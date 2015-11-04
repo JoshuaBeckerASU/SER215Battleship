@@ -96,13 +96,15 @@ public class DBConnection
              //rsPLost.close();
          }
          
-         //create records for new user
          else
          {
+            /*create records for new user
             stmtInsert = conn.createStatement();
             createRecords = "INSERT into bs_player_stats(name, games_played, games_won, games_lost, ships_destroyed, ships_lost, win_percentage, loss_percentage) VALUES('"
                + name + "', 0, 0, 0, 0, 0, 0.00, 0.00);";
             stmtInsert.executeUpdate(createRecords);
+            */
+            System.out.println("ERROR: User records not found");
          }
 
          rs.close();

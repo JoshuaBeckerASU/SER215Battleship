@@ -16,6 +16,7 @@ public class UserRegistration
 {
    private String newUser;
    private String newPass;
+   private String email, avatarImg;
    private final String URL = "jdbc:mysql://50.62.209.118:3306/battleship_db";
    private final String USER = "team4", PASS = "3H2qib2$";
    private String sql, createRecords, createUser;
@@ -53,9 +54,10 @@ public class UserRegistration
          }
          
          conn = DriverManager.getConnection(URL,USER,PASS);
+         stmtUserPass = conn.createStatement();
          stmt = conn.createStatement();
          
-         sql = "SELECT count(*) cnt from bs_player_stats WHERE name = '" + newUser + "';";
+         sql = "SELECT count(*) cnt from bs_player WHERE name = '" + newUser + "';";
          ResultSet rs = stmt.executeQuery(sql);
          
          //if user exists return corresponding code otherwise create new user and return corresponding code
@@ -73,10 +75,14 @@ public class UserRegistration
          {
             stmtUserPass = conn.createStatement();
             stmtInsert = conn.createStatement();
+            createUser = "INSERT into bs_player(name, password, avatar_location, email) VALUES('" + newUser + "', " + newPass + "', 'avatar.jpg', '" + email + "');";
             createRecords = "INSERT into bs_player_stats(name, games_played, games_won, games_lost, ships_destroyed, ships_lost, win_percentage, loss_percentage) VALUES('"
                + newUser + "', 0, 0, 0, 0, 0, 0.00, 0.00);";
+            stmtUserPass.executeUpdate(createUser);
             stmtInsert.executeUpdate(createRecords);
             
+            stmtUserPass.close();
+            stmtInsert.close();
             rs.close();
             stmt.close();
             conn.close();
