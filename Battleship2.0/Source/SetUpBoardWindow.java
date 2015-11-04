@@ -29,7 +29,7 @@ public class SetUpBoardWindow
     public SetUpBoardWindow(Game game, LoadAssets assets, JFrame window)// constructer
     {
 		m_CurrentGame = game;
-		m_CurrentPlayer = game.getPlayer("Player 1");
+		m_CurrentPlayer = m_CurrentGame.getCurrentPlayer();
 		m_CurrentShip = m_CurrentPlayer.getShip(0);
 		
 		m_OldWindow_F = window;
@@ -43,6 +43,8 @@ public class SetUpBoardWindow
 		addActionListeners();
 		
 		addElements();
+		
+		m_CurrentPlayer.startBoardSetup();
 	}
 	/**createComponents
 	* creates components and gives them
@@ -105,13 +107,11 @@ public class SetUpBoardWindow
 		m_Instructions_L.add(instructions[2]);
 		m_Instructions_L.add(instructions[3]);
 		
-		m_CurrentPlayer.setNextShip();
 		JPanel board = m_CurrentPlayer.getBoard();
 		
 		board.setAlignmentX(Component.CENTER_ALIGNMENT);
 		m_Instructions_L.setAlignmentX(Component.CENTER_ALIGNMENT);
 		m_Header_L.setAlignmentX(Component.CENTER_ALIGNMENT);
-		System.out.println("w= " + m_Header_L.getWidth() + " h = " + m_Header_L.getHeight());
 		
 		m_Background_L.add(m_Header_L);
 		m_Background_L.add(new JLabel("\n"));
@@ -195,22 +195,22 @@ public class SetUpBoardWindow
 				switch(m_Command)
 				{
 					case "UP": 
-							m_CurrentPlayer.updateBoard(m_CurrentShip, m_CurrentShip.getLocation().x(),  m_CurrentShip.getLocation().y()-1);
+							m_CurrentPlayer.updateBoard(m_CurrentShip, m_CurrentShip.getLocation().x(),  m_CurrentShip.getLocation().y()-1, "UP");
 							m_Background_L.setSize(new Dimension(m_ScreenWidth-1, m_ScreenHeight-1));
 							m_Background_L.setSize(new Dimension(m_ScreenWidth, m_ScreenHeight));
 							break;
 					case "DOWN": 
-							m_CurrentPlayer.updateBoard(m_CurrentShip, m_CurrentShip.getLocation().x(),  m_CurrentShip.getLocation().y()+1);
+							m_CurrentPlayer.updateBoard(m_CurrentShip, m_CurrentShip.getLocation().x(),  m_CurrentShip.getLocation().y()+1, "DOWN");
 							m_Background_L.setSize(new Dimension(m_ScreenWidth-1, m_ScreenHeight-1));
 							m_Background_L.setSize(new Dimension(m_ScreenWidth, m_ScreenHeight));
 							break;
 					case "LEFT": 
-							m_CurrentPlayer.updateBoard(m_CurrentShip, m_CurrentShip.getLocation().x()-1,  m_CurrentShip.getLocation().y());
+							m_CurrentPlayer.updateBoard(m_CurrentShip, m_CurrentShip.getLocation().x()-1,  m_CurrentShip.getLocation().y(), "LEFT");
 							m_Background_L.setSize(new Dimension(m_ScreenWidth-1, m_ScreenHeight-1));
 							m_Background_L.setSize(new Dimension(m_ScreenWidth, m_ScreenHeight));
 							break;
 					case "RIGHT": 
-							m_CurrentPlayer.updateBoard(m_CurrentShip, m_CurrentShip.getLocation().x()+1,  m_CurrentShip.getLocation().y());
+							m_CurrentPlayer.updateBoard(m_CurrentShip, m_CurrentShip.getLocation().x()+1,  m_CurrentShip.getLocation().y(), "RIGHT");
 							m_Background_L.setSize(new Dimension(m_ScreenWidth-1, m_ScreenHeight-1));
 							m_Background_L.setSize(new Dimension(m_ScreenWidth, m_ScreenHeight));
 							break;

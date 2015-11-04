@@ -28,7 +28,7 @@ public class Board
 	private int m_boardWidth;
 	private int m_boardHight;
 	private final int m_NUM_OF_COL, m_NUM_OF_ROWS;
-	private boolean m_HasShip[][];
+	private String m_HasShip[][];
 	
 	Board(LoadAssets assets, Player currentPlayer, Game game)
 	{
@@ -43,10 +43,10 @@ public class Board
 		m_ShipCount = 0;
 	    m_boardHight = m_Assets.getImage("GameBoard").getIconHeight();
 		m_boardWidth = m_Assets.getImage("GameBoard").getIconWidth();
-		m_HasShip = new boolean [m_NUM_OF_COL][m_NUM_OF_ROWS];
+		m_HasShip = new String[m_NUM_OF_COL][m_NUM_OF_ROWS];
 		for(int i = 0; i < m_NUM_OF_COL; i++)
 		{
-			Arrays.fill(m_HasShip[i],false);
+			Arrays.fill(m_HasShip[i],"NOSHIP");
 		}
 		
 		
@@ -87,7 +87,10 @@ public class Board
 		}
 		return m_GameBoards_P;// show board with hidden ships, for others to see
 	}
-	
+	public JLabel[] getTargetBoard()
+	{
+		return m_GameBoardTargets_L;
+	}
 	private void createBoards()
 	{
 		m_GameBoardGrid_L = new JLabel[m_NUM_OF_ROWS][m_NUM_OF_COL];
@@ -189,62 +192,45 @@ public class Board
 		
 		
 	}
-	public void updateBoard(Ship ship, int x, int y)
+	public void updateBoard(Ship ship, int x, int y, String direction)
 	{
-		String direction = "";
-		// Determining direction
-		if(x == ship.x() + 1)
-			direction = "RIGHT";
-		if(x == ship.x() - 1)
-			direction = "LEFT";
-		if(y == ship.y() - 1)
-			direction = "UP";
-		if(y == ship.y() + 1)
-			direction = "DOWN";
-		
-		if(!isOutOfBounds(x, y, ship) && !hasShip(x,y,ship))
-		{
-			hideShip(ship, ship.x(), ship.y()); // Hide ship at old location
-				
-			showShip(ship, x, y); //Show ship at new location
-				
-			ship.setLocation(x,y);
-		}
-		
 		/* 
 		SKIP OVER SHIP FUNCTIONALITY (Need to add alternate directions. Atm, this only works from top to bottom)
 		*/
-		else if(!isOutOfBounds(x, y, ship) && hasShip(x,y,ship)){ // If the new location is not out of bounds but there is another ship there...
+		if(!isOutOfBounds(x, y, ship) && hasShip(x,y,ship))
+		{ // If the new location is not out of bounds but there is another ship there...
+			int newx = x;
+			int newy = y;
+			switch(direction)
+			{
+				case "UP": 
+						    while(!isOutOfBounds(newx, newy, ship)&& hasShip(newx,newy,ship))
+								newy--;
+						break;
+				case "DOWN": 
+							while(!isOutOfBounds(newx, newy, ship) && hasShip(newx,newy,ship))
+								newy++;
+						break;
+				case "RIGHT": 
+							while(!isOutOfBounds(newx, newy, ship) && hasShip(newx,newy,ship))			
+								newy++;		
+						break;		
+				case "LEFT": 
+							while(!isOutOfBounds(newx, newy, ship) && hasShip(newx,newy,ship))			
+								newy--;
+						break;
+				default: System.out.println("INVALID UPDATE OF BOARD"); break;
+			}
+			x = newx;
+			y = newy;
+		}
+		if(!isOutOfBounds(x, y, ship))
+		{
+			hideShip(ship, ship.x(), ship.y());
 			
-			if(direction == "UP"){
-				if(!isOutOfBounds(x,y-1, ship) && !hasShip(x,y-1,ship)){
-					hideShip(ship, ship.x(), ship.y());
-					showShip(ship, x, y-1);
-					ship.setLocation(x,y-1);
-				}
-			}
-			if(direction == "DOWN"){
-				if(!isOutOfBounds(x,y+1, ship) && !hasShip(x,y+1,ship)){
-					hideShip(ship, ship.x(), ship.y());
-					showShip(ship, x, y+1);
-					ship.setLocation(x,y+1);
-				}
-			}	
-			if(direction == "RIGHT"){
-				if(!isOutOfBounds(x+1,y, ship) && !hasShip(x+1,y,ship)){
-					hideShip(ship, ship.x(), ship.y());
-					showShip(ship, x+1, y);
-					ship.setLocation(x+1,y);
-				}
-			}
-			if(direction == "LEFT"){
-				if(!isOutOfBounds(x-1,y, ship) && !hasShip(x-1,y,ship)){
-					hideShip(ship, ship.x(), ship.y());
-					showShip(ship, x-1, y);
-					ship.setLocation(x-1,y);
-				}
-			}
+			showShip(ship, x,y);
 		
+			ship.setLocation(x,y);
 		}
 	}
 
@@ -338,14 +324,14 @@ public class Board
 	}
 	public boolean hasShip(int x, int y, Ship ship)
 	{
-		if(m_HasShip[x][y])
+		if(m_HasShip[x][y].equals(ship.getName()))
 		{
 			return true;
 		}else if(ship.getAxis() == Ship.X_AXIS)
 		{
 			for(int j = 0; j < ship.getLength();j++)
 			{
-				if(m_HasShip[x+j][y])
+				if(m_HasShip[x+j][y].compareTo("NOSHIP") != 0)
 				{
 					return true;
 				}
@@ -354,7 +340,7 @@ public class Board
 		{
 			for(int j = 0; j < ship.getLength();j++)
 			{
-				if(m_HasShip[x][y-j])
+				if(m_HasShip[x][y-j].compareTo("NOSHIP") != 0)
 				{
 					return true;
 				}
@@ -362,24 +348,23 @@ public class Board
 		}
 		return false;
 	}
-	public boolean hasShip(int x, int y)
+	public String[][] getTakenLoc()
 	{
-		return 
+		return m_HasShip;
 	}
 	public void addToTaken(int x, int y, Ship ship)
 	{
-		m_HasShip[x][y] = true;
 		if(ship.getAxis() == Ship.X_AXIS)
 		{
-			for(int j = 1; j < ship.getLength();j++)
+			for(int j = 0; j < ship.getLength();j++)
 			{
-				m_HasShip[x+j][y] =true;
+				m_HasShip[x+j][y] =ship.getName();
 			}
 		}else
 		{
-			for(int j = 1; j < ship.getLength();j++)
+			for(int j = 0; j < ship.getLength();j++)
 			{
-				m_HasShip[x][y-j] =true;
+				m_HasShip[x][y-j] =ship.getName();
 			}
 		}
 	}

@@ -6,3 +6,5 @@ target: <div>Icons made by <a href="http://www.freepik.com" title="Freepik">Free
              is licensed by <a href="http://creativecommons.org/licenses/by/3.0/" title="Creative Commons BY 3.0">CC BY 3.0</a></div>
 milti level grid: http://opengameart.org/content/3-level-grid
 Plain BackGround Water: http://www.marine-aquarium.co.za/wp-content/uploads/6095422653_0e544a30b0_b.jpg
+target2:<div>Icons made by <a href="http://www.flaticon.com/authors/graphicsbay" title="GraphicsBay">GraphicsBay</a> from <a href="http://www.flaticon.com" title="Flaticon">www.flaticon.com</a>             
+is licensed by <a href="http://creativecommons.org/licenses/by/3.0/" title="Creative Commons BY 3.0">CC BY 3.0</a></div>

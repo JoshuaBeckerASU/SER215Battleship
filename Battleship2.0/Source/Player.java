@@ -16,6 +16,7 @@ public class Player
 	private Board m_Board;
 	private int m_NumOfSelectedTargets;//thats a long name...
 	private int m_ShipsPlaced;
+	private String m_ShipLocaions[][];
 	private Game m_Game;
 	public Ship m_AirCarr;
 	public Ship m_Battleship;
@@ -91,7 +92,18 @@ public class Player
 	{
 		m_NumOfSelectedTargets++;
 	}
-	
+	public void resetShots()
+	{
+		m_NumOfSelectedTargets = 0;
+	}
+	public void startBoardSetup()
+	{
+		setNextShip();
+	}
+	public JLabel[] getTargetBoard()
+	{
+		return m_Board.getTargetBoard();
+	}
     /**getShip
 	* gets the ship by name
 	* @param int: index
@@ -134,9 +146,9 @@ public class Player
 	* @param int: x location on grid
 	* @param int: y location on grid
 	**/
-	public void updateBoard(Ship ship, int x, int y)
+	public void updateBoard(Ship ship, int x, int y, String direction)
 	{
-		m_Board.updateBoard(ship,x, y);
+		m_Board.updateBoard(ship,x, y, direction);
 	}
 	
 	/**getNextShip
@@ -174,8 +186,6 @@ public class Player
 			ship.flipAxis();
 			m_Board.showShip(ship,ship.x(),ship.y());
 		}
-		
-		System.out.println("x = " + ship.getLocation().x() + "  y = " + ship.getLocation().y());
 	}
 	public void addToTaken(int x, int y, Ship ship)
 	{
@@ -185,6 +195,20 @@ public class Player
 	public boolean allShipsSet()
 	{
 		return m_ShipsPlaced == 5;
+	}
+	public boolean hasShip(int x, int y, Ship ship)
+	{
+		return m_Board.hasShip(x, y, ship);
+	}
+	public boolean checkHit(int x, int y)
+	{
+		String loc = m_Board.getTakenLoc()[x][y];
+		if(loc.compareTo("NOSHIP") != 0)
+		{
+			getShip(loc).decLives();
+			return true;
+		}
+		return false;
 	}
 	//Alec: I added this so i can use the getPlayer in game class and write the players name to the client in a print statement
 	//I actually changed my implementation and dont need this but Im gonna leave it just in case someone adds to it in the future

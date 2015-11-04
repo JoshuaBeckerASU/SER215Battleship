@@ -21,7 +21,7 @@ public class LoadAssets
 	private ImageIcon m_StartGame_B, m_Battleship_X, m_Battleship_Y, m_AircraftCarrier_X, m_AircraftCarrier_Y;
 	private ImageIcon m_Cruiser_X, m_Destroyer_X, m_Destroyer_Y, m_Submarine_X,m_Submarine_Y;
 	private ImageIcon m_Cruiser_Y;
-	private ImageIcon m_HitMarker, m_Target;
+	private ImageIcon m_HitMarker, m_Target, m_Target2;
 	private Image m_Cursor;
 	LoadAssets()
 	{
@@ -39,6 +39,7 @@ public class LoadAssets
 		
 		m_HitMarker = loadGameImage("HitMarker.png",m_Board.getIconWidth()/16,  m_Board.getIconHeight()/18);
 		m_Target = loadGameImage("Target.png",m_Board.getIconWidth()/16,  m_Board.getIconHeight()/18);
+		m_Target2 = loadGameImage("Target2.png",m_Board.getIconWidth()/16,  m_Board.getIconHeight()/18);
 		m_Cursor = getShipImages("Battleship.png", Ship.BATTLESHIP_LENGTH, false);
 		
 		m_BackToMainMenu_B = loadButtonImage("BackToMainMenuButton.png");
@@ -82,6 +83,8 @@ public class LoadAssets
 			case "HitMarker": return m_HitMarker;
 			
 			case "Target": return m_Target;
+			
+			case "Target2": return m_Target2;
 			
 			case "BackToMainMenuButton": return m_BackToMainMenu_B;
 			

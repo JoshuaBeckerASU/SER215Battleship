@@ -5,6 +5,7 @@ Create On: 10/26/15
 Contributors:
 ***********************/
 import javax.swing.*;
+import java.util.*;
 
 public class Game
 {
@@ -106,6 +107,17 @@ public class Game
 	{
 		return m_CurrentPlayer;
 	}
+	
+	public Player getNextPlayer()// will need to switch to get opponents board.
+	{
+		if(m_CurrentPlayerIndex == m_Players.length-1)
+		{
+			return m_Players[0];
+		}else
+		{
+			return m_Players[1];
+		}
+	}
 
 	/**TEMP METHOD fillPlayers
 	* fillPlayers with some value
@@ -121,23 +133,29 @@ public class Game
 	{
 		Ship ship = m_Players[1].getNextShip();
 		m_Players[1].setNextShip();
-		m_Players[1].updateBoard(ship, 2,2);
+		m_Players[1].updateBoard(ship, 2,2, "DOWN");
+		m_Players[1].addToTaken(ship.x(),ship.y(),ship);
 		
 		ship = m_Players[1].getNextShip();
 		m_Players[1].setNextShip();
-		m_Players[1].updateBoard(ship, 3,3);
+		m_Players[1].updateBoard(ship, 3,3, "RIGHT");
+		m_Players[1].addToTaken(ship.x(),ship.y(),ship);
 		
 		ship = m_Players[1].getNextShip();
 		m_Players[1].setNextShip();
-		m_Players[1].updateBoard(ship, 4,4);
+		m_Players[1].updateBoard(ship, 4,4,"DOWN");
+		m_Players[1].addToTaken(ship.x(),ship.y(),ship);
 		
+	    ship = m_Players[1].getNextShip();
 		m_Players[1].setNextShip();
-		m_Players[1].updateBoard(ship, 5,5);
+		m_Players[1].updateBoard(ship, 5,5, "DOWN");
+		m_Players[1].addToTaken(ship.x(),ship.y(),ship);
+
 		ship = m_Players[1].getNextShip();
+		m_Players[1].setNextShip();
+		m_Players[1].updateBoard(ship, 6,6, "LEFT");
+		m_Players[1].addToTaken(ship.x(),ship.y(),ship);
 		
-		m_Players[1].setNextShip();
-		m_Players[1].updateBoard(ship, 6,6);
-		ship = m_Players[1].getNextShip();
 	}
 	public void nextTurn()
 	{
@@ -147,29 +165,81 @@ public class Game
 			m_CurrentPlayerIndex = 0;
 		}else
 		{
-			m_CurrentPlayer = m_Players[++m_CurrentPlayerIndex];
+			System.out.println("here");
+			m_CurrentPlayerIndex++;
+			m_CurrentPlayer = m_Players[m_CurrentPlayerIndex];
+		}
+		
+		if(!m_CurrentPlayer.isHuman())
+		{
+			m_CurrentPlayer.resetShots();
+			takeAITurn();
+		}else
+		{
+			takeHumanTurn();
 		}
 	}
-	public void fire()
+
+	private void takeAITurn()
 	{
-		//System.out.println(m_CurrentPlayer.getNumOfSelectedTargets() + " Targets: Name: " + m_CurrentPlayer.getName());
-		checkIfHit();
+		Random rand = new Random(0);
+		for(int i = 0; i < 5; i++)
+		{
+			if(m_CurrentPlayer.getNumOfSelectedTargets() == 4)
+			{
+				m_CurrentPlayer.incNumOfSelTargets();
+				PlayerSelectedTarget(rand.nextInt(15) + 1,rand.nextInt(17)+1);
+				nextTurn();
+			}else
+			{
+				m_CurrentPlayer.incNumOfSelTargets();
+				PlayerSelectedTarget(rand.nextInt(15) + 1,rand.nextInt(17)+1);
+			}
+		}
+	}
+	private void takeHumanTurn()
+	{
+		m_CurrentPlayer.resetShots();
 	}
 	public void PlayerSelectedTarget(int x,int y)
 	{
 		m_TargetLoc[m_CurrentPlayer.getNumOfSelectedTargets()-1] = new Location(x,y);
-		m_GameWindow.updateActionConsole(m_CurrentPlayer.getName() + ":  Selected Target...\n\t" +
-										 m_CurrentPlayer.getName() + ": Has " + (5 - m_CurrentPlayer.getNumOfSelectedTargets()) + " Left");
-		System.out.println(m_CurrentPlayer.getNumOfSelectedTargets() + " num of targets");
+		m_GameWindow.updateActionConsole(m_CurrentPlayer.getName() + ":  Selected Target...\t"
+										 + (5 - m_CurrentPlayer.getNumOfSelectedTargets()) + " Shots Left");
+		checkIfHit();
 	}
 	public void checkIfHit()
-	{/*
+	{
+		int index = m_CurrentPlayer.getNumOfSelectedTargets()-1;
+		int x = m_TargetLoc[index].x();
+		int y = m_TargetLoc[index].y();
 		for(int i = 0; i < 5; i++)
 		{
-			if()
+			if(getNextPlayer().checkHit(x,y))
 			{
+				if(m_CurrentPlayer.isHuman())
+				{
+					BoardMouseAction.setIcon(m_Assets.getImage("HitMarker"));
+				}else
+				{
+					((JLabel) getNextPlayer().getTargetBoard()[x].getComponent(y)).setIcon(m_Assets.getImage("HitMarker"));
+				}
 				
+				m_GameWindow.updateActionConsole("HIT On Locaion\tx = " + x + " y = " + y);
+				
+				break;
+			}else
+			{
+				if(m_CurrentPlayer.isHuman())
+				{
+					BoardMouseAction.setIcon(m_Assets.getImage("Target"));
+				}else
+				{
+					((JLabel) getNextPlayer().getTargetBoard()[x].getComponent(y)).setIcon(m_Assets.getImage("Target"));
+				}
+				m_GameWindow.updateActionConsole("MISS On Locaion\tx = " + x + " y = " + y);
+				break;
 			}
-		}*/
+		}
 	}
 }

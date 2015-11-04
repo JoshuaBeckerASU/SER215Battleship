@@ -21,7 +21,10 @@ public class BoardMouseAction extends MouseAdapter
 	private JLabel m_GameBoardTargets_L[];
 	private Game m_Game;
 	private LoadAssets m_Assets;
+	private Icon m_Target1;
+	private Icon m_Target2;
 	private String m_CurrentPlayersName;
+	private static Icon tmp;
 	
 	BoardMouseAction(int x , int y, Game game, JLabel[] gameBoardTargets_L, LoadAssets assets, String name)
 	{
@@ -31,18 +34,24 @@ public class BoardMouseAction extends MouseAdapter
 		m_GameBoardTargets_L = gameBoardTargets_L;
 		m_Assets = assets;
 		m_CurrentPlayersName = name;
+		m_Target1 =  m_Assets.getImage("Target");
+		m_Target2 =  m_Assets.getImage("Target2");
 	}
 	@Override
 	public void mouseEntered(java.awt.event.MouseEvent evt) 
 	{
 		if(m_Game.getCurrentPlayer().allShipsSet() && (m_CurrentPlayersName.compareTo(m_Game.getCurrentPlayer().getName()) != 0))
-		m_GameBoardTargets_L[m_x].getComponent(m_y).setCursor(new Cursor(Cursor.CROSSHAIR_CURSOR));
+		{
+			tmp = ((JLabel) m_GameBoardTargets_L[m_x].getComponent(m_y)).getIcon();
+			m_GameBoardTargets_L[m_x].getComponent(m_y).setCursor(new Cursor(Cursor.CROSSHAIR_CURSOR));
+			((JLabel) m_GameBoardTargets_L[m_x].getComponent(m_y)).setIcon(m_Target2);
+		}
 	}
 
 	@Override
 	public void mouseExited(java.awt.event.MouseEvent evt) 
 	{
-		//if(m_ShipCount > 5)
+		((JLabel) m_GameBoardTargets_L[m_x].getComponent(m_y)).setIcon(tmp);
 	}
 	@Override
 	public void mouseClicked(java.awt.event.MouseEvent evt)
@@ -54,12 +63,10 @@ public class BoardMouseAction extends MouseAdapter
 	{
 		if(m_Game.getCurrentPlayer().allShipsSet() && (m_CurrentPlayersName.compareTo(m_Game.getCurrentPlayer().getName()) != 0))
 		{
-			((JLabel) m_GameBoardTargets_L[m_x].getComponent(m_y)).setIcon(m_Assets.getImage("Target"));
 			if(m_Game.getCurrentPlayer().getNumOfSelectedTargets() == 4)
 			{
 				m_Game.getCurrentPlayer().incNumOfSelTargets();
 				m_Game.PlayerSelectedTarget(m_x,m_y);
-				m_Game.fire();
 				m_Game.nextTurn();
 			}else
 			{
@@ -67,5 +74,9 @@ public class BoardMouseAction extends MouseAdapter
 				m_Game.PlayerSelectedTarget(m_x,m_y);
 			}
 		}
+	}
+	public static void setIcon(ImageIcon img)
+	{
+		tmp = img;
 	}
 }
