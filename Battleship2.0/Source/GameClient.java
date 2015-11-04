@@ -36,22 +36,19 @@ public class GameClient{
 			
 			//looks for the server with InetAddress and port.
 			socket=new Socket(localHost,port);
-			System.out.println("Here");
+			//System.out.println("Here");
 			//connect iostreams
 			fromServer=new ObjectInputStream(socket.getInputStream());
-			System.out.println("Heres");
+			//System.out.println("Heres");
 			toServer=new ObjectOutputStream(socket.getOutputStream());
 
 			System.out.println("Connection established\n");
 
 			while(true){
-				System.out.print("Enter an x coordinate: ");
-				int x=input.nextInt();
+				String message=input.nextLine();
 
-				System.out.print("\nEnter a y coordinate: ");
-				int y=input.nextInt();
-
-				currentMove=new Location(x,y);
+				currentMove=new Location();
+				currentMove.setMessage(message);
 
 				toServer.writeObject(currentMove);
 				

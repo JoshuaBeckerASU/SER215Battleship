@@ -10,29 +10,32 @@ import java.util.*;
 
 public class GameServer{
 	//creates the server socket
-	private ServerSocket sSocket;
+	private ServerSocket serverSocket;
 	
 	//creates the socket that will communicate with the client 
-	private Socket socket1;
+	private Socket socket,socket1;
 	
 	//inputstream from the client
-	private ObjectInputStream inFromClient;
+	private ObjectInputStream inFromClient,inFromClient1;
 
 	//output stream to the client
-	private ObjectOutputStream outToClient;
+	private ObjectOutputStream outToClient,outToClient1;
 
 	//current game object
-	private Game currentGame;
+	//private Game currentGame;
 
 	//load assets object for game constructor
-	private LoadAssets gameAssets;
+	//private LoadAssets gameAssets;
 
 	//giving it an initial value for now. Same for difficulty
 	private int numberOfPlayers=2,difficulty=2;
 
-	private Location currentMove;
+	//the location of a players move will be sent here
+	private Location currentMove,currentMove1;
 
-
+	//strings that will be used to differentiate between clients
+	String pIp,pIp1;
+	
 	public static void main(String[] args){
 		new GameServer();
 	}
@@ -41,39 +44,55 @@ public class GameServer{
 
 		try{
 			//attach serversocket to a port
-			sSocket=new ServerSocket(8000);
+			serverSocket=new ServerSocket(8000);
+
+			//connect on socket
+			socket=serverSocket.accept();
+
+			//get clients InetAddress
+			InetAddress clientAddress=socket.getInetAddress();
+
+			//converts InetAddress object to string for storage
+			pIp=clientAddress.toString();
+
+			System.out.println("Connection established with "+pIp);
 
 			//wait for connection
-			socket1=sSocket.accept();
+			socket1=serverSocket.accept();
 
-			System.out.println("Connection established");
+			//get clients InetAddress
+			InetAddress clientAddress1=socket1.getInetAddress();
+
+			//converts InetAddress object to string for storage
+			pIp1=clientAddress.toString();
+
+			System.out.println("Connection established with "+pIp1);
 
 			//instantiate datastreams
-			inFromClient=new ObjectInputStream(socket1.getInputStream());
-			outToClient=new ObjectOutputStream(socket1.getOutputStream());
+			inFromClient=new ObjectInputStream(socket.getInputStream());
+			outToClient=new ObjectOutputStream(socket.getOutputStream());
 
-			//initialize loadAssets
+			//instantiate datastreams
+			inFromClient1=new ObjectInputStream(socket1.getInputStream());
+			outToClient1=new ObjectOutputStream(socket1.getOutputStream());
+
+
+			/*//initialize loadAssets
 			gameAssets=new LoadAssets();
 
 			//initialize game object
-			currentGame=new Game(numberOfPlayers,difficulty,gameAssets);
+			currentGame=new Game(numberOfPlayers,difficulty,gameAssets);*/
 
 			while(true){
 				currentMove=(Location)inFromClient.readObject();
 
-				System.out.println(currentMove.x() + " " + currentMove.y());
+				outToClient1.writeObject(currentMove);
 
-				currentMove.setMessage("Cooridnates received");
+				currentMove=(Location)inFromClient1.readObject();
 
 				outToClient.writeObject(currentMove);
-
-				System.out.println("Message sent");
-				
-
-
+			
 			}
-
-
 
 		}catch(IOException io){
 			System.err.println(io);
