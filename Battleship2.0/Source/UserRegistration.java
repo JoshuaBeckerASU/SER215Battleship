@@ -33,9 +33,10 @@ public class UserRegistration
    {
       /*
       resultCode meaning:
-      0 username already exists
+      0 username already exists and is successfully logged in
       1 username has been created
       2 username has not been created successfully
+      3 username exists but is an incorrect password
       */
       int resultCode;
       
@@ -63,6 +64,10 @@ public class UserRegistration
          //if user exists return corresponding code otherwise create new user and return corresponding code
          if(!rs.isBeforeFirst())
          {
+            /*
+            need to create algorithm for checking password
+            */
+            
             rs.close();
             stmt.close();
             conn.close();
