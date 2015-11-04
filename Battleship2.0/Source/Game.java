@@ -163,13 +163,13 @@ public class Game
 		System.out.println(m_CurrentPlayer.getNumOfSelectedTargets() + " num of targets");
 	}
 	public void checkIfHit()
-	{
+	{/*
 		for(int i = 0; i < 5; i++)
 		{
 			if()
 			{
 				
 			}
-		}
+		}*/
 	}
 }

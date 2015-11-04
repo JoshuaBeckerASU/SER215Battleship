@@ -54,9 +54,15 @@ public class GameClient{
 				currentMove=new Location(x,y);
 
 				toServer.writeObject(currentMove);
+				
+				currentMove=(Location)fromServer.readObject();
+				
+				System.out.println(currentMove.getMessage());
 			}
 		}catch(IOException io){
 			System.err.println(io);
+		}catch(ClassNotFoundException c){
+			System.err.println(c);
 		}
 
 
