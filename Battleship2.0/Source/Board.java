@@ -213,11 +213,11 @@ public class Board
 						break;
 				case "RIGHT": 
 							while(!isOutOfBounds(newx, newy, ship) && hasShip(newx,newy,ship))			
-								newy++;		
+								newx++;		
 						break;		
 				case "LEFT": 
 							while(!isOutOfBounds(newx, newy, ship) && hasShip(newx,newy,ship))			
-								newy--;
+								newx--;
 						break;
 				default: System.out.println("INVALID UPDATE OF BOARD"); break;
 			}
