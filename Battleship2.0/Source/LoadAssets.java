@@ -12,6 +12,7 @@ import javax.swing.JFrame;
 import javax.imageio.*;
 import java.awt.image.*;
 import java.io.*;
+import java.net.*;
 
 public class LoadAssets
 {	
@@ -23,6 +24,8 @@ public class LoadAssets
 	private ImageIcon m_Cruiser_Y;
 	private ImageIcon m_HitMarker, m_Target, m_Target2;
 	private Image m_Cursor;
+	private final int GridCol;
+	private final int GridRows;
 	LoadAssets()
 	{
 		GraphicsDevice gd = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();// geting size of screen
@@ -30,16 +33,18 @@ public class LoadAssets
 		int ScreenHeight = gd.getDisplayMode().getHeight();
 		boolean X = true;
 		boolean Y = false;
+		GridCol = 16;
+		GridRows = 19;
 		
-		m_Board = loadGameImage("Grid6.png", 576, 648);
-		m_BoardBlank = loadGameImage("GameBoardBlank.png",576, 648);
+		m_Board = loadGameImage("Grid8.png", 577, 685);
+		m_BoardBlank = loadGameImage("GameBoardBlank.png",577, 685);
 		m_Instructions = loadGameImage("Instructions.png", ScreenWidth, 100);
 		m_MenuBackground = loadGameImage("MenuBG.jpg", ScreenWidth, ScreenHeight);
-		m_GameBackground = loadGameImage("GameBG5.jpg", ScreenWidth, ScreenHeight);
+		m_GameBackground = loadGameImage("GameBG1.jpg", ScreenWidth, ScreenHeight);
 		
-		m_HitMarker = loadGameImage("HitMarker.png",m_Board.getIconWidth()/16,  m_Board.getIconHeight()/18);
-		m_Target = loadGameImage("Target.png",m_Board.getIconWidth()/16,  m_Board.getIconHeight()/18);
-		m_Target2 = loadGameImage("Target2.png",m_Board.getIconWidth()/16,  m_Board.getIconHeight()/18);
+		m_HitMarker = loadGif("Fire.gif",m_Board.getIconWidth()/GridCol,  m_Board.getIconHeight()/GridRows);
+		m_Target = loadGameImage("Target.png",m_Board.getIconWidth()/GridCol,  m_Board.getIconHeight()/GridRows);
+		m_Target2 = loadGameImage("Target2.png",m_Board.getIconWidth()/GridCol,  m_Board.getIconHeight()/GridRows);
 		m_Cursor = getShipImages("Battleship.png", Ship.BATTLESHIP_LENGTH, false);
 		
 		m_BackToMainMenu_B = loadButtonImage("BackToMainMenuButton.png");
@@ -142,6 +147,18 @@ public class LoadAssets
 		}
 		return null;
 	}
+	private ImageIcon loadGif(String name, int w, int h)
+	{
+		String path = "";
+		path = System.getProperty("user.dir");
+		path = path.replace('\\','/');
+		path = path.replaceAll("Source", "Assets/GUI/GameImages/" + name);
+		System.out.println(path);
+		ImageIcon gif;
+		
+		gif = new ImageIcon(path);
+		return gif;
+	}
 	private ImageIcon loadButtonImage(String name)
 	{
 		String path = "";
@@ -185,8 +202,8 @@ public class LoadAssets
 		path = path.replace('\\','/');
 		path = path.replaceAll("Source", "Assets/Ships/" + name);
 		Image img;
-		int height = m_Board.getIconHeight()/18;
-		int width = m_Board.getIconWidth()/16;
+		int height = m_Board.getIconHeight()/GridRows;
+		int width = m_Board.getIconWidth()/GridCol;
 		
 		if(orientation)
 		{
@@ -221,8 +238,8 @@ public class LoadAssets
 		path = path.replace('\\','/');
 		path = path.replaceAll("Source", "Assets/Ships/" + name);
 		Image img;
-		int height = m_Board.getIconHeight()/18;
-		int width = m_Board.getIconWidth()/16;
+		int height = m_Board.getIconHeight()/GridRows;
+		int width = m_Board.getIconWidth()/GridCol;
 		
 		if(orientation)
 		{

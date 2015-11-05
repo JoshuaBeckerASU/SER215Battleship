@@ -16,6 +16,7 @@ public class Player
 	private Board m_Board;
 	private int m_NumOfSelectedTargets;//thats a long name...
 	private int m_ShipsPlaced;
+	private int m_ShipsLeft;
 	private String m_ShipLocaions[][];
 	private Game m_Game;
 	public Ship m_AirCarr;
@@ -38,6 +39,7 @@ public class Player
 		m_Wins = 0;
 		m_ShipsPlaced = 0;
 		m_NumOfSelectedTargets = 0;
+		m_ShipsLeft = 5;
 		m_Game = game;
 		m_AirCarr = new Ship("AircraftCarrier", Ship.CARRIER_LENGTH, m_Assets);
 		m_Battleship = new Ship("Battleship", Ship.BATTLESHIP_LENGTH, m_Assets);
@@ -55,6 +57,14 @@ public class Player
 	public JPanel getBoardHide()
 	{
 		return m_Board.getBoardHide();
+	}
+	public int getShipsLeft()
+	{
+		return m_ShipsLeft;
+	}
+	public void decShipsLeft()
+	{
+		m_ShipsLeft--;
 	}
 	public int getNumOfSelectedTargets()
 	{
@@ -187,6 +197,10 @@ public class Player
 			m_Board.showShip(ship,ship.x(),ship.y());
 		}
 	}
+	public void showShip(String name)
+	{
+		m_Board.showShip(getShip(name), getShip(name).x(),getShip(name).y());
+	}
 	public void addToTaken(int x, int y, Ship ship)
 	{
 		m_Board.addToTaken(x,y,ship);
@@ -200,15 +214,23 @@ public class Player
 	{
 		return m_Board.hasShip(x, y, ship);
 	}
-	public boolean checkHit(int x, int y)
+	public String checkHit(int x, int y)
 	{
 		String loc = m_Board.getTakenLoc()[x][y];
+		String message = "MISS";
 		if(loc.compareTo("NOSHIP") != 0)
 		{
 			getShip(loc).decLives();
-			return true;
+			if(getShip(loc).getLives() <= 0)
+			{
+				decShipsLeft();
+				message = getShip(loc).getName();
+			}else
+			{
+				message = "HIT";
+			}
 		}
-		return false;
+		return message;
 	}
 	//Alec: I added this so i can use the getPlayer in game class and write the players name to the client in a print statement
 	//I actually changed my implementation and dont need this but Im gonna leave it just in case someone adds to it in the future

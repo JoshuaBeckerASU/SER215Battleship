@@ -36,7 +36,7 @@ public class Board
 		Cursor m_CrossHair_C = toolkit.createCustomCursor(m_Assets.getImage("BattleShip_Y", 1) , new Point(20, 
            20), "img");*/
 		m_NUM_OF_COL = 16;
-		m_NUM_OF_ROWS = 18;
+		m_NUM_OF_ROWS = 19;
 		m_Game = game;
 		m_Assets = assets;
 		m_CurrentPlayer = currentPlayer;
@@ -48,7 +48,6 @@ public class Board
 		{
 			Arrays.fill(m_HasShip[i],"NOSHIP");
 		}
-		
 		
 		createBoards();
 		
@@ -198,7 +197,8 @@ public class Board
 		SKIP OVER SHIP FUNCTIONALITY (Need to add alternate directions. Atm, this only works from top to bottom)
 		*/
 		if(!isOutOfBounds(x, y, ship) && hasShip(x,y,ship))
-		{ // If the new location is not out of bounds but there is another ship there...
+		{
+			// If the new location is not out of bounds but there is another ship there...
 			int newx = x;
 			int newy = y;
 			switch(direction)
@@ -224,6 +224,7 @@ public class Board
 			x = newx;
 			y = newy;
 		}
+		
 		if(!isOutOfBounds(x, y, ship))
 		{
 			hideShip(ship, ship.x(), ship.y());
