@@ -10,12 +10,12 @@ import java.util.*;
 
 
 
-public class GameClient{
+public class GameClient implements Runnable{
 	
 	//iostreams
 	private ObjectInputStream fromServer;
 	private ObjectOutputStream toServer;
-	private BufferedReader reader;
+	
 
 	private Socket socket;
 
@@ -25,6 +25,17 @@ public class GameClient{
 	//The port that the server is on
 	private int port=8000;
 
+	//which player the client is
+	private int player;
+
+	//player constants
+	private final int PLAYER1=1,PLAYER2=2;
+	
+	//is it the clients turn
+	boolean myTurn;
+
+	boolean waiting=true;
+
 	private Location currentMove;
 
 	private Scanner input=new Scanner(System.in);
@@ -32,37 +43,82 @@ public class GameClient{
 	public GameClient(){
 
 
+		connectToServer();
+
+		System.out.println("connected to server now run");
+
+		run();
+
+
+	}
+
+	public void run(){
 		try{
-			
-			//looks for the server with InetAddress and port.
-			socket=new Socket(localHost,port);
-			//System.out.println("Here");
-			//connect iostreams
-			fromServer=new ObjectInputStream(socket.getInputStream());
-			//System.out.println("Heres");
-			toServer=new ObjectOutputStream(socket.getOutputStream());
-
-			System.out.println("Connection established\n");
-
 			while(true){
-				String message=input.nextLine();
+				if(player==PLAYER1){
 
-				currentMove=new Location();
-				currentMove.setMessage(message);
+					String message=input.nextLine();
 
-				toServer.writeObject(currentMove);
+					sendMessage(message);
+
+					message=receiveMessage();
 				
-				currentMove=(Location)fromServer.readObject();
-				
-				System.out.println(currentMove.getMessage());
+				}
+				else{
+					String message=receiveMessage();
+
+					message=input.nextLine();
+
+					sendMessage(message);
+
+				}
 			}
 		}catch(IOException io){
 			System.err.println(io);
 		}catch(ClassNotFoundException c){
 			System.err.println(c);
 		}
+	}
 
+	public void connectToServer(){
+		try{
+			
+			//looks for the server with InetAddress and port.
+			socket=new Socket(localHost,port);
+			System.out.println("Here");
+			//connect iostreams
 
+			//get player number from server
+			player=new DataInputStream(socket.getInputStream()).readInt();
+
+			System.out.println(player);
+			fromServer=new ObjectInputStream(socket.getInputStream());
+			System.out.println("p1 is connected");
+			
+			toServer=new ObjectOutputStream(socket.getOutputStream());
+			System.out.println("p1 os connected");
+			System.out.println("Connection established\n");
+
+			
+		}catch(IOException io){
+			System.err.println(io);
+		}
+	}
+
+	public void waitForTurn() throws InterruptedException{
+		while(waiting){
+			Thread.sleep(100);
+		}
+
+		waiting=true;
+	}
+
+	public String receiveMessage() throws IOException,ClassNotFoundException{
+		return (String)fromServer.readObject();
+	}
+
+	public void sendMessage(String message)throws IOException{
+		toServer.writeObject(message);
 	}
 
 	//again this main is just for testing purposes. will be removed eventually
