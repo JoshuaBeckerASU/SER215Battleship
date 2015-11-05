@@ -80,7 +80,7 @@ public class UserRegistration
          {
             stmtUserPass = conn.createStatement();
             stmtInsert = conn.createStatement();
-            createUser = "INSERT into bs_player(name, password, avatar_location, email) VALUES('" + newUser + "', " + newPass + "', 'avatar.jpg', '" + email + "');";
+            createUser = "INSERT into bs_player(name, password, avatar_location, email) VALUES('" + newUser + "', MD5('" + newPass + "'), 'avatar.jpg', '" + email + "');";
             createRecords = "INSERT into bs_player_stats(name, games_played, games_won, games_lost, ships_destroyed, ships_lost, win_percentage, loss_percentage) VALUES('"
                + newUser + "', 0, 0, 0, 0, 0, 0.00, 0.00);";
             stmtUserPass.executeUpdate(createUser);

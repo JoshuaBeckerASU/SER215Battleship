@@ -40,16 +40,22 @@ public class UserLogin
       switch(resultCode)
       {
          case 0: m_LoginResult_S = "You have successfully logged in.";
+            isLoggedIn = true;
             break;
             
          case 1: m_LoginResult_S = "Your user been successfully created.";
+            isLoggedIn = true;
             break;
             
          case 2: m_LoginResult_S = "User registration failed.";
+            isLoggedIn = false;
             break;
             
          case 3: m_LoginResult_S = "Username and password combination does not exist.";
+            isLoggedIn = false;
             break;
       }
+      
+      return isLoggedIn;
    }
 }
