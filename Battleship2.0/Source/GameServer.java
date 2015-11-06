@@ -16,10 +16,6 @@ public class GameServer{
 	
 	//creates the socket that will communicate with the client 
 	private Socket socket1,socket2;
-	
-
-	//current game object
-	//private Game currentGame;
 
 	//load assets object for game constructor
 	//private LoadAssets gameAssets;
@@ -60,13 +56,14 @@ public class GameServer{
 
 				System.out.println("\nStarting new thread");
 
-				GameSession gameSession=new GameSession(socket1,socket2);
+				ChatSession chatSession=new ChatSession(socket1,socket2);
 
 				System.out.println("\nStarting new thread");
 
 				numOfSessions++;
 
-				new Thread(gameSession).start();
+				//this is just for testing chat 
+				new Thread(chatSession).start();
 			
 			}
 
@@ -76,39 +73,37 @@ public class GameServer{
 		
 	}
 
-	class GameSession implements Runnable{
+	class ChatSession implements Runnable{
 
 		private Socket s_player1,s_player2;
 		
 		private ObjectInputStream is_fromPlayer1,is_fromPlayer2;
 		private ObjectOutputStream os_toPlayer1,os_toPlayer2;
 
-		private boolean continuePlay=true;
+		private boolean continueChat=true;
 
 		private InetAddress ip_player1,ip_player2;
 
 		private String message;
 
 
-		public GameSession(Socket socket1,Socket socket2){
+		public ChatSession(Socket socket1,Socket socket2){
 
 			//assign sockets to players
 			s_player1=socket1;
 			s_player2=socket2;
 
 			try{
-				System.out.println("Here");
+				
 				//associate iostreams
-				is_fromPlayer1=new ObjectInputStream(s_player1.getInputStream());
-				System.out.println("p1 is connected");
-				os_toPlayer1=new ObjectOutputStream(s_player1.getOutputStream());
-				System.out.println("p1 os connected");
-
-				is_fromPlayer2=new ObjectInputStream(s_player2.getInputStream());
-				System.out.println("p2 is connected");
-				os_toPlayer2=new ObjectOutputStream(s_player2.getOutputStream());
+				is_fromPlayer1=new ObjectInputStream(socket1.getInputStream());					
+				os_toPlayer1=new ObjectOutputStream(socket1.getOutputStream());
+					
+				is_fromPlayer2=new ObjectInputStream(socket2.getInputStream());
+				os_toPlayer2=new ObjectOutputStream(socket2.getOutputStream());
+					
 				System.out.println("All data streams connected");
-
+				
 				//get IP's
 				ip_player1=s_player1.getInetAddress();
 				ip_player2=s_player2.getInetAddress();
@@ -118,12 +113,14 @@ public class GameServer{
 			}
 
 			message="";
+			
 
 		}
 
 		public void run(){
+			
 			try{
-				while(continuePlay){
+				while(continueChat){
 					
 					message=(String)is_fromPlayer1.readObject();
 
@@ -134,7 +131,7 @@ public class GameServer{
 					os_toPlayer1.writeObject(message);
 
 					if(message.equals("quit") || message.equals("Quit"))
-						continuePlay=false;
+						continueChat=false;
 			
 				}
 			}catch(IOException io){
@@ -144,7 +141,60 @@ public class GameServer{
 				System.err.println(c);
 			}
 		}
-
-		
 	}
+
+	class GameSession implements Runnable{
+
+		private Socket s_player1,s_player2;
+		
+		private ObjectInputStream is_fromPlayer1,is_fromPlayer2;
+		private ObjectOutputStream os_toPlayer1,os_toPlayer2;
+
+		//chat task
+		private ChatSession gameChat;
+
+		//will be used for chat 
+		private Thread chatThread;
+
+		//current game object
+		private Game currentGame;
+
+		//load assets object for game constructor
+		private LoadAssets gameAssets;
+
+		public GameSession(Socket socket1,Socket socket2){
+
+			gameChat=new ChatSession(socket1,socket2);
+
+			//assign sockets to players
+			s_player1=socket1;
+			s_player2=socket2;
+
+			try{
+				
+				//associate iostreams
+				is_fromPlayer1=new ObjectInputStream(socket1.getInputStream());					
+				os_toPlayer1=new ObjectOutputStream(socket1.getOutputStream());
+					
+				is_fromPlayer2=new ObjectInputStream(socket2.getInputStream());
+				os_toPlayer2=new ObjectOutputStream(socket2.getOutputStream());
+					
+				System.out.println("All data streams connected");
+				
+			}catch(IOException io){
+				System.err.println(io);
+			}
+
+
+
+
+		}
+
+		public void run(){
+
+
+		}
+
+	}
+
 }

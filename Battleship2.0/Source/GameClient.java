@@ -45,9 +45,9 @@ public class GameClient implements Runnable{
 
 		connectToServer();
 
-		System.out.println("connected to server now run");
+		
 
-		run();
+		
 
 
 	}
@@ -62,10 +62,13 @@ public class GameClient implements Runnable{
 					sendMessage(message);
 
 					message=receiveMessage();
+					System.out.println(message);
 				
 				}
 				else{
 					String message=receiveMessage();
+
+					System.out.println(message);
 
 					message=input.nextLine();
 
@@ -92,17 +95,21 @@ public class GameClient implements Runnable{
 			player=new DataInputStream(socket.getInputStream()).readInt();
 
 			System.out.println(player);
-			fromServer=new ObjectInputStream(socket.getInputStream());
-			System.out.println("p1 is connected");
-			
 			toServer=new ObjectOutputStream(socket.getOutputStream());
-			System.out.println("p1 os connected");
+			System.out.println(player+" is connected");
+			
+			fromServer=new ObjectInputStream(socket.getInputStream());
+			System.out.println(player+" os connected");
 			System.out.println("Connection established\n");
 
 			
 		}catch(IOException io){
 			System.err.println(io);
 		}
+
+		Thread thread=new Thread(this);
+		System.out.println("Starting thread");
+		thread.start();
 	}
 
 	public void waitForTurn() throws InterruptedException{
@@ -124,6 +131,8 @@ public class GameClient implements Runnable{
 	//again this main is just for testing purposes. will be removed eventually
 	public static void main(String[] args){
 		new GameClient();
+	
+		
 	}
 
 
