@@ -4,15 +4,11 @@ Author: David Ward
 Create On: 10/28/15
 Updated On: 
 Contributors:
-battleship_db
-team4
-3H2qib2$
-50.62.209.118:3306
 ***********************/
 
 import java.sql.*;
 
-public class DBConnection
+public class RecordTracking
 {
    //creating the connection string to the DB
    private final String URL = "jdbc:mysql://50.62.209.118:3306/battleship_db";
@@ -26,7 +22,7 @@ public class DBConnection
    private String sql, createRecords;
    private String playerName;
    
-   public DBConnection()
+   public RecordTracking()
    {
       
    }
@@ -79,11 +75,6 @@ public class DBConnection
              ResultSet rsSLost = stmt.executeQuery(sqlSLost);
              intSLost = ((Number) rsSLost.getObject(1)).intValue();
              
-             //ResultSet rsPWon = stmt.executeQuery(sqlPWon);
-             
-             //ResultSet rsPLost = stmt.executeQuery(sqlPLost);
-
-             
              pWon = ((double) intGWon / intPlayed) * 100;
              pLost = ((double) intGLost / intPlayed) * 100;
              
@@ -92,18 +83,10 @@ public class DBConnection
              rsGLost.close();
              rsDestroyed.close();
              rsSLost.close();
-             //rsPWon.close();
-             //rsPLost.close();
          }
          
          else
          {
-            /*create records for new user
-            stmtInsert = conn.createStatement();
-            createRecords = "INSERT into bs_player_stats(name, games_played, games_won, games_lost, ships_destroyed, ships_lost, win_percentage, loss_percentage) VALUES('"
-               + name + "', 0, 0, 0, 0, 0, 0.00, 0.00);";
-            stmtInsert.executeUpdate(createRecords);
-            */
             System.out.println("ERROR: User records not found");
          }
 
