@@ -78,6 +78,18 @@ public class Board
 		return m_GameBoards_P;
 	}
 	
+	public int getNumCols(){
+	
+		return m_NUM_OF_COL;
+	
+	}
+
+	public int getNumRows(){
+	
+		return m_NUM_OF_ROWS;
+	
+	}
+	
 	public JPanel getBoardHide()
 	{
 		for(int i = 0; i <5; i++)

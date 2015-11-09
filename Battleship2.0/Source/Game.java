@@ -7,6 +7,7 @@ Contributors:
 import javax.swing.*;
 import java.util.*;
 
+
 public class Game
 {
 	private Player m_Players[];
@@ -129,33 +130,32 @@ public class Game
 		m_CurrentPlayer = m_Players[0];
 		fillAI();
 	}
+	
+	/*	Primary method utilized in populating 
+	*	the designated AI player's pieces to the board upon setup.
+	*/
 	public void fillAI()
 	{
-		Ship ship = m_Players[1].getNextShip();
-		m_Players[1].setNextShip();
-		m_Players[1].updateBoard(ship, 2,2, "DOWN");
-		m_Players[1].addToTaken(ship.x(),ship.y(),ship);
+		Board AI_Board = m_Players[1].getBoardObject(); // Need to access A.I. Board owned by Player. 
+		Random random = new Random();
+		int randX = 0;
+		int randY = 0;
 		
-		ship = m_Players[1].getNextShip();
-		m_Players[1].setNextShip();
-		m_Players[1].updateBoard(ship, 3,3, "RIGHT");
-		m_Players[1].addToTaken(ship.x(),ship.y(),ship);
-		
-		ship = m_Players[1].getNextShip();
-		m_Players[1].setNextShip();
-		m_Players[1].updateBoard(ship, 4,4,"DOWN");
-		m_Players[1].addToTaken(ship.x(),ship.y(),ship);
-		
-	    ship = m_Players[1].getNextShip();
-		m_Players[1].setNextShip();
-		m_Players[1].updateBoard(ship, 5,5, "DOWN");
-		m_Players[1].addToTaken(ship.x(),ship.y(),ship);
-
-		ship = m_Players[1].getNextShip();
-		m_Players[1].setNextShip();
-		m_Players[1].updateBoard(ship, 6,6, "LEFT");
-		m_Players[1].addToTaken(ship.x(),ship.y(),ship);
-		
+		// Placing Ships on Board
+		for(int i=0;i<5;i++){
+			// RANDOM VALUE INSTANTIATION
+			randX = random.nextInt(AI_Board.getNumCols())+1; // Shifting from 0-15 --> 1 - 16
+			randY = random.nextInt(AI_Board.getNumRows())+1;
+			int randOrientation = random.nextInt(2); // boolean interpretation for randomly flipping ships. 
+			System.out.println("X: " + randX + "Y: " + randY);
+			
+			// SHIP PLACEMENT
+			Ship ship = m_Players[1].getNextShip();
+			m_Players[1].setNextShip();
+			m_Players[1].updateBoard(ship, randX,randY, "DOWN");
+			if(randOrientation == 1) m_Players[1].flipAxis(ship);
+			m_Players[1].addToTaken(ship.x(),ship.y(),ship);
+		}
 	}
 	public void nextTurn()
 	{

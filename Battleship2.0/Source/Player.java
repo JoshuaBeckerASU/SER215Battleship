@@ -54,6 +54,12 @@ public class Player
 		return m_Board.getBoard();
 	}
 	
+	public Board getBoardObject(){
+	
+		return m_Board;
+	
+	}
+	
 	public JPanel getBoardHide()
 	{
 		return m_Board.getBoardHide();
