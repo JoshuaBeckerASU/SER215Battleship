@@ -30,8 +30,12 @@ public class GameServer{
 			//attach serversocket to a port
 			serverSocket=new ServerSocket(port);
 
+			//socket1=serverSocket.accept();
+
 			
 			while(true){
+
+				
 				//connect on socket
 				socket1=serverSocket.accept();
 
@@ -54,16 +58,13 @@ public class GameServer{
 
 				System.out.println("Connection established with "+clientAddress2);
 
-				System.out.println("\nStarting new thread");
-
 				ChatSession chatSession=new ChatSession(socket1,socket2);
-
-				System.out.println("\nStarting new thread");
 
 				numOfSessions++;
 
 				//this is just for testing chat 
 				new Thread(chatSession).start();
+
 			
 			}
 
@@ -85,7 +86,6 @@ public class GameServer{
 		private InetAddress ip_player1,ip_player2;
 
 		private String message;
-
 
 		public ChatSession(Socket socket1,Socket socket2){
 
@@ -113,7 +113,6 @@ public class GameServer{
 			}
 
 			message="";
-			
 
 		}
 
@@ -121,9 +120,8 @@ public class GameServer{
 			
 			try{
 				while(continueChat){
-					
 					message=(String)is_fromPlayer1.readObject();
-
+					
 					os_toPlayer2.writeObject(message);
 
 					message=(String)is_fromPlayer2.readObject();
@@ -141,8 +139,12 @@ public class GameServer{
 				System.err.println(c);
 			}
 		}
+	
+		
+
 	}
 
+	
 	class GameSession implements Runnable{
 
 		private Socket s_player1,s_player2;

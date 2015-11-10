@@ -20,7 +20,7 @@ public class GameClient implements Runnable{
 	private Socket socket;
 
 	//this is the InetAddress address that represents my computer
-	private String localHost="10.143.235.91";
+	private String localHost="192.168.0.7";
 
 	//The port that the server is on
 	private int port=8000;
@@ -42,39 +42,36 @@ public class GameClient implements Runnable{
 
 	public GameClient(){
 
-
+		System.out.println("Conecting to Server...");
 		connectToServer();
-
 		
-
-		
-
-
 	}
 
 	public void run(){
 		try{
 			while(true){
 				if(player==PLAYER1){
-
+					System.out.print("\n\nPlayer1>");
 					String message=input.nextLine();
 
 					sendMessage(message);
 
 					message=receiveMessage();
-					System.out.println(message);
+					System.out.println("\n\nPLAYER2>"+message);
 				
 				}
 				else{
-					String message=receiveMessage();
 
-					System.out.println(message);
+					message=receiveMessage();
+					System.out.println("\n\nPLAYER1>"+message);
 
-					message=input.nextLine();
+					System.out.print("\n\nPlayer2>");
+
+					String message=input.nextLine();
 
 					sendMessage(message);
-
 				}
+				
 			}
 		}catch(IOException io){
 			System.err.println(io);
@@ -88,7 +85,7 @@ public class GameClient implements Runnable{
 			
 			//looks for the server with InetAddress and port.
 			socket=new Socket(localHost,port);
-			System.out.println("Here");
+			
 			//connect iostreams
 
 			//get player number from server
@@ -96,10 +93,9 @@ public class GameClient implements Runnable{
 
 			System.out.println(player);
 			toServer=new ObjectOutputStream(socket.getOutputStream());
-			System.out.println(player+" is connected");
 			
 			fromServer=new ObjectInputStream(socket.getInputStream());
-			System.out.println(player+" os connected");
+			
 			System.out.println("Connection established\n");
 
 			
@@ -108,7 +104,7 @@ public class GameClient implements Runnable{
 		}
 
 		Thread thread=new Thread(this);
-		System.out.println("Starting thread");
+		
 		thread.start();
 	}
 
