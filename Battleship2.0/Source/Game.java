@@ -169,6 +169,8 @@ public class Game
 			m_CurrentPlayer = m_Players[m_CurrentPlayerIndex];
 		}
 		
+       //m_CurrentPlayer.disableBoard();
+       //getOpponentPlayer().enableBoard();
 		if(!m_CurrentPlayer.isHuman())
 		{
 			m_CurrentPlayer.resetShots();

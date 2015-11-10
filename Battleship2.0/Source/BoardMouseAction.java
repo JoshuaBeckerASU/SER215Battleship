@@ -40,7 +40,7 @@ public class BoardMouseAction extends MouseAdapter
 	@Override
 	public void mouseEntered(java.awt.event.MouseEvent evt) 
 	{
-		if(m_Game.getCurrentPlayer().allShipsSet() && (m_CurrentPlayersName.compareTo(m_Game.getCurrentPlayer().getName()) != 0))
+		if(m_Game.getCurrentPlayer().allShipsSet() && (m_CurrentPlayersName.compareTo(m_Game.getCurrentPlayer().getName()) != 0) && !m_Game.getOpponentPlayer().checkHit(m_x,m_y, true))
 		{
 			tmp = ((JLabel) m_GameBoardTargets_L[m_x].getComponent(m_y)).getIcon();
 			m_GameBoardTargets_L[m_x].getComponent(m_y).setCursor(new Cursor(Cursor.CROSSHAIR_CURSOR));
@@ -51,7 +51,10 @@ public class BoardMouseAction extends MouseAdapter
 	@Override
 	public void mouseExited(java.awt.event.MouseEvent evt) 
 	{
-		((JLabel) m_GameBoardTargets_L[m_x].getComponent(m_y)).setIcon(tmp);
+		if(m_Game.getCurrentPlayer().allShipsSet() && (m_CurrentPlayersName.compareTo(m_Game.getCurrentPlayer().getName()) != 0))
+		{
+            ((JLabel) m_GameBoardTargets_L[m_x].getComponent(m_y)).setIcon(tmp);
+        }
 	}
 	@Override
 	public void mouseClicked(java.awt.event.MouseEvent evt)

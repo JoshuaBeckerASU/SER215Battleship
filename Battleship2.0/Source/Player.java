@@ -59,7 +59,14 @@ public class Player
 		return m_Board;
 	
 	}
-	
+	public void enableBoard()
+    {
+        m_Board.enableMouseListener();
+    }
+    public void disableBoard()
+    {
+        m_Board.disableMouseListener();
+    }
 	public JPanel getBoardHide()
 	{
 		return m_Board.getBoardHide();
@@ -237,6 +244,17 @@ public class Player
 			}
 		}
 		return message;
+	}
+	public boolean checkHit(int x, int y, boolean tmp)
+	{
+		JLabel label = m_Board.getTakenLabel(x,y);
+        if(label.getIcon() == null)
+        {
+            return false;
+        }else
+        {
+            return true;
+        }
 	}
 	//Alec: I added this so i can use the getPlayer in game class and write the players name to the client in a print statement
 	//I actually changed my implementation and dont need this but Im gonna leave it just in case someone adds to it in the future
