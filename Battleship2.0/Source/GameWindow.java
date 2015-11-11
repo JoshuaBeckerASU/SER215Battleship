@@ -85,7 +85,7 @@ public class GameWindow
 	{
 		m_Game_F.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
-		m_Background_L.setLayout(new BoxLayout(m_Background_L, BoxLayout.Y_AXIS));
+		m_Background_L.setLayout(new BorderLayout());
 		
 		BorderLayout layout = new BorderLayout();
 		layout.setHgap(650);
@@ -172,12 +172,12 @@ public class GameWindow
 		
 		m_Footer_L.add(m_Chat_TA, BorderLayout.WEST);
 		
-		m_Background_L.add(m_Header_L);
-		m_Background_L.add(new JLabel("\n"));
-		m_Background_L.add(m_Boards_P);
-		m_Background_L.add(new JLabel("\n"));
-		m_Background_L.add(new JLabel("\n"));
-		m_Background_L.add(m_Footer_L);
+		m_Background_L.add(m_Header_L, BorderLayout.NORTH);
+		//m_Background_L.add(new JLabel("\n"));
+		m_Background_L.add(m_Boards_P, BorderLayout.CENTER);
+		//m_Background_L.add(new JLabel("\n"));
+		//m_Background_L.add(new JLabel("\n"));
+		m_Background_L.add(m_Footer_L, BorderLayout.SOUTH);
 		
 		m_Game_F.add(m_Background_L);
 		
@@ -243,9 +243,13 @@ public class GameWindow
 		}
         public void actionPerformed(ActionEvent event)
         {
-			if(m_Command.compareTo("EXIT") == 0)
+			switch(m_Command)
 			{
-				System.exit(1);// DOUBLE CHECK WHERE TO SEND...
+                case "EXIT":
+                        System.exit(1);// DOUBLE CHECK WHERE TO SEND...
+                        break;
+                case "W": m_CurrentGame.gameOver();
+                        break;
 			}
 		}
     }
@@ -257,8 +261,11 @@ public class GameWindow
 	{
 		m_Background_L.getInputMap().put(KeyStroke.getKeyStroke("ESCAPE"),"EXIT");
 		m_Background_L.getActionMap().put( "EXIT", new KeyAction("EXIT"));
+        m_Background_L.getInputMap().put(KeyStroke.getKeyStroke("W"),"W");
+        m_Background_L.getActionMap().put( "W", new KeyAction("W"));
 		m_ActionConsole_TA.getInputMap().put(KeyStroke.getKeyStroke("ESCAPE"),"EXIT");
 		m_ActionConsole_TA.getActionMap().put( "EXIT", new KeyAction("EXIT"));
+
 	}
 	
 	private JLabel updatePlayerStats(Player player, JLabel stats)

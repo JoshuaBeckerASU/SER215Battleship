@@ -28,6 +28,7 @@ public class GameOverWindow
 		m_Assets = assets;
 		
 		m_OldWindow = window;
+        m_OldWindow.setEnabled(false);
 		
 		createComponents();
 		
@@ -69,7 +70,8 @@ public class GameOverWindow
 		
 		m_GameOverFrame.setUndecorated(true);
         m_GameOverFrame.getRootPane().setWindowDecorationStyle(JRootPane.NONE);
-        m_GameOverFrame.setLocation( m_ScreenWidth/4, m_ScreenHeight/4);
+        m_GameOverFrame.setSize(new Dimension(m_Assets.getImage("GameOverBG").getIconWidth(), m_Assets.getImage("GameOverBG").getIconHeight()));
+        m_GameOverFrame.setLocation( m_ScreenWidth/2-m_Assets.getImage("GameOverBG").getIconWidth()/2, m_ScreenHeight/2-m_Assets.getImage("GameOverBG").getIconHeight()/2);//centering
         m_GameOverFrame.setAlwaysOnTop(true);
 		
 		m_BackToMenu_B.setMargin(new Insets(0,0,0,0));
