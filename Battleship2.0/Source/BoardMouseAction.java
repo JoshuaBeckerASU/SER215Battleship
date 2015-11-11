@@ -40,7 +40,7 @@ public class BoardMouseAction extends MouseAdapter
 	@Override
 	public void mouseEntered(java.awt.event.MouseEvent evt) 
 	{
-		if(m_Game.getCurrentPlayer().allShipsSet() && (m_CurrentPlayersName.compareTo(m_Game.getCurrentPlayer().getName()) != 0) && !m_Game.getOpponentPlayer().checkHit(m_x,m_y, true))
+		if(m_Game.getCurrentPlayer().allShipsSet() && (m_CurrentPlayersName.compareTo(m_Game.getCurrentPlayer().getName()) != 0))
 		{
 			tmp = ((JLabel) m_GameBoardTargets_L[m_x].getComponent(m_y)).getIcon();
 			m_GameBoardTargets_L[m_x].getComponent(m_y).setCursor(new Cursor(Cursor.CROSSHAIR_CURSOR));
@@ -51,7 +51,7 @@ public class BoardMouseAction extends MouseAdapter
 	@Override
 	public void mouseExited(java.awt.event.MouseEvent evt) 
 	{
-		if(m_Game.getCurrentPlayer().allShipsSet() && (m_CurrentPlayersName.compareTo(m_Game.getCurrentPlayer().getName()) != 0))
+        if(m_Game.getCurrentPlayer().allShipsSet() && (m_CurrentPlayersName.compareTo(m_Game.getCurrentPlayer().getName()) != 0))
 		{
             ((JLabel) m_GameBoardTargets_L[m_x].getComponent(m_y)).setIcon(tmp);
         }
@@ -66,16 +66,20 @@ public class BoardMouseAction extends MouseAdapter
 	{
 		if(m_Game.getCurrentPlayer().allShipsSet() && (m_CurrentPlayersName.compareTo(m_Game.getCurrentPlayer().getName()) != 0))
 		{
-			if(m_Game.getCurrentPlayer().getNumOfSelectedTargets() == 4)
-			{
-				m_Game.getCurrentPlayer().incNumOfSelTargets();
-				m_Game.PlayerSelectedTarget(m_x,m_y);
-				m_Game.nextTurn();
-			}else
-			{
-				m_Game.getCurrentPlayer().incNumOfSelTargets();
-				m_Game.PlayerSelectedTarget(m_x,m_y);
-			}
+            if(((JLabel) m_GameBoardTargets_L[m_x].getComponent(m_y)).getText().compareTo("") == 0)
+            {
+                ((JLabel) m_GameBoardTargets_L[m_x].getComponent(m_y)).setText("USED");
+                if(m_Game.getCurrentPlayer().getNumOfSelectedTargets() == 4)
+                {
+                    m_Game.getCurrentPlayer().incNumOfSelTargets();
+                    m_Game.PlayerSelectedTarget(m_x,m_y);
+                    m_Game.nextTurn();
+                }else
+                {
+                    m_Game.getCurrentPlayer().incNumOfSelTargets();
+                    m_Game.PlayerSelectedTarget(m_x,m_y);
+                }
+            }
 		}
 	}
 	public static void setIcon(ImageIcon img)

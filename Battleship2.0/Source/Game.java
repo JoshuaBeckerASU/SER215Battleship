@@ -220,6 +220,7 @@ public class Game
 		int x = m_TargetLoc[index].x();
 		int y = m_TargetLoc[index].y();
 		String result = getOpponentPlayer().checkHit(x,y);
+        JLabel tmp = ((JLabel) getOpponentPlayer().getTargetBoard()[x].getComponent(y));
 		switch(result)
 		{
 			case "HIT":
@@ -228,7 +229,8 @@ public class Game
 							BoardMouseAction.setIcon(m_Assets.getImage("HitMarker"));
 						}else
 						{
-							((JLabel) getOpponentPlayer().getTargetBoard()[x].getComponent(y)).setIcon(m_Assets.getImage("HitMarker"));
+							tmp.setIcon(m_Assets.getImage("HitMarker"));
+                            tmp.setText("HIT");
 						}
 						m_GameWindow.updateActionConsole("HIT On Location x = " + x + " y = " + y+ "\n\n"+ (5 - m_CurrentPlayer.getNumOfSelectedTargets()) + " Shots Left\n");
 					break;
@@ -239,17 +241,19 @@ public class Game
 							BoardMouseAction.setIcon(m_Assets.getImage("Target"));
 						}else
 						{
-							((JLabel) getOpponentPlayer().getTargetBoard()[x].getComponent(y)).setIcon(m_Assets.getImage("Target"));
+							tmp.setIcon(m_Assets.getImage("Target"));
+                            tmp.setText("MISS");
 						}
 						m_GameWindow.updateActionConsole("MISS On Location x = " + x + " y = " + y +"\n\n"+ (5 - m_CurrentPlayer.getNumOfSelectedTargets()) + " Shots Left\n");
 					break;
-			default:
+			default: //Ship is Sunk
 						if(m_CurrentPlayer.isHuman())
 				        {
 				        	BoardMouseAction.setIcon(m_Assets.getImage("HitMarker"));
 				        }else
 				        {
-				        	((JLabel) getOpponentPlayer().getTargetBoard()[x].getComponent(y)).setIcon(m_Assets.getImage("HitMarker"));
+				        	tmp.setIcon(m_Assets.getImage("HitMarker"));
+                            tmp.setText("HIT");
 				        }
 						getOpponentPlayer().showShip(result);
 						m_GameWindow.updateActionConsole(m_CurrentPlayer.getName() + " Sunk " + getOpponentPlayer().getName() + "'s " + result);
