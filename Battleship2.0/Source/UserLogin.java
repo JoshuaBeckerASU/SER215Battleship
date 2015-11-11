@@ -23,7 +23,7 @@ public class UserLogin extends JFrame
    private JLabel m_UserName_L, m_Password_L, m_Results_L;
    private JTextField m_UserName_T, m_Password_T;
    private String m_UserName_S, m_Password_S, m_LoginResult_S, m_RegResult_S;
-   private FlowLayout m_FrameLayout = new FlowLayout(), m_PanelLayout = new FlowLayout();
+   private FlowLayout m_FrameLayout = new FlowLayout(), m_PanelLayout1 = new FlowLayout(), m_PanelLayout2 = new FlowLayout();
 
    public static void main(String[] args)
    {
@@ -97,8 +97,8 @@ public class UserLogin extends JFrame
    public void createComponents()
    {
       GraphicsDevice gd = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();// geting size of screen
-		m_ScreenWidth = gd.getDisplayMode().getWidth();
-		m_ScreenHeight = gd.getDisplayMode().getHeight();
+		m_ScreenWidth = 500;                    //gd.getDisplayMode().getWidth();
+		m_ScreenHeight = 300;                   //gd.getDisplayMode().getHeight();
       
       m_UserLoginFrame = new JFrame("User Login");
       m_UserRegFrame = new JFrame("Create User");
@@ -120,16 +120,23 @@ public class UserLogin extends JFrame
       m_UserName_T = new JTextField(40);
       m_Password_T = new JTextField(40);
       
+      m_UserName_L.setAlignmentY(TOP_ALIGNMENT);
+      m_UserName_T.setAlignmentY(TOP_ALIGNMENT);
+      
+      m_Password_L.setAlignmentY(CENTER_ALIGNMENT);
+      m_Password_T.setAlignmentY(CENTER_ALIGNMENT);
+      
       m_LabelText_Existing_P = new JPanel();
       m_Buttons_Existing_P = new JPanel();
       m_LabelText_New_P = new JPanel();
       m_Buttons_New_P = new JPanel();
       
-      m_LabelText_Existing_P.setLayout(m_PanelLayout);
-      m_Buttons_Existing_P.setLayout(m_PanelLayout);
-      m_LabelText_New_P.setLayout(m_PanelLayout);
-      m_Buttons_New_P.setLayout(m_PanelLayout);
-      m_PanelLayout.setAlignment(FlowLayout.CENTER);
+      m_LabelText_Existing_P.setLayout(m_PanelLayout1);
+      m_Buttons_Existing_P.setLayout(m_PanelLayout2);
+      m_LabelText_New_P.setLayout(m_PanelLayout1);
+      m_Buttons_New_P.setLayout(m_PanelLayout2);
+      m_PanelLayout1.setAlignment(FlowLayout.CENTER);
+      m_PanelLayout2.setAlignment(FlowLayout.CENTER);
    }
    
    public void buildComponentsLog()
@@ -144,17 +151,17 @@ public class UserLogin extends JFrame
    
    public void addElements()
    {
-      m_LabelText_Existing_P.add(m_UserName_L);
-      m_LabelText_Existing_P.add(m_UserName_T);
-      m_LabelText_Existing_P.add(m_Password_L);
-      m_LabelText_Existing_P.add(m_Password_T);
+      m_LabelText_Existing_P.add(m_UserName_L, BorderLayout.NORTH);
+      m_LabelText_Existing_P.add(m_UserName_T, BorderLayout.NORTH);
+      m_LabelText_Existing_P.add(m_Password_L, BorderLayout.SOUTH);
+      m_LabelText_Existing_P.add(m_Password_T, BorderLayout.SOUTH);
       m_LabelText_Existing_P.add(m_Results_L);
       
       m_Buttons_Existing_P.add(m_Login);
       m_Buttons_Existing_P.add(m_NewUser);
       m_Buttons_Existing_P.add(m_Exit);
       
-      m_UserLoginFrame.add(m_LabelText_Existing_P);
-      m_UserLoginFrame.add(m_Buttons_Existing_P);
+      m_UserLoginFrame.add(m_LabelText_Existing_P, BorderLayout.NORTH);
+      m_UserLoginFrame.add(m_Buttons_Existing_P, BorderLayout.SOUTH);
    }
 }
