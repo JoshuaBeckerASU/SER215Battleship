@@ -23,6 +23,7 @@ public class UserLogin extends JFrame
    private JLabel m_UserName_L, m_Password_L, m_Results_L;
    private JTextField m_UserName_T, m_Password_T;
    private String m_UserName_S, m_Password_S, m_LoginResult_S, m_RegResult_S;
+   private FlowLayout m_FrameLayout = new FlowLayout(), m_PanelLayout = new FlowLayout();
 
    public static void main(String[] args)
    {
@@ -101,6 +102,9 @@ public class UserLogin extends JFrame
       
       m_UserLoginFrame = new JFrame("User Login");
       m_UserRegFrame = new JFrame("Create User");
+      m_UserLoginFrame.setLayout(m_FrameLayout);
+      m_UserRegFrame.setLayout(m_FrameLayout);
+      m_FrameLayout.setAlignment(FlowLayout.CENTER);
       
       m_Login = new JButton("Sign in");
       m_NewUser = new JButton("New User");
@@ -120,6 +124,12 @@ public class UserLogin extends JFrame
       m_Buttons_Existing_P = new JPanel();
       m_LabelText_New_P = new JPanel();
       m_Buttons_New_P = new JPanel();
+      
+      m_LabelText_Existing_P.setLayout(m_PanelLayout);
+      m_Buttons_Existing_P.setLayout(m_PanelLayout);
+      m_LabelText_New_P.setLayout(m_PanelLayout);
+      m_Buttons_New_P.setLayout(m_PanelLayout);
+      m_PanelLayout.setAlignment(FlowLayout.CENTER);
    }
    
    public void buildComponentsLog()
