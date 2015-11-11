@@ -262,7 +262,10 @@ public class Game
 		if(getOpponentPlayer().getShipsLeft() == 0)
 		{
 			m_GameWindow.updateActionConsole("\nGAME OVER\n" + getOpponentPlayer().getName() + " Has Lost...");
-			
+            BoardMouseAction.disable();
+            // update player states here
+			GameOverWindow gameOver = new GameOverWindow(m_GameWindow.getFrame(), m_Assets);
+            m_OldWindow.dispose();
 		}
 	}
 }

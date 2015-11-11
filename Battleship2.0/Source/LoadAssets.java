@@ -22,7 +22,7 @@ public class LoadAssets
 	private ImageIcon m_StartGame_B, m_Battleship_X, m_Battleship_Y, m_AircraftCarrier_X, m_AircraftCarrier_Y;
 	private ImageIcon m_Cruiser_X, m_Destroyer_X, m_Destroyer_Y, m_Submarine_X,m_Submarine_Y;
 	private ImageIcon m_Cruiser_Y;
-	private ImageIcon m_HitMarker, m_Target, m_Target2;
+	private ImageIcon m_HitMarker, m_Target, m_Target2, m_GameOverBG;
 	private Image m_Cursor;
 	private final int GridCol;
 	private final int GridRows;
@@ -39,6 +39,7 @@ public class LoadAssets
 		m_Board = loadGameImage("Grid8.png", 577, 685);
 		m_BoardBlank = loadGameImage("GameBoardBlank.png",577, 685);
 		m_Instructions = loadGameImage("Instructions.png", ScreenWidth, 100);
+        m_GameOverBG = loadGameImage("GameOverBG.png",550,420);
 		m_MenuBackground = loadGameImage("MenuBG.jpg", ScreenWidth, ScreenHeight);
 		m_GameBackground = loadGameImage("GameBG1.jpg", ScreenWidth, ScreenHeight);
 		
@@ -86,6 +87,8 @@ public class LoadAssets
 			case "MenuBG": return m_MenuBackground;
 			
 			case "HitMarker": return m_HitMarker;
+            
+            case "GameOverBG": return m_GameOverBG;
 			
 			case "Target": return m_Target;
 			

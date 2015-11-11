@@ -296,6 +296,10 @@ public class GameWindow
 		
 		return stats;
 	}
+    public JFrame getFrame()
+    {
+        return m_Game_F;
+    }
 	public void resetActionConsole()
 	{
 		m_ActionConsole_TA.setText("");
