@@ -21,8 +21,8 @@ public class LoadAssets
 	private ImageIcon m_PlayGame_B, m_Settings_B, m_StartANewGame_B, m_MenuHeader;
 	private ImageIcon m_StartGame_B, m_Battleship_X, m_Battleship_Y, m_AircraftCarrier_X, m_AircraftCarrier_Y;
 	private ImageIcon m_Cruiser_X, m_Destroyer_X, m_Destroyer_Y, m_Submarine_X,m_Submarine_Y;
-	private ImageIcon m_Cruiser_Y, m_SinglePlayer_B, m_MultiPlayer_B;
-	private ImageIcon m_HitMarker, m_Target, m_Target2, m_GameOverBG;
+	private ImageIcon m_Cruiser_Y, m_SinglePlayer_B, m_MultiPlayer_B, m_LobbyBackground;
+	private ImageIcon m_HitMarker, m_Target, m_Target2, m_GameOverBG, m_LobbyBox;
 	private Image m_Cursor;
 	private final int GridCol;
 	private final int GridRows;
@@ -44,6 +44,9 @@ public class LoadAssets
 		m_GameBackground = loadGameImage("GameBG1.jpg", ScreenWidth, ScreenHeight);
         m_MenuBox = loadGameImage("MenuBox.png",600,700);
         m_MenuHeader = loadGameImage("GameBoardBlank.png",ScreenWidth,ScreenHeight/2-getImage("MenuBox").getIconHeight()/2);
+        m_LobbyBackground = loadGameImage("LobbyBG.jpg", ScreenWidth, ScreenHeight);
+        m_LobbyBox = loadGameImage("MenuBox.png",ScreenWidth - 300,700);
+        
 		
 		m_HitMarker = loadGif("Fire.gif",m_Board.getIconWidth()/GridCol,  m_Board.getIconHeight()/GridRows);
 		m_Target = loadGameImage("Target.png",m_Board.getIconWidth()/GridCol,  m_Board.getIconHeight()/GridRows);
@@ -83,6 +86,10 @@ public class LoadAssets
 			case "GameBoard": return m_Board;
             
             case "MenuHeader": return m_MenuHeader;
+            
+            case "LobbyBG": return m_LobbyBackground;
+            
+            case "LobbyBox": return m_LobbyBox;
 			
 			case "GameBoardBlank": return m_BoardBlank;
 			

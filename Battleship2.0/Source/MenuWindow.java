@@ -46,6 +46,7 @@ public class MenuWindow
 		GraphicsDevice gd = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();// geting size of screen
 		m_ScreenWidth = gd.getDisplayMode().getWidth();
 		m_ScreenHeight = gd.getDisplayMode().getHeight();
+        
 		
 		m_Background_L = new JLabel(m_Assets.getImage("MenuBG"));
         m_MenuButton_L = new JLabel(m_Assets.getImage("MenuBox"));
@@ -98,19 +99,9 @@ public class MenuWindow
 	**/
 	public void addElements()
 	{
-        m_MenuButton_L.add(new JLabel("\n\n"));
-        m_MenuButton_L.add(new JLabel("\n\n"));
-        m_MenuButton_L.add(new JLabel("\n\n"));
-        m_MenuButton_L.add(new JLabel("\n\n"));
-        m_MenuButton_L.add(new JLabel("\n\n"));
-        m_MenuButton_L.add(new JLabel("\n\n"));
-        m_MenuButton_L.add(new JLabel("\n\n"));
-        m_MenuButton_L.add(new JLabel("\n\n"));
-        m_MenuButton_L.add(new JLabel("\n\n"));
-        m_MenuButton_L.add(new JLabel("\n\n"));
-        m_MenuButton_L.add(new JLabel("\n\n"));
-        m_MenuButton_L.add(new JLabel("\n\n"));
-        m_MenuButton_L.add(new JLabel("\n\n"));
+        for(int i = 0; i < 13; i++)
+            m_MenuButton_L.add(new JLabel("\n\n"));//spaceing
+        
 		m_MenuButton_L.add(m_MultiPlayer_B);
         m_MenuButton_L.add(new JLabel("\n\n"));
         m_MenuButton_L.add(m_SinglePlayer_B);
@@ -163,7 +154,7 @@ public class MenuWindow
 			{
 				case "MultiPlayer": new GameSetUpWindow(m_MenuFrame, m_Assets);//new MultiPlayerWindow(m_MenuFrame, m_Assets);
 					break;
-                case "SinglePlayer": new GameSetUpWindow(m_MenuFrame, m_Assets);
+                case "SinglePlayer": new SinglePlayerWindow(m_MenuFrame, m_Assets);
                     break;
 				case "Exit": m_MenuFrame.dispose(); System.exit(1);
 					break;
