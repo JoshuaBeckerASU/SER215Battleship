@@ -19,8 +19,9 @@ public class MenuWindow
 {
 	private JFrame m_MenuFrame;
 	private int m_ScreenWidth, m_ScreenHeight;
-	private JButton m_PlayGame_B, m_Exit_B, m_Settings_B;
+	private JButton m_MultiPlayer_B, m_Exit_B, m_Settings_B, m_SinglePlayer_B;
 	private JLabel m_Background_L;
+    private JLabel m_MenuButton_L;
 	private LoadAssets m_Assets;
 	
     public MenuWindow(LoadAssets assets)// constructer
@@ -47,12 +48,14 @@ public class MenuWindow
 		m_ScreenHeight = gd.getDisplayMode().getHeight();
 		
 		m_Background_L = new JLabel(m_Assets.getImage("MenuBG"));
+        m_MenuButton_L = new JLabel(m_Assets.getImage("MenuBox"));
 		
 		m_MenuFrame = new JFrame("Menu");
 		
-		m_PlayGame_B = new JButton(m_Assets.getImage("PlayGameButton"));
+		m_MultiPlayer_B = new JButton(m_Assets.getImage("MultiPlayerButton"));
 		m_Settings_B = new JButton(m_Assets.getImage("SettingsButton"));
 		m_Exit_B = new JButton(m_Assets.getImage("ExitButton"));
+        m_SinglePlayer_B = new JButton(m_Assets.getImage("SinglePlayerButton"));
 	}
 	/**buildComponents
 	* set up components and there attributes.
@@ -62,7 +65,10 @@ public class MenuWindow
 	{
 		m_MenuFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		m_MenuFrame.add(m_Background_L);
-		m_Background_L.setLayout(new FlowLayout());
+		m_Background_L.setLayout(new BoxLayout(m_Background_L, BoxLayout.Y_AXIS));
+        
+        m_MenuButton_L.setLayout(new BoxLayout(m_MenuButton_L, BoxLayout.Y_AXIS));
+        m_MenuButton_L.setSize(new Dimension(m_Assets.getImage("MenuBox").getIconWidth(),m_Assets.getImage("MenuBox").getIconHeight()));
 		
 		m_MenuFrame.setUndecorated(true);
         m_MenuFrame.getRootPane().setWindowDecorationStyle(JRootPane.NONE);
@@ -70,13 +76,20 @@ public class MenuWindow
 		m_MenuFrame.setSize(new Dimension(m_ScreenWidth,m_ScreenHeight));
 		
 		m_Exit_B.setMargin(new Insets(0,0,0,0));
-		m_PlayGame_B.setMargin(new Insets(0,0,0,0));
+		m_MultiPlayer_B.setMargin(new Insets(0,0,0,0));
 		m_Settings_B.setMargin(new Insets(0,0,0,0));
+        m_SinglePlayer_B.setMargin(new Insets(0,0,0,0));
 		
 		m_Exit_B.setActionCommand("Exit");
-		m_PlayGame_B.setActionCommand("PlayGame");
+		m_MultiPlayer_B.setActionCommand("MultiPlayer");
 		m_Settings_B.setActionCommand("Settings");
-		
+        m_SinglePlayer_B.setActionCommand("SinglePlayer");
+        
+        m_Exit_B.setAlignmentX(Component.CENTER_ALIGNMENT);
+        m_MultiPlayer_B.setAlignmentX(Component.CENTER_ALIGNMENT);
+        m_Settings_B.setAlignmentX(Component.CENTER_ALIGNMENT);
+        m_SinglePlayer_B.setAlignmentX(Component.CENTER_ALIGNMENT);
+        m_MenuButton_L.setAlignmentX(Component.CENTER_ALIGNMENT);
 	}
 	/**addElements
 	* add components to panels and
@@ -85,9 +98,32 @@ public class MenuWindow
 	**/
 	public void addElements()
 	{
-		m_Background_L.add(m_PlayGame_B);
-		m_Background_L.add(m_Settings_B);
-		m_Background_L.add(m_Exit_B);
+        m_MenuButton_L.add(new JLabel("\n\n"));
+        m_MenuButton_L.add(new JLabel("\n\n"));
+        m_MenuButton_L.add(new JLabel("\n\n"));
+        m_MenuButton_L.add(new JLabel("\n\n"));
+        m_MenuButton_L.add(new JLabel("\n\n"));
+        m_MenuButton_L.add(new JLabel("\n\n"));
+        m_MenuButton_L.add(new JLabel("\n\n"));
+        m_MenuButton_L.add(new JLabel("\n\n"));
+        m_MenuButton_L.add(new JLabel("\n\n"));
+        m_MenuButton_L.add(new JLabel("\n\n"));
+        m_MenuButton_L.add(new JLabel("\n\n"));
+        m_MenuButton_L.add(new JLabel("\n\n"));
+        m_MenuButton_L.add(new JLabel("\n\n"));
+		m_MenuButton_L.add(m_MultiPlayer_B);
+        m_MenuButton_L.add(new JLabel("\n\n"));
+        m_MenuButton_L.add(m_SinglePlayer_B);
+        m_MenuButton_L.add(new JLabel("\n\n"));
+		m_MenuButton_L.add(m_Settings_B);
+        m_MenuButton_L.add(new JLabel("\n\n"));
+		m_MenuButton_L.add(m_Exit_B);
+        
+        JLabel tmp = new JLabel(m_Assets.getImage("MenuHeader"));
+        tmp.setAlignmentX(Component.CENTER_ALIGNMENT);
+        
+        m_Background_L.add(tmp);
+        m_Background_L.add(m_MenuButton_L);
 		
 		m_MenuFrame.add(m_Background_L);
 		
@@ -104,9 +140,10 @@ public class MenuWindow
 	**/
 	private void addActionListeners()
 	{
-		m_PlayGame_B.addActionListener(new ButtonListener());
+		m_MultiPlayer_B.addActionListener(new ButtonListener());
 		m_Exit_B.addActionListener(new ButtonListener());
 		m_Settings_B.addActionListener(new ButtonListener());
+        m_SinglePlayer_B.addActionListener(new ButtonListener());
 	}
 
 	/**Listeners
@@ -124,8 +161,10 @@ public class MenuWindow
 			String command = event.getActionCommand();
 			switch(command)
 			{
-				case "PlayGame": GameSetUpWindow newGame = new GameSetUpWindow(m_MenuFrame, m_Assets);
+				case "MultiPlayer": new GameSetUpWindow(m_MenuFrame, m_Assets);//new MultiPlayerWindow(m_MenuFrame, m_Assets);
 					break;
+                case "SinglePlayer": new GameSetUpWindow(m_MenuFrame, m_Assets);
+                    break;
 				case "Exit": m_MenuFrame.dispose(); System.exit(1);
 					break;
 				case "Settings":
