@@ -19,10 +19,10 @@ public class UserLogin extends JFrame
    private JFrame m_UserLoginFrame, m_UserRegFrame;
    private int m_ScreenWidth, m_ScreenHeight;
    private JButton m_Login, m_Register, m_NewUser, m_Cancel, m_Exit; //m_Login button to login as existing user, m_Register button to register new user, m_NewUser button to bring up new user registration
-   private JPanel m_LabelText_ExistingUser_P, m_LabelText_ExistingPass_P, m_Buttons_Existing_P, m_LabelText_NewUser_P, m_LabelText_NewPass_P, m_Buttons_New_P;
-   private JLabel m_UserName_L, m_Password_L, m_Results_L;
-   private JTextField m_UserName_T, m_Password_T;
-   private String m_UserName_S, m_Password_S, m_LoginResult_S, m_RegResult_S;
+   private JPanel m_LabelText_ExistingUser_P, m_LabelText_ExistingPass_P, m_Buttons_Existing_P, m_LabelText_NewUser_P, m_LabelText_NewPass_P, m_LabelText_ConfirmPass_P, m_Buttons_New_P;
+   private JLabel m_UserName_L, m_Password_L, m_ConfirmPass_L, m_Results_L;
+   private JTextField m_UserName_T, m_Password_T, m_ConfirmPass_T;
+   private String m_UserName_S, m_Password_S, m_Result_S;
    private FlowLayout m_FrameLayout = new FlowLayout(), m_PanelLayout1 = new FlowLayout(), m_PanelLayout2 = new FlowLayout();
 
    public static void main(String[] args)
@@ -35,7 +35,15 @@ public class UserLogin extends JFrame
       createComponents();
       buildComponentsLog();
       addElementsLog();
+      addActionListeners();
       m_UserLoginFrame.setVisible(true);
+   }
+   
+   public void UserReg()
+   {
+      buildComponentsNew();
+      addElementsNew();
+      m_UserRegFrame.setVisible(true);
    }
    
    //check if username and password are correct
@@ -50,15 +58,15 @@ public class UserLogin extends JFrame
       
       switch(resultCode)
       {
-         case 0: m_LoginResult_S = "You have successfully logged in.";
+         case 0: m_Result_S = "You have successfully logged in.";
             isLoggedIn = true;
             break;
             
-         case 1: m_LoginResult_S = "Username and password combination does not exist";
+         case 1: m_Result_S = "Username and password combination does not exist";
             isLoggedIn = false;
             break;
             
-         case 2: m_LoginResult_S = "Database connection failed.";
+         case 2: m_Result_S = "Database connection failed.";
             isLoggedIn = false;
             break;
       }
@@ -78,15 +86,15 @@ public class UserLogin extends JFrame
       
       switch(resultCode)
       {
-         case 0: m_RegResult_S = "You have successfully registered.";
+         case 0: m_Result_S = "You have successfully registered.";
             isLoggedIn = true;
             break;
             
-         case 1: m_RegResult_S = "Username already exists. Username must be unique. Registration failed.";
+         case 1: m_Result_S = "Username already exists. Username must be unique. Registration failed.";
             isLoggedIn = false;
             break;
             
-         case 2: m_RegResult_S = "Database connection failed. Registration failed.";
+         case 2: m_Result_S = "Database connection failed. Registration failed.";
             isLoggedIn = false;
             break;
       }
@@ -115,16 +123,19 @@ public class UserLogin extends JFrame
       
       m_UserName_L = new JLabel("Username:");
       m_Password_L = new JLabel("Password:");
+      m_ConfirmPass_L = new JLabel("Confirm:");
       m_Results_L = new JLabel("");
       
       m_UserName_T = new JTextField(20);
       m_Password_T = new JTextField(35);
+      m_ConfirmPass_T = new JTextField(35);
       
       m_LabelText_ExistingUser_P = new JPanel();
       m_LabelText_ExistingPass_P = new JPanel();
       m_Buttons_Existing_P = new JPanel();
       m_LabelText_NewUser_P = new JPanel();
       m_LabelText_NewPass_P = new JPanel();
+      m_LabelText_ConfirmPass_P = new JPanel();
       
       m_Buttons_New_P = new JPanel();
       
@@ -133,6 +144,7 @@ public class UserLogin extends JFrame
       m_Buttons_Existing_P.setLayout(m_PanelLayout2);
       m_LabelText_NewUser_P.setLayout(m_PanelLayout1);
       m_LabelText_NewPass_P.setLayout(m_PanelLayout1);
+      m_LabelText_ConfirmPass_P.setLayout(m_PanelLayout1);
       m_Buttons_New_P.setLayout(m_PanelLayout2);
       m_PanelLayout1.setAlignment(FlowLayout.CENTER);
       m_PanelLayout2.setAlignment(FlowLayout.CENTER);
@@ -146,6 +158,10 @@ public class UserLogin extends JFrame
       m_Login.setMargin(new Insets(0,0,0,0));
       m_NewUser.setMargin(new Insets(0,0,0,0));
       m_Exit.setMargin(new Insets(0,0,0,0));
+      
+      m_Login.setActionCommand("Login");
+      m_NewUser.setActionCommand("New User");
+      m_Exit.setActionCommand("Exit");
    }
    
    public void addElementsLog()
@@ -167,11 +183,75 @@ public class UserLogin extends JFrame
    
    public void buildComponentsNew()
    {
-   
+      m_UserRegFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+      m_UserRegFrame.setSize(new Dimension(m_ScreenWidth,m_ScreenHeight));
+      
+      m_Register.setMargin(new Insets(0,0,0,0));
+      m_Cancel.setMargin(new Insets(0,0,0,0));
+      
+      m_Register.setActionCommand("Register");
+      m_Cancel.setActionCommand("Cancel");
    }
    
    public void addElementsNew()
    {
+      m_LabelText_NewUser_P.add(m_UserName_L, BorderLayout.NORTH);
+      m_LabelText_NewUser_P.add(m_UserName_T, BorderLayout.NORTH);
+      m_LabelText_NewPass_P.add(m_Password_L, BorderLayout.CENTER);
+      m_LabelText_NewUser_P.add(m_Password_T, BorderLayout.CENTER);
+      m_LabelText_ConfirmPass_P.add(m_ConfirmPass_L, BorderLayout.SOUTH);
+      m_LabelText_ConfirmPass_P.add(m_ConfirmPass_T, BorderLayout.SOUTH);
+      
+      m_Buttons_New_P.add(m_Register);
+      m_Buttons_New_P.add( m_Cancel);
+      
+      m_UserRegFrame.add(m_LabelText_NewUser_P, BorderLayout.NORTH);
+      m_UserRegFrame.add(m_LabelText_NewPass_P, BorderLayout.CENTER);
+      m_UserRegFrame.add(m_LabelText_ConfirmPass_P, BorderLayout.CENTER);
+      m_UserRegFrame.add(m_Buttons_New_P, BorderLayout.SOUTH);
+   }
    
+   private void addActionListeners()
+   {
+      m_Login.addActionListener(new ButtonListener());
+      m_Register.addActionListener(new ButtonListener());
+      m_NewUser.addActionListener(new ButtonListener());
+      m_Cancel.addActionListener(new ButtonListener());
+      m_Exit.addActionListener(new ButtonListener());
+   }
+   
+   private class ButtonListener implements ActionListener
+   {
+      private boolean isRegged = false, isLogged = false;
+      
+      public void actionPerformed(ActionEvent event)
+      {
+         String command = event.getActionCommand();
+			
+         switch(command)
+         {
+            case "Login": isLogged = loginSuccess();
+               break;
+            case "New User": UserReg();
+               break;
+            case "Exit": m_UserLoginFrame.dispose(); System.exit(1);
+               break;
+            case "Register": isRegged = registrationSuccess();
+               break;
+            case "Cancel": m_UserRegFrame.dispose();
+               break;
+         }
+         
+         if(isLogged == true || isRegged == true)
+         {
+            LoadAssets assets = new LoadAssets();
+            MenuWindow menu = new MenuWindow(assets);
+         }
+         
+         else
+         {
+            System.out.println(m_Result_S);
+         }
+      }
    }
 }
