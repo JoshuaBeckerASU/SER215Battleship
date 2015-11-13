@@ -152,7 +152,7 @@ public class MenuWindow
 			String command = event.getActionCommand();
 			switch(command)
 			{
-				case "MultiPlayer": new GameSetUpWindow(m_MenuFrame, m_Assets);//new MultiPlayerWindow(m_MenuFrame, m_Assets);
+				case "MultiPlayer": //new GameSetUpWindow(m_MenuFrame, m_Assets);//new MultiPlayerWindow(m_MenuFrame, m_Assets);
 					break;
                 case "SinglePlayer": new SinglePlayerWindow(m_MenuFrame, m_Assets);
                     break;
