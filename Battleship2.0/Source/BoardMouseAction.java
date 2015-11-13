@@ -25,7 +25,7 @@ public class BoardMouseAction extends MouseAdapter
 	private Icon m_Target2;
 	private String m_CurrentPlayersName;
 	private static Icon tmp;
-    private static boolean m_Disabled = false;
+    private boolean m_Disabled = false;
 	
 	BoardMouseAction(int x , int y, Game game, JLabel[] gameBoardTargets_L, LoadAssets assets, String name)
 	{
@@ -41,7 +41,8 @@ public class BoardMouseAction extends MouseAdapter
 	@Override
 	public void mouseEntered(java.awt.event.MouseEvent evt) 
 	{
-		if(m_Game.getCurrentPlayer().allShipsSet() && (m_CurrentPlayersName.compareTo(m_Game.getCurrentPlayer().getName()) != 0) && !m_Disabled)
+        if(!m_Disabled)
+		if(m_Game.getCurrentPlayer().allShipsSet() && (m_CurrentPlayersName.compareTo(m_Game.getCurrentPlayer().getName()) != 0))
 		{
 			tmp = ((JLabel) m_GameBoardTargets_L[m_x].getComponent(m_y)).getIcon();
 			m_GameBoardTargets_L[m_x].getComponent(m_y).setCursor(new Cursor(Cursor.CROSSHAIR_CURSOR));
@@ -52,7 +53,8 @@ public class BoardMouseAction extends MouseAdapter
 	@Override
 	public void mouseExited(java.awt.event.MouseEvent evt) 
 	{
-        if(m_Game.getCurrentPlayer().allShipsSet() && (m_CurrentPlayersName.compareTo(m_Game.getCurrentPlayer().getName()) != 0) && !m_Disabled)
+        if(!m_Disabled)
+        if(m_Game.getCurrentPlayer().allShipsSet() && (m_CurrentPlayersName.compareTo(m_Game.getCurrentPlayer().getName()) != 0))
 		{
             ((JLabel) m_GameBoardTargets_L[m_x].getComponent(m_y)).setIcon(tmp);
         }
@@ -65,7 +67,8 @@ public class BoardMouseAction extends MouseAdapter
 	@Override
 	public void mousePressed(java.awt.event.MouseEvent evt)
 	{
-		if(m_Game.getCurrentPlayer().allShipsSet() && (m_CurrentPlayersName.compareTo(m_Game.getCurrentPlayer().getName()) != 0) && !m_Disabled)
+        if(!m_Disabled)
+		if(m_Game.getCurrentPlayer().allShipsSet() && (m_CurrentPlayersName.compareTo(m_Game.getCurrentPlayer().getName()) != 0))
 		{
             if(((JLabel) m_GameBoardTargets_L[m_x].getComponent(m_y)).getText().compareTo("") == 0)
             {
@@ -87,11 +90,11 @@ public class BoardMouseAction extends MouseAdapter
 	{
 		tmp = img;
 	}
-    public static void disable()
+    public void disable()
     {
         m_Disabled = true;
     }
-    public static void enable()
+    public void enable()
     {
         m_Disabled = false;
     }

@@ -16,24 +16,21 @@ import java.io.*;
 
 public class SetUpBoardWindow
 {
-	private JFrame m_SetUpBoard_F, m_Game_F, m_OldWindow_F;
+	private JFrame m_SetUpBoard_F;
 	private int m_ScreenWidth, m_ScreenHeight;
 	private JButton m_BackToMenu_B, m_StartGame_B;
 	private JComboBox<String> m_NumOfPly_CB, m_AIDiff_CB;
 	private JLabel m_Background_L, m_Instructions_L, m_Header_L;
-	private Game m_CurrentGame;
 	private Player m_CurrentPlayer;
 	private Ship m_CurrentShip;
 	private LoadAssets m_Assets;
 	
-    public SetUpBoardWindow(Game game, LoadAssets assets, JFrame window)// constructer
+    public SetUpBoardWindow(Player player, LoadAssets assets)// constructer
     {
-		m_CurrentGame = game;
-		m_CurrentPlayer = m_CurrentGame.getCurrentPlayer();
-		m_CurrentShip = m_CurrentPlayer.getShip(0);
-		
-		m_OldWindow_F = window;
-		
+		m_CurrentPlayer = player;
+        m_CurrentPlayer.disableBoard();
+		m_CurrentShip = player.getShip(0);
+			
 		m_Assets = assets;
 		
 		createComponents();
@@ -89,7 +86,7 @@ public class SetUpBoardWindow
 		setKeyBind();
 		m_Background_L.setForeground(Color.WHITE);
 		
-		JLabel instructions[] = {new JLabel("Use the Arrow Keys to move the ship"), new JLabel("Press the Space Bar to change the orientation"), 
+		JLabel instructions[] = {new JLabel("Use the Arrow Keys to move the ship " + m_CurrentPlayer.getName()), new JLabel("Press the Space Bar to change the orientation"), 
 								 new JLabel("Press Enter to Place the Ship"), new JLabel("Press Esc to quit")};
 		instructions[0].setAlignmentX(Component.CENTER_ALIGNMENT);
 		instructions[1].setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -112,6 +109,7 @@ public class SetUpBoardWindow
 		board.setAlignmentX(Component.CENTER_ALIGNMENT);
 		m_Instructions_L.setAlignmentX(Component.CENTER_ALIGNMENT);
 		m_Header_L.setAlignmentX(Component.CENTER_ALIGNMENT);
+        m_Header_L.add(new JLabel(m_CurrentPlayer.getName()));
 		
 		m_Background_L.add(m_Header_L);
 		m_Background_L.add(new JLabel("\n"));
@@ -224,8 +222,7 @@ public class SetUpBoardWindow
 							if(m_CurrentPlayer.allShipsSet())
 							{
 								// DOUBLE CHECK IF THEY ARE READY...
-								m_CurrentGame.startGame(m_SetUpBoard_F);
-								m_OldWindow_F.dispose();
+								Game.getCurrentGame().setUpBoards();
 								// DELETE MEMU BUTTONS AND THINGS...
 							}
 							break;

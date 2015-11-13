@@ -17,7 +17,7 @@ import javax.swing.text.*;
 
 public class GameWindow
 {
-	private JFrame m_Game_F, m_OldWindow_F;
+	private JFrame m_Game_F;
 	private int m_ScreenWidth, m_ScreenHeight;
 	private JButton m_Options_B, m_Exit_B;
 	private JLabel m_Background_L, m_Footer_L, m_Header_L;
@@ -31,11 +31,10 @@ public class GameWindow
 	private int m_BOARD_WIDTH;
 	private int m_BOARD_HEIGHT;
 	
-    public GameWindow(Game game, LoadAssets assets, JFrame oldWindow)// constructer
+    public GameWindow(Game game, LoadAssets assets)// constructer
     {
 		m_CurrentGame = game;
 		
-		m_OldWindow_F = oldWindow;
 		m_Assets = assets;
 		
 		createComponents();
@@ -141,7 +140,7 @@ public class GameWindow
 		m_Game_F.setUndecorated(true);
         m_Game_F.getRootPane().setWindowDecorationStyle(JRootPane.NONE);
 		m_Game_F.setSize(new Dimension(m_ScreenWidth,m_ScreenHeight));
-		
+		if(m_CurrentGame == null)System.out.println("WHY");
 		updateActionConsole("Waiting for " + m_CurrentGame.getCurrentPlayer().getName() + " To Take Turn\n"
 						    + (5 - m_CurrentGame.getCurrentPlayer().getNumOfSelectedTargets()) + " Shots Left\n");
 	}
@@ -155,7 +154,7 @@ public class GameWindow
 		m_Background_L.setForeground(Color.WHITE);
 		
 		JPanel board = m_CurrentGame.getCurrentPlayer().getBoard();
-		JPanel board2 = m_CurrentGame.getPlayer("AI").getBoardHide();
+		JPanel board2 = m_CurrentGame.getOpponentPlayer().getBoardHide();
 	
 		m_Boards_P.setAlignmentX(Component.CENTER_ALIGNMENT);
 		m_Footer_L.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -168,7 +167,7 @@ public class GameWindow
 		m_Boards_P.add(board2);
 		
 		m_Header_L.add(updatePlayerStats(m_CurrentGame.getCurrentPlayer(),m_CurrentPlayerStats_L));
-		m_Header_L.add(updatePlayerStats(m_CurrentGame.getPlayer("AI"),m_OtherPlayerStats_L));
+		m_Header_L.add(updatePlayerStats(m_CurrentGame.getOpponentPlayer(),m_OtherPlayerStats_L));
 		
 		m_Footer_L.add(m_Chat_TA, BorderLayout.WEST);
 		
@@ -275,31 +274,18 @@ public class GameWindow
 		tmp.setAlignmentX(Component.CENTER_ALIGNMENT);
 		tmp.setForeground(Color.WHITE);
 		stats.add(tmp);
-		
-		tmp = new JLabel("BattleShip Health: " + (player.m_Battleship.getLives()*25) + "%");
+        
+		tmp = new JLabel("Fleet Status");
 		tmp.setAlignmentX(Component.CENTER_ALIGNMENT);
 		tmp.setForeground(Color.WHITE);
 		stats.add(tmp);
 		
-		tmp = new JLabel("Carrier Health: " + (player.m_AirCarr.getLives()*20) + "%");
-		tmp.setAlignmentX(Component.CENTER_ALIGNMENT);
-		tmp.setForeground(Color.WHITE);
-		stats.add(tmp);
-		
-		tmp = new JLabel("Cruiser Health: " + (player.m_Cruiser.getLives()*50) + "%");
-		tmp.setAlignmentX(Component.CENTER_ALIGNMENT);
-		tmp.setForeground(Color.WHITE);
-		stats.add(tmp);
-		
-		tmp = new JLabel("Submarine Health: " + (player.m_Sub.getLives()*33 + 1) + "%");
-		tmp.setAlignmentX(Component.CENTER_ALIGNMENT);
-		tmp.setForeground(Color.WHITE);
-		stats.add(tmp);
-		
-		tmp = new JLabel("Destroyer Health: " + (player.m_Destoyer.getLives()*33 + 1) + "%");
-		tmp.setAlignmentX(Component.CENTER_ALIGNMENT);
-		tmp.setForeground(Color.WHITE);
-		stats.add(tmp);
+		JProgressBar tmp2 = new JProgressBar(0,85);
+        tmp2.setMaximumSize(new Dimension(400, 30));
+		tmp2.setAlignmentX(Component.CENTER_ALIGNMENT);
+        tmp2.setBackground(Color.RED);
+		tmp2.setForeground(Color.BLACK);
+		stats.add(tmp2);
 		
 		return stats;
 	}

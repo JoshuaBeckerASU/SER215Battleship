@@ -1,9 +1,15 @@
-/**
-Name: GameSetUpWindow
-Author: Joshua Becker
-Create On: 10/26/15
-Contributors:
- **/
+/******************************
+* @file: GameSetUpWindow.java
+* @author: Joshua Becker
+* @date: 9/26/15
+* @description:
+* 
+* @index
+* [
+*     m_: for member variables
+*     g_: for global variables
+* ]
+*******************************/
 
 import java.awt.*;
 import java.awt.event.*; 

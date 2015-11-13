@@ -24,11 +24,13 @@ public class SinglePlayerWindow
 {
 	private JFrame m_SinglePlayer_F, m_OldWindow;
 	private int m_ScreenWidth, m_ScreenHeight;
-	private JButton m_ResetLobby_B, m_BackToMainMenu_B, m_Settings_B, m_SinglePlayer_B;
+    private Game m_Game;
+	private JButton m_ResetLobby_B, m_BackToMainMenu_B, m_StartGame_B;
 	private JLabel m_Background_L;
     private JLabel m_Slots_L;
-    private JLabel m_Content_L;
-    private Slot m_SlotOne, m_SlotTwo, m_SlotThree;
+    private JLabel m_Body_L, m_Header_L, m_HeaderText_L, m_HeaderButtons_L;
+    
+    private LobbySlot m_Slots[];
 	private LoadAssets m_Assets;
 	
     public SinglePlayerWindow(JFrame oldWindow ,LoadAssets assets)// constructer
@@ -54,69 +56,27 @@ public class SinglePlayerWindow
 		GraphicsDevice gd = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();// geting size of screen
 		m_ScreenWidth = gd.getDisplayMode().getWidth();
 		m_ScreenHeight = gd.getDisplayMode().getHeight();
+        
+        m_Slots = new LobbySlot[3];
 		
 		m_Background_L = new JLabel(m_Assets.getImage("LobbyBG"));
-        m_Content_L = new JLabel(m_Assets.getImage("LobbyBox"));
+        m_Body_L = new JLabel(m_Assets.getImage("LobbyBox"));
+        m_Header_L = new JLabel(m_Assets.getImage("GameBoardBlank"));
+        m_HeaderButtons_L = new JLabel(m_Assets.getImage("GameBoardBlank"));
+        m_HeaderText_L = new JLabel(m_Assets.getImage("GameBoardBlank"));
         
         m_Slots_L = new JLabel(m_Assets.getImage("GameBoardBlank"));
-        
-       /* m_SlotOne_L = new JLabel(m_Assets.getImage("GameBoardBlank"));
-        m_SlotTwo_L = new JLabel(m_Assets.getImage("GameBoardBlank"));
-        m_SlotThree_L = new JLabel(m_Assets.getImage("GameBoardBlank"));*/
 		
 		m_SinglePlayer_F = new JFrame("SinglePlayerWindow");
 		
-		m_ResetLobby_B = new JButton(m_Assets.getImage("ResetLobbyButton"));
-		m_Settings_B = new JButton(m_Assets.getImage("SettingsButton"));
+		m_ResetLobby_B = new JButton(m_Assets.getImage("ResetLobby"));
+		m_StartGame_B = new JButton(m_Assets.getImage("StartGameButton"));
 		m_BackToMainMenu_B = new JButton(m_Assets.getImage("BackToMainMenuButton"));
-        m_SinglePlayer_B = new JButton(m_Assets.getImage("SinglePlayerButton"));
         
-        m_SlotOne = new Slot(1);
-        m_SlotTwo = new Slot(2);
-        m_SlotThree = new Slot(3);
+        m_Slots[0] = new LobbySlot(1, m_Assets);
+        m_Slots[1] = new LobbySlot(2, m_Assets);
+        m_Slots[2] = new LobbySlot(3, m_Assets);
 	}
-    
-    private class Slot extends JLabel
-    {
-        private JTextArea m_Name_TA;
-        private JSpinner m_Difficulty_S;
-        private JSpinner m_TypeOfPlayer_S;
-        private int m_index;
-        Slot(int index)
-        {
-            m_index = index;
-            
-            setIcon(m_Assets.getImage("SettingsButton"));
-            setLayout(new FlowLayout(FlowLayout.CENTER, 100, 3));
-            
-            buildComponents();
-            addComponents();
-        }
-        private void buildComponents()
-        {
-            m_Name_TA = new JTextArea("Player " + m_index);
-            m_Difficulty_S = new JSpinner();
-            m_TypeOfPlayer_S = new JSpinner();
-        }
-        private void addComponents()
-        {
-            add(m_Name_TA);
-            add(m_Difficulty_S);
-            add(m_TypeOfPlayer_S);
-        }
-        public JTextArea getNameTA()
-        {
-            return m_Name_TA;
-        }
-        public JSpinner getDiff()
-        {
-            return m_Difficulty_S;
-        }
-        public JSpinner getType()
-        {
-            return m_TypeOfPlayer_S;
-        }
-    }
 	/**buildComponents
 	* set up components and there attributes.
 	* 
@@ -127,10 +87,17 @@ public class SinglePlayerWindow
 		m_SinglePlayer_F.add(m_Background_L);
 		m_Background_L.setLayout(new BoxLayout(m_Background_L, BoxLayout.Y_AXIS));
         
-        m_Content_L.setLayout(new BorderLayout());
+        m_Header_L.setLayout(new BoxLayout(m_Header_L,BoxLayout.Y_AXIS));
+        m_HeaderText_L.setLayout(new FlowLayout(FlowLayout.CENTER,200,0));
+        m_HeaderButtons_L.setLayout(new FlowLayout(FlowLayout.CENTER,10,10));
         
-        m_Slots_L.setLayout(new BoxLayout(m_Slots_L, BoxLayout.Y_AXIS));
-        m_Slots_L.setSize(new Dimension(m_Assets.getImage("MenuBox").getIconWidth(),m_Assets.getImage("MenuBox").getIconHeight()));
+        m_Body_L.setLayout(new BorderLayout());
+        
+        m_Slots_L.setLayout(new FlowLayout(FlowLayout.CENTER,3, 50));
+        
+        //m_Slots_L.setSize(new Dimension(m_Assets.getImage("MenuBox").getIconWidth(),m_Assets.getImage("MenuBox").getIconHeight()));
+        m_HeaderButtons_L.setMaximumSize(new Dimension(1000, 50));
+        m_Header_L.setMaximumSize(new Dimension(1000, 40));
 		
 		m_SinglePlayer_F.setUndecorated(true);
         m_SinglePlayer_F.getRootPane().setWindowDecorationStyle(JRootPane.NONE);
@@ -139,23 +106,33 @@ public class SinglePlayerWindow
 		
 		m_BackToMainMenu_B.setMargin(new Insets(0,0,0,0));
 		m_ResetLobby_B.setMargin(new Insets(0,0,0,0));
-		m_Settings_B.setMargin(new Insets(0,0,0,0));
-        m_SinglePlayer_B.setMargin(new Insets(0,0,0,0));
+		m_StartGame_B.setMargin(new Insets(0,0,0,0));
 		
 		m_BackToMainMenu_B.setActionCommand("BackToMainMenu");
 		m_ResetLobby_B.setActionCommand("ResetLobby");
-		m_Settings_B.setActionCommand("Settings");
+		m_StartGame_B.setActionCommand("StartGame");
         
         m_BackToMainMenu_B.setAlignmentX(Component.CENTER_ALIGNMENT);
         m_ResetLobby_B.setAlignmentX(Component.CENTER_ALIGNMENT);
-        m_Settings_B.setAlignmentX(Component.CENTER_ALIGNMENT);
-        m_SinglePlayer_B.setAlignmentX(Component.CENTER_ALIGNMENT);
+        m_StartGame_B.setAlignmentX(Component.CENTER_ALIGNMENT);
         m_Slots_L.setAlignmentX(Component.CENTER_ALIGNMENT);
-        m_SlotOne.setAlignmentX(Component.CENTER_ALIGNMENT);
-        m_SlotTwo.setAlignmentX(Component.CENTER_ALIGNMENT);
-        m_SlotThree.setAlignmentX(Component.CENTER_ALIGNMENT);
+        m_Slots[0].setAlignmentX(Component.CENTER_ALIGNMENT);
+        m_Slots[1].setAlignmentX(Component.CENTER_ALIGNMENT);
+        m_Slots[2].setAlignmentX(Component.CENTER_ALIGNMENT);
+        m_Header_L.setAlignmentX(Component.CENTER_ALIGNMENT);
+        m_HeaderText_L.setAlignmentX(Component.CENTER_ALIGNMENT);
+        m_HeaderButtons_L.setAlignmentX(Component.CENTER_ALIGNMENT);
+        m_Body_L.setAlignmentX(Component.CENTER_ALIGNMENT);
         
-        m_Content_L.setAlignmentX(Component.CENTER_ALIGNMENT);
+        MouseListener[] ml = (MouseListener[])m_Slots[0].getisActive().getListeners(MouseListener.class);//makeing the first check box un-editable, most always be one player...
+
+        for (int i = 0; i < ml.length; i++)
+            m_Slots[0].getisActive().removeMouseListener( ml[i] );
+        
+        m_Slots[0].getisActive().getInputMap().put(KeyStroke.getKeyStroke("SPACE"), "none");
+        m_Slots[0].getisActive().getInputMap().put(KeyStroke.getKeyStroke("released SPACE"), "none");
+        
+        m_Slots[0].getType().setEditable(false);
 	}
 	/**addElements
 	* add components to panels and
@@ -164,22 +141,33 @@ public class SinglePlayerWindow
 	**/
 	public void addElements()
 	{
-        m_Slots_L.add(m_SlotOne);
-        m_Slots_L.add(m_SlotTwo);
-        m_Slots_L.add(m_SlotThree);
-      
-		m_Content_L.add(m_Slots_L, BorderLayout.CENTER);
-        /*m_Content_L.add(new JLabel("\n\n"));
-        m_Content_L.add(m_SlotTwo);
-        m_Content_L.add(new JLabel("\n\n"));
-		m_Content_L.add(m_SlotThree);*/
-		m_Content_L.add(m_BackToMainMenu_B, BorderLayout.NORTH);
+        m_Slots_L.add(m_Slots[0]);
+        m_Slots_L.add(m_Slots[1]);
+        m_Slots_L.add(m_Slots[2]);
+        
+        m_HeaderButtons_L.add(m_StartGame_B);
+        m_HeaderButtons_L.add(m_ResetLobby_B);
+        m_HeaderButtons_L.add(m_BackToMainMenu_B);
+        
+        m_HeaderText_L.add(new JLabel("Active Player"));
+        m_HeaderText_L.add(new JLabel("Player Name"));
+        m_HeaderText_L.add(new JLabel("Player Difficulty"));
+        m_HeaderText_L.add(new JLabel("Type Of Player"));
+        
+        m_Header_L.add(m_HeaderButtons_L);
+       // m_Header_L.add(m_HeaderText_L);
+        /*m_Body_L.add(new JLabel("\n\n"));
+        m_Body_L.add(m_SlotTwo);
+        m_Body_L.add(new JLabel("\n\n"));
+		m_Body_L.add(m_SlotThree);*/
+		m_Body_L.add(m_Header_L, BorderLayout.NORTH);
+        m_Body_L.add(m_Slots_L, BorderLayout.SOUTH);
         
         JLabel tmp = new JLabel(m_Assets.getImage("MenuHeader"));
         tmp.setAlignmentX(Component.CENTER_ALIGNMENT);
         
         m_Background_L.add(tmp);
-        m_Background_L.add(m_Content_L);
+        m_Background_L.add(m_Body_L);
 		
 		m_SinglePlayer_F.add(m_Background_L);
 		
@@ -187,7 +175,6 @@ public class SinglePlayerWindow
 		
 		m_SinglePlayer_F.setVisible(true);
 	}
-	
 	/**addActionListeners
 	* adds ActionListener, which wait till
 	* an action is Performed then sends 
@@ -198,8 +185,7 @@ public class SinglePlayerWindow
 	{
 		m_ResetLobby_B.addActionListener(new ButtonListener());
 		m_BackToMainMenu_B.addActionListener(new ButtonListener());
-		m_Settings_B.addActionListener(new ButtonListener());
-        m_SinglePlayer_B.addActionListener(new ButtonListener());
+		m_StartGame_B.addActionListener(new ButtonListener());
 	}
 
 	/**Listeners
@@ -217,13 +203,14 @@ public class SinglePlayerWindow
 			String command = event.getActionCommand();
 			switch(command)
 			{
-				case "ResetLobby": new GameSetUpWindow(m_SinglePlayer_F, m_Assets);//new ResetLobbyWindow(m_SinglePlayer_F, m_Assets);
-					break;
-                case "SinglePlayer": new GameSetUpWindow(m_SinglePlayer_F, m_Assets);//new SinglePlayerWindow(m_SinglePlayer_F, M_Assets)
+				case "ResetLobby": //new GameSetUpWindow(m_SinglePlayer_F, m_Assets);//new ResetLobbyWindow(m_SinglePlayer_F, m_Assets);
                     break;
-				case "BackToMainMenu": System.exit(1);
+				case "BackToMainMenu": m_OldWindow.setVisible(true);m_SinglePlayer_F.dispose();
 					break;
-				case "Settings":
+				case "StartGame":
+                        m_Game = new Game(m_Slots[0].getDiff().getSelectedIndex(),m_Slots, m_Assets);
+                        m_Game.setUpGame(m_Game);
+						m_OldWindow.dispose();
 					break;
 			}
 		}  

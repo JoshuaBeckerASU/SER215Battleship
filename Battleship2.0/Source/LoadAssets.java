@@ -17,12 +17,13 @@ import java.net.*;
 public class LoadAssets
 {	
 	private ImageIcon m_Board, m_BoardBlank, m_MenuBackground,m_Instructions, m_GameBackground;
-	private ImageIcon m_BackToMainMenu_B, m_Exit_B, m_LoadAGame_B, m_MenuBox;
+	private ImageIcon m_BackToMainMenu_B, m_Exit_B, m_LoadAGame_B, m_MenuBox, m_SlotBG;
 	private ImageIcon m_PlayGame_B, m_Settings_B, m_StartANewGame_B, m_MenuHeader;
 	private ImageIcon m_StartGame_B, m_Battleship_X, m_Battleship_Y, m_AircraftCarrier_X, m_AircraftCarrier_Y;
 	private ImageIcon m_Cruiser_X, m_Destroyer_X, m_Destroyer_Y, m_Submarine_X,m_Submarine_Y;
 	private ImageIcon m_Cruiser_Y, m_SinglePlayer_B, m_MultiPlayer_B, m_LobbyBackground;
 	private ImageIcon m_HitMarker, m_Target, m_Target2, m_GameOverBG, m_LobbyBox;
+    private ImageIcon m_ReplayGame_B, m_ResetLobby_B;
 	private Image m_Cursor;
 	private final int GridCol;
 	private final int GridRows;
@@ -46,6 +47,7 @@ public class LoadAssets
         m_MenuHeader = loadGameImage("GameBoardBlank.png",ScreenWidth,ScreenHeight/2-getImage("MenuBox").getIconHeight()/2);
         m_LobbyBackground = loadGameImage("LobbyBG.jpg", ScreenWidth, ScreenHeight);
         m_LobbyBox = loadGameImage("MenuBox.png",ScreenWidth - 300,700);
+        m_SlotBG = loadGameImage("SlotBG.png", ScreenWidth - 400,60);
         
 		
 		m_HitMarker = loadGif("Fire.gif",m_Board.getIconWidth()/GridCol,  m_Board.getIconHeight()/GridRows);
@@ -62,6 +64,8 @@ public class LoadAssets
 		m_StartGame_B = loadButtonImage("StartGameButton.png");
         m_SinglePlayer_B = loadButtonImage("SinglePlayerButton.png");
         m_MultiPlayer_B = loadButtonImage("MultiPlayerButton.png");
+        m_ReplayGame_B = loadButtonImage("ReplayGameButton.png");
+        m_ResetLobby_B = loadButtonImage("ResetLobbyButton.png");
 		
 		m_AircraftCarrier_X = loadShipImage("AircraftCarrier.png", Ship.CARRIER_LENGTH, X);
 		m_AircraftCarrier_Y = loadShipImage("AircraftCarrier_Y.png", Ship.CARRIER_LENGTH, Y);
@@ -90,6 +94,12 @@ public class LoadAssets
             case "LobbyBG": return m_LobbyBackground;
             
             case "LobbyBox": return m_LobbyBox;
+            
+            case "SlotBG": return m_SlotBG;
+            
+            case "ResetLobby": return m_ResetLobby_B;
+            
+            case "ReplayGame": return m_ReplayGame_B;
 			
 			case "GameBoardBlank": return m_BoardBlank;
 			
@@ -175,7 +185,6 @@ public class LoadAssets
 		path = System.getProperty("user.dir");
 		path = path.replace('\\','/');
 		path = path.replaceAll("Source", "Assets/GUI/GameImages/" + name);
-		System.out.println(path);
 		ImageIcon gif;
 		
 		gif = new ImageIcon(path);

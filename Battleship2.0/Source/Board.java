@@ -27,6 +27,7 @@ public class Board
 	private int m_ShipCount;
 	private int m_boardWidth;
 	private int m_boardHight;
+    private BoardMouseAction[][] m_MouseAct;
 	private final int m_NUM_OF_COL, m_NUM_OF_ROWS;
 	private String m_HasShip[][];
 	
@@ -44,6 +45,7 @@ public class Board
 	    m_boardHight = m_Assets.getImage("GameBoard").getIconHeight();
 		m_boardWidth = m_Assets.getImage("GameBoard").getIconWidth();
 		m_HasShip = new String[m_NUM_OF_COL][m_NUM_OF_ROWS];
+        m_MouseAct = new BoardMouseAction[m_NUM_OF_COL][m_NUM_OF_ROWS];
 		for(int i = 0; i < m_NUM_OF_COL; i++)
 		{
 			Arrays.fill(m_HasShip[i],"NOSHIP");
@@ -184,9 +186,9 @@ public class Board
 			m_GameBoard_Y_P.add(m_GameBoard_Y_L[x]);
 			m_GameBoardTargets_P.add(m_GameBoardTargets_L[x]);
 		}
-        enableMouseListener();
+        addMouseListeners();
 	}
-    public void enableMouseListener()
+    public void addMouseListeners()
     {
         JLabel tmp;
 		for(int x = 0; x < m_NUM_OF_COL; x++)
@@ -194,19 +196,29 @@ public class Board
 			for(int y = 0; y < m_NUM_OF_ROWS; y++)
 			{
                 tmp  = (JLabel)  m_GameBoardTargets_L[x].getComponent(y);
-                tmp.addMouseListener(new BoardMouseAction(x ,y, m_Game,m_GameBoardTargets_L, m_Assets, m_CurrentPlayer.getName()));
+                m_MouseAct[x][y] = new BoardMouseAction(x ,y, m_Game,m_GameBoardTargets_L, m_Assets, m_CurrentPlayer.getName());
+                tmp.addMouseListener(m_MouseAct[x][y]);
             }
         }
     }
-    public void disableMouseListener()
+    public void disableMouseListeners()
+    {
+		for(int x = 0; x < m_NUM_OF_COL; x++)
+		{
+			for(int y = 0; y < m_NUM_OF_ROWS; y++)
+			{
+                m_MouseAct[x][y].disable();
+            }
+        }
+    }
+    public void enableMouseListeners()
     {
         JLabel tmp;
 		for(int x = 0; x < m_NUM_OF_COL; x++)
 		{
 			for(int y = 0; y < m_NUM_OF_ROWS; y++)
 			{
-                tmp  = (JLabel)  m_GameBoardTargets_L[x].getComponent(y);
-                tmp.removeMouseListener(tmp.getMouseListeners()[0]);
+                m_MouseAct[x][y].enable();
             }
         }
     }

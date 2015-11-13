@@ -11,6 +11,7 @@ import java.util.*;
 public class Game
 {
 	private Player m_Players[];
+    private LobbySlot m_Slots[];
 	private Player m_CurrentPlayer;
 	private int m_CurrentPlayerIndex;
 	private int m_difficulty;
@@ -19,27 +20,56 @@ public class Game
 	private JFrame m_OldWindow;
 	private LoadAssets m_Assets;
 	private Location m_TargetLoc[];
+    private static Game m_CurrentGame;
 	
 	Game()
 	{
 		
 	}
-	Game(int difficulty, int numOfPlys, LoadAssets assets)
+	Game(int difficulty, LobbySlot slots[], LoadAssets assets)
 	{
 		m_Assets = assets;
+        m_Slots = slots;
 		m_difficulty = difficulty;
-		m_Players = new Player[2];// change this later...
-		fillPlayers();
 		m_CurrentPlayerIndex = 0;
 		m_NumOfGames = 0;
 		m_TargetLoc = new Location[5];
+        m_CurrentGame = this;
 	}
+    public void setUpGame(Game game)
+    {
+        m_CurrentGame = game;
+        
+        fillPlayers();
+        setUpBoards();
+    }
 	
-	public void startGame(JFrame oldWindow)
+	public void startGame()
 	{
-		m_OldWindow = oldWindow;
-		m_GameWindow = new GameWindow(this, m_Assets, m_OldWindow);
+        m_CurrentPlayer = m_Players[0];
+        getOpponentPlayer().enableBoard();
+		m_GameWindow = new GameWindow(m_CurrentGame, m_Assets);
 	}
+    
+    public void setUpBoards()
+    {
+        if(m_Players[0].isHuman() && !m_Players[0].allShipsSet())
+        {
+            System.out.println("here");
+            new SetUpBoardWindow(m_Players[0], m_Assets);
+        }else if(m_Players.length > 1 && m_Players[1].isHuman() && !m_Players[1].allShipsSet())
+        {
+            System.out.println("there");
+            new SetUpBoardWindow(m_Players[1], m_Assets);
+        }else if(m_Players.length > 2 && m_Players[2].isHuman() && !m_Players[2].allShipsSet())
+        {
+            System.out.println("there");
+            new SetUpBoardWindow(m_Players[2], m_Assets);
+        }else
+        {
+            startGame();
+        }
+    }
 	/**getNumOfPlys
 	* gets the number of players
 	* @return int: number of players
@@ -116,7 +146,7 @@ public class Game
 			return m_Players[0];
 		}else
 		{
-			return m_Players[1];
+			return m_Players[m_CurrentPlayerIndex+1];
 		}
 	}
 
@@ -125,18 +155,28 @@ public class Game
 	**/
 	private void fillPlayers()
 	{
-		m_Players[0] = new Player("Player 1", true, m_Assets, this);
-		m_Players[1] = new Player("AI", false, m_Assets, this);
-		m_CurrentPlayer = m_Players[0];
-		fillAI();
+        int count = 0;
+        for(int i = 0; i < 3; i++)
+        {
+            if(m_Slots[i].getisActive().isSelected())count++;
+        }
+        m_Players = new Player[count];
+        for(int i = 0; i < m_Players.length; i++)
+            if(((String) m_Slots[i].getType().getSelectedItem()).compareTo("Computer Player") == 0)
+            {
+                m_Players[i] = new Player(m_Slots[i].getNameTA().getText(), false, m_Assets,m_CurrentGame);
+                fillAI(m_Players[i]);
+            } 
+            else
+                m_Players[i] = new Player(m_Slots[i].getNameTA().getText(), true, m_Assets, m_CurrentGame);
 	}
 	
 	/*	Primary method utilized in populating 
 	*	the designated AI player's pieces to the board upon setup.
 	*/
-	public void fillAI()
+	public void fillAI(Player player)
 	{
-		Board AI_Board = m_Players[1].getBoardObject(); // Need to access A.I. Board owned by Player. 
+		Board AI_Board = player.getBoardObject(); // Need to access A.I. Board owned by Player. 
 		Random random = new Random();
 		int randX = 0;
 		int randY = 0;
@@ -151,14 +191,16 @@ public class Game
 			
 			// SHIP PLACEMENT
 			Ship ship = m_Players[1].getNextShip();
-			m_Players[1].setNextShip();
-			m_Players[1].updateBoard(ship, randX,randY, "DOWN");
-			if(randOrientation == 1) m_Players[1].flipAxis(ship);
-			m_Players[1].addToTaken(ship.x(),ship.y(),ship);
+			player.setNextShip();
+			player.updateBoard(ship, randX,randY, "DOWN");
+			if(randOrientation == 1) player.flipAxis(ship);
+                player.addToTaken(ship.x(),ship.y(),ship);
 		}
 	}
 	public void nextTurn()
 	{
+        m_CurrentPlayer.enableBoard();
+        getOpponentPlayer().disableBoard();
 		if(m_CurrentPlayerIndex == m_Players.length -1)
 		{
 			m_CurrentPlayer = m_Players[0];
@@ -267,9 +309,12 @@ public class Game
     public void gameOver()
     {
 		m_GameWindow.updateActionConsole("\nGAME OVER\n" + getOpponentPlayer().getName() + " Has Lost...");
-        BoardMouseAction.disable();
         // update player states here
 		GameOverWindow gameOver = new GameOverWindow(m_GameWindow.getFrame(), m_Assets);
         m_OldWindow.dispose();
+    }
+    public static Game getCurrentGame()
+    {
+        return m_CurrentGame;
     }
 }

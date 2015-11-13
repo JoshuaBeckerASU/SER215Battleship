@@ -61,11 +61,11 @@ public class Player
 	}
 	public void enableBoard()
     {
-        m_Board.enableMouseListener();
+        m_Board.enableMouseListeners();
     }
     public void disableBoard()
     {
-        m_Board.disableMouseListener();
+        m_Board.disableMouseListeners();
     }
 	public JPanel getBoardHide()
 	{

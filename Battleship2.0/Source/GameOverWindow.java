@@ -55,7 +55,7 @@ public class GameOverWindow
 		
 		m_BackToMenu_B = new JButton(m_Assets.getImage("BackToMainMenuButton"));
 		m_StartGame_B = new JButton(m_Assets.getImage("StartGameButton"));
-        m_ReplayGame_B = new JButton("TEMPLET: REPLAY GAME");
+        m_ReplayGame_B = new JButton(m_Assets.getImage("ReplayGame"));
 	}
 	/**buildComponents
 	* set up components and there attributes.
