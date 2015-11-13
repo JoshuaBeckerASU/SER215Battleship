@@ -375,7 +375,6 @@ public class Game
 						}else
 						{
 							tmp.setIcon(m_Assets.getImage("HitMarker"));
-<<<<<<< HEAD
                             tmp.setText("HIT");
 							//m_CurrentPlayer.setEnemyWasHit(true); // Enemy was Hit on last turn. 
 							if(m_CurrentPlayer.getOriginHitX() == -1 && m_CurrentPlayer.getOriginHitY() == -1){ // Unnecessary to check both; but for the sake of testing...
@@ -387,9 +386,7 @@ public class Game
 							m_CurrentPlayer.setLastHitX(x);
 							m_CurrentPlayer.setLastHitY(y);
 							System.out.println("Last Hits Were: " + x + y);
-					
-=======
->>>>>>> 0e8a5d57df1e1a557338a7e84fc51632523fdf62
+			
 						}
                         tmp.setText("HIT");
 						m_GameWindow.updateActionConsole("HIT On Location x = " + x + " y = " + y+ "\n\n"+ (5 - m_CurrentPlayer.getNumOfSelectedTargets()) + " Shots Left\n");
@@ -402,11 +399,8 @@ public class Game
 						}else
 						{
 							tmp.setIcon(m_Assets.getImage("Target"));
-<<<<<<< HEAD
                             tmp.setText("MISS");
 							System.out.println("Miss at " + x + ", " + y);
-=======
->>>>>>> 0e8a5d57df1e1a557338a7e84fc51632523fdf62
 						}
                         tmp.setText("MISS");
 						m_GameWindow.updateActionConsole("MISS On Location x = " + x + " y = " + y +"\n\n"+ (5 - m_CurrentPlayer.getNumOfSelectedTargets()) + " Shots Left\n");
