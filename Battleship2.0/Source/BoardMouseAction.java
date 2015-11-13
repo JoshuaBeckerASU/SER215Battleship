@@ -54,9 +54,11 @@ public class BoardMouseAction extends MouseAdapter
 	public void mouseExited(java.awt.event.MouseEvent evt) 
 	{
         if(!m_Disabled)
-        if(m_Game.getCurrentPlayer().allShipsSet() && (m_CurrentPlayersName.compareTo(m_Game.getCurrentPlayer().getName()) != 0))
-		{
-            ((JLabel) m_GameBoardTargets_L[m_x].getComponent(m_y)).setIcon(tmp);
+        {
+            if(m_Game.getCurrentPlayer().allShipsSet() && (m_CurrentPlayersName.compareTo(m_Game.getCurrentPlayer().getName()) != 0))
+            {
+                ((JLabel) m_GameBoardTargets_L[m_x].getComponent(m_y)).setIcon(tmp);
+            }
         }
 	}
 	@Override
@@ -97,5 +99,9 @@ public class BoardMouseAction extends MouseAdapter
     public void enable()
     {
         m_Disabled = false;
+    }
+    public void setExitedIcon()
+    {
+        ((JLabel) m_GameBoardTargets_L[m_x].getComponent(m_y)).setIcon(tmp);
     }
 }

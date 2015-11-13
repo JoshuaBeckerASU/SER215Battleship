@@ -201,6 +201,8 @@ public class Game
 	{
         m_CurrentPlayer.enableBoard();
         getOpponentPlayer().disableBoard();
+        getOpponentPlayer().setExitedIcon(m_TargetLoc[4].x(),m_TargetLoc[4].y());
+        
 		if(m_CurrentPlayerIndex == m_Players.length -1)
 		{
 			m_CurrentPlayer = m_Players[0];
@@ -373,6 +375,7 @@ public class Game
 						}else
 						{
 							tmp.setIcon(m_Assets.getImage("HitMarker"));
+<<<<<<< HEAD
                             tmp.setText("HIT");
 							//m_CurrentPlayer.setEnemyWasHit(true); // Enemy was Hit on last turn. 
 							if(m_CurrentPlayer.getOriginHitX() == -1 && m_CurrentPlayer.getOriginHitY() == -1){ // Unnecessary to check both; but for the sake of testing...
@@ -385,7 +388,10 @@ public class Game
 							m_CurrentPlayer.setLastHitY(y);
 							System.out.println("Last Hits Were: " + x + y);
 					
+=======
+>>>>>>> 0e8a5d57df1e1a557338a7e84fc51632523fdf62
 						}
+                        tmp.setText("HIT");
 						m_GameWindow.updateActionConsole("HIT On Location x = " + x + " y = " + y+ "\n\n"+ (5 - m_CurrentPlayer.getNumOfSelectedTargets()) + " Shots Left\n");
 					break;
 					
@@ -396,20 +402,18 @@ public class Game
 						}else
 						{
 							tmp.setIcon(m_Assets.getImage("Target"));
+<<<<<<< HEAD
                             tmp.setText("MISS");
 							System.out.println("Miss at " + x + ", " + y);
+=======
+>>>>>>> 0e8a5d57df1e1a557338a7e84fc51632523fdf62
 						}
+                        tmp.setText("MISS");
 						m_GameWindow.updateActionConsole("MISS On Location x = " + x + " y = " + y +"\n\n"+ (5 - m_CurrentPlayer.getNumOfSelectedTargets()) + " Shots Left\n");
 					break;
 			default: //Ship is Sunk
-						if(m_CurrentPlayer.isHuman())
-				        {
-				        	BoardMouseAction.setIcon(m_Assets.getImage("HitMarker"));
-				        }else
-				        {
-				        	tmp.setIcon(m_Assets.getImage("HitMarker"));
-                            tmp.setText("HIT");
-				        }
+                        BoardMouseAction.setIcon(m_Assets.getImage("HitMarker"));
+                        tmp.setText("HIT");
 						getOpponentPlayer().showShip(result);
 						m_GameWindow.updateActionConsole(m_CurrentPlayer.getName() + " Sunk " + getOpponentPlayer().getName() + "'s " + result);
 				break;

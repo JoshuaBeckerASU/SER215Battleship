@@ -222,6 +222,10 @@ public class Board
             }
         }
     }
+    public void setExitedIcon(int x,int y)
+    {
+        m_MouseAct[x][y].setExitedIcon();
+    }
 	public void addNextShip(Ship ship)
 	{
 		int x = 1; int y = 1;
