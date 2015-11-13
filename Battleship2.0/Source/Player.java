@@ -123,6 +123,10 @@ public class Player
 	{
 		setNextShip();
 	}
+    public void setExitedIcon(int x, int y)
+    {
+        m_Board.setExitedIcon(x, y);
+    }
 	public JLabel[] getTargetBoard()
 	{
 		return m_Board.getTargetBoard();
