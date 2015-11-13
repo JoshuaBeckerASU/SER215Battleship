@@ -12,6 +12,16 @@ public class Player
 	private boolean m_Type;
 	private int m_Wins;
 	private int m_Losses;
+	
+	// AI Implementation: condense once implemented
+	private int m_enemyShipsLeft;
+	private boolean m_enemyWasHit;
+	private int m_originHitX;
+	private int m_originHitY;
+	private int m_lastHitX;
+	private int m_lastHitY; 
+	private int[] m_directionsShot;
+	
 	private LoadAssets m_Assets;
 	private Board m_Board;
 	private int m_NumOfSelectedTargets;//thats a long name...
@@ -40,6 +50,15 @@ public class Player
 		m_ShipsPlaced = 0;
 		m_NumOfSelectedTargets = 0;
 		m_ShipsLeft = 5;
+		
+		m_enemyShipsLeft = 5;
+		m_enemyWasHit = false;
+		m_originHitX = -1;
+		m_originHitY = -1;
+		m_lastHitX = -1;
+		m_lastHitY = -1;
+		m_directionsShot = new int[] {0,0,0,0}; // Cardinal Directions from OriginHit [0]SOUTH, [1]NORTH, [2]EAST, [3]WEST | 0 indicates not Tried. 1 Indicates Tried.
+		
 		m_Game = game;
 		m_AirCarr = new Ship("AircraftCarrier", Ship.CARRIER_LENGTH, m_Assets);
 		m_Battleship = new Ship("Battleship", Ship.BATTLESHIP_LENGTH, m_Assets);
@@ -71,10 +90,75 @@ public class Player
 	{
 		return m_Board.getBoardHide();
 	}
-	public int getShipsLeft()
+	
+	public int getShipsLeft() 
 	{
 		return m_ShipsLeft;
 	}
+	//////////////////////////
+	// FOR AI IMPLEMENTATION//
+	//////////////////////////	
+	/* Many of these methods are more or less to keep track of important information between round cycles 
+	**(i.e., if a ship that was hit was not sunk in the previous 5 shots)
+	*/
+	public int getEnemyShipsLeft(){ // get ENEMY ships left from previous round to compare against current number of enemy ships
+		return m_enemyShipsLeft;
+	}
+	public void setEnemyShipsLeft(int num){
+		m_enemyShipsLeft = num;
+	}
+	public void decEnemyShipsLeft(){
+		m_enemyShipsLeft--;
+	}
+	
+	public int getLastHitX(){
+		return m_lastHitX;
+	}
+	public int getLastHitY(){
+		return m_lastHitY;
+	}
+	public void setLastHitX(int lastHitX){
+		m_lastHitX = lastHitX;
+	}
+	public void setLastHitY(int lastHitY){
+		m_lastHitY = lastHitY;
+	}
+	
+	public int getOriginHitX(){
+		return m_originHitX;
+	}
+	public int getOriginHitY(){
+		return m_originHitY;
+	}
+	public void setOriginHitX(int originHitX){
+		m_originHitX = originHitX;
+	}
+	public void setOriginHitY(int originHitY){
+		m_originHitY = originHitY;
+	}
+
+	public int[] getDirectionsShot(){
+		return m_directionsShot;
+	}
+	public void setDirectionsShot(int index, int value){
+		m_directionsShot[index] = value;
+	}
+
+	public boolean wasEnemyHit(){
+	
+		return m_enemyWasHit;
+	}
+	public void setEnemyWasHit(boolean bool){
+		m_enemyWasHit = bool;
+	}
+	
+	//////////////////////////////////
+	// END AI IMPLEMENTATION METHODS//
+	//////////////////////////////////		
+	
+	
+	
+	
 	public void decShipsLeft()
 	{
 		m_ShipsLeft--;

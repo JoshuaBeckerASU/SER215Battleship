@@ -223,24 +223,125 @@ public class Game
 		}
 	}
 
-	private void takeAITurn()
+	private void takeAITurn() // Three difficulty levels: 0: Random, 1: Basic Logic, 2: 30% chance of direct hit. (3rd not implemented yet).
 	{
-		Random rand = new Random(System.currentTimeMillis());
+		Random rand = new Random();
 		m_GameWindow.resetActionConsole();
-		for(int i = 0; i < 5; i++)
-		{
-			if(m_CurrentPlayer.getNumOfSelectedTargets() == 4)
-			{
-				m_CurrentPlayer.incNumOfSelTargets();
-				PlayerSelectedTarget(rand.nextInt(15) + 1,rand.nextInt(17)+1);
-				nextTurn();
-			}else
-			{
-				m_CurrentPlayer.incNumOfSelTargets();
-				PlayerSelectedTarget(rand.nextInt(15) + 1,rand.nextInt(17)+1);
-			}
-		}
-	}
+		System.out.println("HERE! with Diffculty as:" + m_difficulty);
+
+			switch (m_difficulty){			
+				
+				// EASY DIFFICULTY
+				case 0: 
+					for(int i = 0; i < 5; i++)
+					{
+						if(m_CurrentPlayer.getNumOfSelectedTargets() == 4)
+						{
+							m_CurrentPlayer.incNumOfSelTargets();
+							PlayerSelectedTarget(rand.nextInt(15) + 1,rand.nextInt(17)+1);
+							nextTurn();
+						}else
+						{
+							m_CurrentPlayer.incNumOfSelTargets();
+							PlayerSelectedTarget(rand.nextInt(15) + 1,rand.nextInt(17)+1);
+						}
+					}break;
+					
+				// MEDIUM DIFFICULTY	
+				case 1: 
+					int shots = 0;
+					int i = 0;
+					System.out.println("First Case");
+					int[] cardinalArray = m_CurrentPlayer.getDirectionsShot();
+					System.out.println("After cardinal assignment");
+					while(shots < 5){ // For five shots...
+						System.out.println("After For Loop: SHOT #: " + shots);
+						if(getOpponentPlayer().getShipsLeft() == m_CurrentPlayer.getEnemyShipsLeft() && m_CurrentPlayer.wasEnemyHit() == true){ // Then last turn, there was a hit, but ship count didn't change: thus not sunk
+							System.out.println("After Conditional");
+							System.out.println("CARDINAL DIRECTION VALUE: " + m_CurrentPlayer.getDirectionsShot()[i]);
+							System.out.println("Cardinal Direction INDEX Value: " + i);
+							if(m_CurrentPlayer.getDirectionsShot()[i] == 0){ // If AI hasn't previously tried this direction...
+								switch (i){ // Discerning direction based on i in the array
+									case 0: // South
+										m_CurrentPlayer.incNumOfSelTargets();
+										shots++;
+										PlayerSelectedTarget(m_CurrentPlayer.getLastHitX(),m_CurrentPlayer.getLastHitY()+1);
+										if(getOpponentPlayer().checkHit(m_CurrentPlayer.getLastHitX(),m_CurrentPlayer.getLastHitY()+1) == "MISS"){
+											m_CurrentPlayer.setDirectionsShot(i, 1);
+											m_CurrentPlayer.setLastHitX(m_CurrentPlayer.getOriginHitX());
+											m_CurrentPlayer.setLastHitY(m_CurrentPlayer.getOriginHitY());
+											System.out.println("MISS!");
+											i++;
+										}
+										break;
+									case 1: // North
+										m_CurrentPlayer.incNumOfSelTargets();
+										shots++;
+										PlayerSelectedTarget(m_CurrentPlayer.getLastHitX(),m_CurrentPlayer.getLastHitY()-1);
+										if(getOpponentPlayer().checkHit(m_CurrentPlayer.getLastHitX(),m_CurrentPlayer.getLastHitY()-1) == "MISS"){
+											m_CurrentPlayer.setDirectionsShot(i, 1);
+											m_CurrentPlayer.setLastHitX(m_CurrentPlayer.getOriginHitX());
+											m_CurrentPlayer.setLastHitY(m_CurrentPlayer.getOriginHitY());
+											System.out.println("MISS!");
+											i++;											
+										}
+										break;
+									case 2: // East
+										m_CurrentPlayer.incNumOfSelTargets();
+										shots++;
+										PlayerSelectedTarget(m_CurrentPlayer.getLastHitX()+1,m_CurrentPlayer.getLastHitY());
+										if(getOpponentPlayer().checkHit(m_CurrentPlayer.getLastHitX()+1,m_CurrentPlayer.getLastHitY()) == "MISS"){
+											m_CurrentPlayer.setDirectionsShot(i, 1);
+											m_CurrentPlayer.setLastHitX(m_CurrentPlayer.getOriginHitX());
+											m_CurrentPlayer.setLastHitY(m_CurrentPlayer.getOriginHitY());
+											System.out.println("MISS!");
+											i++;											
+										}
+										break;											
+									case 3: // West
+										m_CurrentPlayer.incNumOfSelTargets();
+										shots++;											
+										PlayerSelectedTarget(m_CurrentPlayer.getLastHitX()-1,m_CurrentPlayer.getLastHitY());
+										if(getOpponentPlayer().checkHit(m_CurrentPlayer.getLastHitX()-1,m_CurrentPlayer.getLastHitY()) == "MISS"){
+											m_CurrentPlayer.setDirectionsShot(i, 1);
+											m_CurrentPlayer.setLastHitX(m_CurrentPlayer.getOriginHitX());
+											m_CurrentPlayer.setLastHitY(m_CurrentPlayer.getOriginHitY());	
+											System.out.println("MISS at!");	
+											i++;											
+										}
+										break;
+									default: // Should be an error
+										System.out.println("i is " + i);
+										i = 0;
+								}
+							}else if(m_CurrentPlayer.getDirectionsShot()[i] == 1)
+								i++;
+							
+						}
+						else if(m_CurrentPlayer.wasEnemyHit() == true && (getOpponentPlayer().getShipsLeft() != m_CurrentPlayer.getEnemyShipsLeft())){ // If a ship was not previously hit 
+							// ... Then a ship was presumably sunk but was not updated.
+							System.out.println("IN IF ELSE BLOCK");
+							System.out.println("Opponent Player Ships: " + getOpponentPlayer().getShipsLeft() + "Current Player Tracking: " + m_CurrentPlayer.getEnemyShipsLeft());
+							m_CurrentPlayer.setOriginHitX(-1);
+							m_CurrentPlayer.setOriginHitY(-1);
+							m_CurrentPlayer.setEnemyWasHit(false); // We're not continuing to attack a ship that has yet to be sunk.
+							m_CurrentPlayer.setEnemyShipsLeft(getOpponentPlayer().getShipsLeft());
+							System.out.println("AFTER UPDATE: Opponent Player Ships: " + getOpponentPlayer().getShipsLeft() + "Current Player Tracking: " + m_CurrentPlayer.getEnemyShipsLeft());					
+							// Decrement ship left compared to opponent.
+							// Need to reset ShipDirection Array, too
+							}
+						else{
+							System.out.println("IN ELSE");
+							m_CurrentPlayer.incNumOfSelTargets();
+							PlayerSelectedTarget(rand.nextInt(15) + 1,rand.nextInt(17)+1);
+							shots++;
+							} 
+					}
+					System.out.println("### AI TURN ENDED ###");
+					nextTurn();		
+					
+			}// End Difficulty Switch block		
+	}	
 	private void takeHumanTurn()
 	{
 		m_CurrentPlayer.resetShots();
@@ -273,6 +374,17 @@ public class Game
 						{
 							tmp.setIcon(m_Assets.getImage("HitMarker"));
                             tmp.setText("HIT");
+							//m_CurrentPlayer.setEnemyWasHit(true); // Enemy was Hit on last turn. 
+							if(m_CurrentPlayer.getOriginHitX() == -1 && m_CurrentPlayer.getOriginHitY() == -1){ // Unnecessary to check both; but for the sake of testing...
+								m_CurrentPlayer.setOriginHitX(x);
+								m_CurrentPlayer.setOriginHitY(y);
+								m_CurrentPlayer.setEnemyWasHit(true);
+								System.out.println("HERE IN AWT");
+							}
+							m_CurrentPlayer.setLastHitX(x);
+							m_CurrentPlayer.setLastHitY(y);
+							System.out.println("Last Hits Were: " + x + y);
+					
 						}
 						m_GameWindow.updateActionConsole("HIT On Location x = " + x + " y = " + y+ "\n\n"+ (5 - m_CurrentPlayer.getNumOfSelectedTargets()) + " Shots Left\n");
 					break;
@@ -285,6 +397,7 @@ public class Game
 						{
 							tmp.setIcon(m_Assets.getImage("Target"));
                             tmp.setText("MISS");
+							System.out.println("Miss at " + x + ", " + y);
 						}
 						m_GameWindow.updateActionConsole("MISS On Location x = " + x + " y = " + y +"\n\n"+ (5 - m_CurrentPlayer.getNumOfSelectedTargets()) + " Shots Left\n");
 					break;
