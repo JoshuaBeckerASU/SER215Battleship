@@ -87,4 +87,8 @@ public class LobbySlot extends JLabel implements Serializable
     {
         return m_isActive_CkB;
     }
+    public void setisActive(boolean isActive)
+    {
+        m_isActive_CkB.setSelected(isActive);
+    }
 }

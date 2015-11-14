@@ -125,6 +125,10 @@ public class SetUpBoardWindow
 		
 		m_SetUpBoard_F.setVisible(true);
 	}
+    public void setEnabled(boolean bool)
+    {
+        m_SetUpBoard_F.setEnabled(bool);
+    }
 	/**addActionListeners
 	* adds ActionListener, which wait till
 	* an action is Performed then sends 
@@ -219,12 +223,15 @@ public class SetUpBoardWindow
 							m_CurrentPlayer.addToTaken(m_CurrentShip.x(),m_CurrentShip.y(),m_CurrentShip);
 							m_CurrentShip = m_CurrentPlayer.getNextShip();
 							m_CurrentPlayer.setNextShip();
-							if(m_CurrentPlayer.allShipsSet())
+							if(m_CurrentPlayer.allShipsSet() && !Game.getCurrentGame().isMultiplayer())
 							{
 								// DOUBLE CHECK IF THEY ARE READY...
 								Game.getCurrentGame().setUpBoards();
 								// DELETE MEMU BUTTONS AND THINGS...
-							}
+							}else
+                            {
+                                //send message to client finnished board set up
+                            }
 							break;
 				}
 			}

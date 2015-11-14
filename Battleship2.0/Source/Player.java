@@ -67,7 +67,16 @@ public class Player
 		m_Destoyer = new Ship("Destroyer", Ship.DESTROYER_LENGTH, m_Assets);
 		m_Board = new Board(m_Assets, this, m_Game);
 	}
-	
+	public int getFleetHealth()
+    {
+        int health = 0;
+        health = health + m_AirCarr.getLives()*6;
+        health = health + m_Battleship.getLives()*6;
+        health = health + m_Sub.getLives()*6;
+        health = health + m_Cruiser.getLives()*6;
+        health = health + m_Destoyer.getLives()*6;
+        return health;
+    }
 	public JPanel getBoard()
 	{
 		return m_Board.getBoard();
@@ -155,9 +164,6 @@ public class Player
 	//////////////////////////////////
 	// END AI IMPLEMENTATION METHODS//
 	//////////////////////////////////		
-	
-	
-	
 	
 	public void decShipsLeft()
 	{

@@ -143,7 +143,8 @@ public class SinglePlayerWindow
 	{
         m_Slots_L.add(m_Slots[0]);
         m_Slots_L.add(m_Slots[1]);
-        m_Slots_L.add(m_Slots[2]);
+        //m_Slots_L.add(m_Slots[2]);
+        m_Slots[2].setisActive(false);
         
         m_HeaderButtons_L.add(m_StartGame_B);
         m_HeaderButtons_L.add(m_ResetLobby_B);
@@ -208,9 +209,9 @@ public class SinglePlayerWindow
 				case "BackToMainMenu": m_OldWindow.setVisible(true);m_SinglePlayer_F.dispose();
 					break;
 				case "StartGame":
+                        m_OldWindow.dispose();
                         m_Game = new Game(m_Slots[0].getDiff().getSelectedIndex(),m_Slots, m_Assets);
                         m_Game.setUpGame(m_Game);
-						m_OldWindow.dispose();
 					break;
 			}
 		}  

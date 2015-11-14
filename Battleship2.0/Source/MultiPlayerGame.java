@@ -13,8 +13,5 @@ public class MultiPlayerGame extends Game
     private GameServer m_Server;
 	MultiPlayerGame(int difficulty, LobbySlot slots[], LoadAssets assets)
 	{
-        super(difficulty, slots, assets);
-        m_Server = new GameServer();
-        
 	}
 }

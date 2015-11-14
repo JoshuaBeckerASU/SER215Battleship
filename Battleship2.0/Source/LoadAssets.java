@@ -26,7 +26,7 @@ public class LoadAssets implements Runnable
 	{
 		GridCol = 16;
 		GridRows = 19;
-        m_Assets = new ImageIcon[37];
+        m_Assets = new ImageIcon[40];
         m_Names = new ArrayList<String>();
 	}
 	
@@ -225,6 +225,9 @@ public class LoadAssets implements Runnable
 		m_Assets[34] = loadShipImage("Destroyer.png", Ship.DESTROYER_LENGTH, X);
 		m_Assets[35] = loadShipImage("Destroyer_Y.png", Ship.DESTROYER_LENGTH, Y);
         m_Assets[36] = loadGameImage("GameBoardBlank.png", ScreenWidth,(ScreenHeight-700)/2);
+        m_Assets[37] = loadGameImage("MenuBox.png",ScreenWidth - 250, ScreenHeight- 300);
+        m_Assets[38] = loadButtonImage("WaitingForOtherPlayerButton.png");
+        m_Assets[39] = loadGameImage("WaitingScreenBG.png",700,800);
         
 		m_Names.add("GameBoard");
 		m_Names.add("GameBoardBlank");
@@ -263,6 +266,9 @@ public class LoadAssets implements Runnable
 		m_Names.add("Destroyer_X");
 		m_Names.add("Destroyer_Y");
         m_Names.add("MenuHeader");
+        m_Names.add("LobbyBox");
+        m_Names.add("WaitingScreen");
+        m_Names.add("WaitingScreenBG");
 
 
         System.out.println("DONE LOADING");

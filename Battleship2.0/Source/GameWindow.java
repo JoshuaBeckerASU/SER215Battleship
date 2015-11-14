@@ -25,7 +25,7 @@ public class GameWindow
 	private JLabel m_CurrentPlayerStats_L, m_OtherPlayerStats_L;
 	private DefaultCaret m_ActionConsolesCaret;
 	private JScrollPane m_ActionConsole_SP;
-	private JLabel m_Boards_P;
+	private JLabel m_Boards_P, m_PlayerOneStats, m_PlayerTwoStats;
 	private Game m_CurrentGame;
 	private LoadAssets m_Assets;
 	private int m_BOARD_WIDTH;
@@ -165,9 +165,13 @@ public class GameWindow
 		m_Boards_P.add(board);
 		m_Boards_P.add(m_ActionConsole_SP);
 		m_Boards_P.add(board2);
+        
+        m_PlayerOneStats = updatePlayerStats(m_CurrentGame.getCurrentPlayer(),m_CurrentPlayerStats_L, 102);
+        
+        m_PlayerTwoStats = updatePlayerStats(m_CurrentGame.getOpponentPlayer(),m_OtherPlayerStats_L, 102);
 		
-		m_Header_L.add(updatePlayerStats(m_CurrentGame.getCurrentPlayer(),m_CurrentPlayerStats_L));
-		m_Header_L.add(updatePlayerStats(m_CurrentGame.getOpponentPlayer(),m_OtherPlayerStats_L));
+		m_Header_L.add(m_PlayerOneStats);
+		m_Header_L.add(m_PlayerTwoStats);
 		
 		m_Footer_L.add(m_Chat_TA, BorderLayout.WEST);
 		
@@ -267,7 +271,7 @@ public class GameWindow
 
 	}
 	
-	private JLabel updatePlayerStats(Player player, JLabel stats)
+	private JLabel updatePlayerStats(Player player, JLabel stats, int fleetHealth)
 	{
 		stats.removeAll();
 		JLabel tmp = new JLabel(player.getName() + " Stats");
@@ -280,11 +284,12 @@ public class GameWindow
 		tmp.setForeground(Color.WHITE);
 		stats.add(tmp);
 		
-		JProgressBar tmp2 = new JProgressBar(0,85);
+		JProgressBar tmp2 = new JProgressBar(0,102);
         tmp2.setMaximumSize(new Dimension(400, 30));
 		tmp2.setAlignmentX(Component.CENTER_ALIGNMENT);
         tmp2.setBackground(Color.RED);
 		tmp2.setForeground(Color.BLACK);
+        tmp2.setValue(fleetHealth);
 		stats.add(tmp2);
 		
 		return stats;
@@ -297,6 +302,13 @@ public class GameWindow
 	{
 		m_ActionConsole_TA.setText("");
 	}
+    public void decFleetHealth(boolean player)
+    {
+        if(player)
+            m_PlayerOneStats = updatePlayerStats(m_CurrentGame.getOpponentPlayer(),m_OtherPlayerStats_L, m_CurrentGame.getOpponentPlayer().getFleetHealth());
+        else
+            m_PlayerOneStats = updatePlayerStats(m_CurrentGame.getOpponentPlayer(),m_CurrentPlayerStats_L, m_CurrentGame.getOpponentPlayer().getFleetHealth());
+    }
 	public void updateChatConsole(Player player, String message)
 	{
 		m_Chat_TA.append("\n"+ player.getName() + " says " + message + "\n");

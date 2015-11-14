@@ -10,6 +10,7 @@ import java.util.*;
 
 public class Game
 {
+    public static int MULTIPLAYERGAME = -1;
 	private Player m_Players[];
     private LobbySlot m_Slots[];
 	private Player m_CurrentPlayer;
@@ -20,6 +21,8 @@ public class Game
 	private JFrame m_OldWindow;
 	private LoadAssets m_Assets;
 	private Location m_TargetLoc[];
+    private SetUpBoardWindow m_SetUpBoard_W;
+    private WaitingScreenWindow m_WaitingScreen_W;
     private static Game m_CurrentGame;
     private boolean m_IsMultiPlayer;
 	
@@ -31,24 +34,20 @@ public class Game
 	{
 		m_Assets = assets;
         m_Slots = slots;
-		m_difficulty = difficulty;
+        if(difficulty == MULTIPLAYERGAME)
+        {
+            m_difficulty = 1;
+            m_IsMultiPlayer = true;
+        }else
+        {
+            m_difficulty = difficulty;
+            m_IsMultiPlayer = false;
+        }
 		m_CurrentPlayerIndex = 0;
 		m_NumOfGames = 0;
 		m_TargetLoc = new Location[5];
         m_CurrentGame = this;
-        m_IsMultiPlayer = false;
-	}
-	Game(LoadAssets assets)
-	{
-		m_Assets = assets;
-        m_Slots = null;
-		m_difficulty = 0;
-		m_CurrentPlayerIndex = 0;
-		m_NumOfGames = 0;
-		m_TargetLoc = new Location[5];
-        m_CurrentGame = this;
-        m_IsMultiPlayer = true;
-        //setUpMultiPlayerGame();
+
 	}
     public void setUpGame(Game game)
     {
@@ -57,28 +56,40 @@ public class Game
         fillPlayers();
         setUpBoards();
     }
-	
+	public void showWaitingScreen()
+    {
+       m_SetUpBoard_W.setEnabled(false);
+       m_WaitingScreen_W = new WaitingScreenWindow();
+    }
+    public void hideWaitingScreen()
+    {
+        m_SetUpBoard_W.setEnabled(true);
+        m_WaitingScreen_W.dispose();
+    }
 	public void startGame()
 	{
         m_CurrentPlayer = m_Players[0];
         getOpponentPlayer().enableBoard();
 		m_GameWindow = new GameWindow(m_CurrentGame, m_Assets);
 	}
-    
+    public boolean isMultiplayer()
+    {
+        return m_IsMultiPlayer;
+    }
     public void setUpBoards()
     {
         if(m_Players[0].isHuman() && !m_Players[0].allShipsSet())
         {
             System.out.println("here");
-            new SetUpBoardWindow(m_Players[0], m_Assets);
-        }else if(m_Players.length > 1 && m_Players[1].isHuman() && !m_Players[1].allShipsSet())
+            m_SetUpBoard_W = new SetUpBoardWindow(m_Players[0], m_Assets);
+        }else if(m_Players.length > 1 && m_Players[1].isHuman() && !m_Players[1].allShipsSet() && !m_IsMultiPlayer)
         {
             System.out.println("there");
-            new SetUpBoardWindow(m_Players[1], m_Assets);
+            m_SetUpBoard_W = new SetUpBoardWindow(m_Players[1], m_Assets);
         }else if(m_Players.length > 2 && m_Players[2].isHuman() && !m_Players[2].allShipsSet())
         {
             System.out.println("there");
-            new SetUpBoardWindow(m_Players[2], m_Assets);
+            m_SetUpBoard_W = new SetUpBoardWindow(m_Players[2], m_Assets);
         }else
         {
             startGame();
@@ -402,6 +413,7 @@ public class Game
 							System.out.println("Last Hits Were: " + x + y);
 			
 						}
+                        m_GameWindow.decFleetHealth(m_CurrentPlayerIndex == 0);
                         tmp.setText("HIT");
 						m_GameWindow.updateActionConsole("HIT On Location x = " + x + " y = " + y+ "\n\n"+ (5 - m_CurrentPlayer.getNumOfSelectedTargets()) + " Shots Left\n");
 					break;
@@ -423,6 +435,7 @@ public class Game
                         BoardMouseAction.setIcon(m_Assets.getImage("HitMarker"));
                         tmp.setText("HIT");
 						getOpponentPlayer().showShip(result);
+                        m_GameWindow.decFleetHealth(m_CurrentPlayerIndex == 0);
 						m_GameWindow.updateActionConsole(m_CurrentPlayer.getName() + " Sunk " + getOpponentPlayer().getName() + "'s " + result);
 				break;
 		}
