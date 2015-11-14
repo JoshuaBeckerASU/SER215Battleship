@@ -8,6 +8,9 @@ import java.net.*;
 import java.io.*;
 import java.util.*;
 
+//dont need threading since server will also act as a client
+
+
 public class GameServer{
 	//creates the server socket
 	private ServerSocket serverSocket;
@@ -24,7 +27,7 @@ public class GameServer{
 		new GameServer();
 	}
 
-	public GameServer(){
+	public GameServer(String ownerName,){
 
 		try{
 			//attach serversocket to a port
@@ -32,7 +35,7 @@ public class GameServer{
 
 			//socket1=serverSocket.accept();
 
-			
+			//dont need while loop anymore since no dedicated server 
 			while(true){
 
 				
@@ -194,6 +197,10 @@ public class GameServer{
 
 		public void run(){
 
+			//get names of players
+			//set up boards
+			//send boards to one another
+			//
 
 		}
 
