@@ -41,14 +41,14 @@ public class Game
 	Game(LoadAssets assets)
 	{
 		m_Assets = assets;
-        m_Slots = slots;
-		m_difficulty = difficulty;
+        m_Slots = null;
+		m_difficulty = 0;
 		m_CurrentPlayerIndex = 0;
 		m_NumOfGames = 0;
 		m_TargetLoc = new Location[5];
         m_CurrentGame = this;
         m_IsMultiPlayer = true;
-        setUpMultiPlayerGame();
+        //setUpMultiPlayerGame();
 	}
     public void setUpGame(Game game)
     {
