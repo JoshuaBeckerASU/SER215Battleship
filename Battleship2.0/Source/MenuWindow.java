@@ -15,7 +15,7 @@ import javax.imageio.*;
 import java.awt.image.*;
 import java.io.*;
 
-public class MenuWindow
+public class MenuWindow implements Runnable
 {
 	private JFrame m_MenuFrame;
 	private int m_ScreenWidth, m_ScreenHeight;
@@ -27,14 +27,6 @@ public class MenuWindow
     public MenuWindow(LoadAssets assets)// constructer
     {
 		m_Assets = assets;
-		
-		createComponents();
-		
-		buildComponents();
-		
-		addActionListeners();
-		
-		addElements();
 	}
 	/**createComponents
 	* creates components and gives them
@@ -152,7 +144,7 @@ public class MenuWindow
 			String command = event.getActionCommand();
 			switch(command)
 			{
-				case "MultiPlayer": //new GameSetUpWindow(m_MenuFrame, m_Assets);//new MultiPlayerWindow(m_MenuFrame, m_Assets);
+				case "MultiPlayer": new MultiPlayerMenuWindow(m_MenuFrame, m_Assets);
 					break;
                 case "SinglePlayer": new SinglePlayerWindow(m_MenuFrame, m_Assets);
                     break;
@@ -163,4 +155,14 @@ public class MenuWindow
 			}
 		}  
 	}
+    public void run()
+    {
+		createComponents();
+		
+		buildComponents();
+		
+		addActionListeners();
+		
+		addElements();
+    }
 }

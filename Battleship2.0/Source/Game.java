@@ -21,6 +21,7 @@ public class Game
 	private LoadAssets m_Assets;
 	private Location m_TargetLoc[];
     private static Game m_CurrentGame;
+    private boolean m_IsMultiPlayer;
 	
 	Game()
 	{
@@ -35,6 +36,19 @@ public class Game
 		m_NumOfGames = 0;
 		m_TargetLoc = new Location[5];
         m_CurrentGame = this;
+        m_IsMultiPlayer = false;
+	}
+	Game(LoadAssets assets)
+	{
+		m_Assets = assets;
+        m_Slots = slots;
+		m_difficulty = difficulty;
+		m_CurrentPlayerIndex = 0;
+		m_NumOfGames = 0;
+		m_TargetLoc = new Location[5];
+        m_CurrentGame = this;
+        m_IsMultiPlayer = true;
+        setUpMultiPlayerGame();
 	}
     public void setUpGame(Game game)
     {

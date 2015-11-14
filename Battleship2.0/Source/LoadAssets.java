@@ -13,151 +13,32 @@ import javax.imageio.*;
 import java.awt.image.*;
 import java.io.*;
 import java.net.*;
+import java.util.*;
 
-public class LoadAssets
+public class LoadAssets implements Runnable
 {	
-	private ImageIcon m_Board, m_BoardBlank, m_MenuBackground,m_Instructions, m_GameBackground;
-	private ImageIcon m_BackToMainMenu_B, m_Exit_B, m_LoadAGame_B, m_MenuBox, m_SlotBG;
-	private ImageIcon m_PlayGame_B, m_Settings_B, m_StartANewGame_B, m_MenuHeader;
-	private ImageIcon m_StartGame_B, m_Battleship_X, m_Battleship_Y, m_AircraftCarrier_X, m_AircraftCarrier_Y;
-	private ImageIcon m_Cruiser_X, m_Destroyer_X, m_Destroyer_Y, m_Submarine_X,m_Submarine_Y;
-	private ImageIcon m_Cruiser_Y, m_SinglePlayer_B, m_MultiPlayer_B, m_LobbyBackground;
-	private ImageIcon m_HitMarker, m_Target, m_Target2, m_GameOverBG, m_LobbyBox;
-    private ImageIcon m_ReplayGame_B, m_ResetLobby_B;
-	private Image m_Cursor;
+    private ImageIcon [] m_Assets;
+    private ArrayList<String> m_Names;
 	private final int GridCol;
 	private final int GridRows;
+    
 	LoadAssets()
 	{
-		GraphicsDevice gd = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();// geting size of screen
-		int ScreenWidth = gd.getDisplayMode().getWidth();
-		int ScreenHeight = gd.getDisplayMode().getHeight();
-		boolean X = true;
-		boolean Y = false;
 		GridCol = 16;
 		GridRows = 19;
-		
-		m_Board = loadGameImage("Grid8.png", 577, 685);
-		m_BoardBlank = loadGameImage("GameBoardBlank.png",577, 685);
-		m_Instructions = loadGameImage("Instructions.png", ScreenWidth, 100);
-        m_GameOverBG = loadGameImage("GameOverBG.png",550,420);
-		m_MenuBackground = loadGameImage("MenuBG.jpg", ScreenWidth, ScreenHeight);
-		m_GameBackground = loadGameImage("GameBG1.jpg", ScreenWidth, ScreenHeight);
-        m_MenuBox = loadGameImage("MenuBox.png",600,700);
-        m_MenuHeader = loadGameImage("GameBoardBlank.png",ScreenWidth,ScreenHeight/2-getImage("MenuBox").getIconHeight()/2);
-        m_LobbyBackground = loadGameImage("LobbyBG.jpg", ScreenWidth, ScreenHeight);
-        m_LobbyBox = loadGameImage("MenuBox.png",ScreenWidth - 300,700);
-        m_SlotBG = loadGameImage("SlotBG.png", ScreenWidth - 400,60);
-        
-		
-		m_HitMarker = loadGif("Fire.gif",m_Board.getIconWidth()/GridCol,  m_Board.getIconHeight()/GridRows);
-		m_Target = loadGameImage("Target.png",m_Board.getIconWidth()/GridCol,  m_Board.getIconHeight()/GridRows);
-		m_Target2 = loadGameImage("Target2.png",m_Board.getIconWidth()/GridCol,  m_Board.getIconHeight()/GridRows);
-		m_Cursor = getShipImages("Battleship.png", Ship.BATTLESHIP_LENGTH, false);
-		
-		m_BackToMainMenu_B = loadButtonImage("BackToMainMenuButton.png");
-		m_Exit_B = loadButtonImage("ExitButton.png");
-		m_LoadAGame_B = loadButtonImage("LoadAGameButton.png");
-		m_PlayGame_B = loadButtonImage("PlayGameButton.png");
-		m_Settings_B = loadButtonImage("SettingsButton.png");
-		m_StartANewGame_B = loadButtonImage("StartANewGameButton.png");
-		m_StartGame_B = loadButtonImage("StartGameButton.png");
-        m_SinglePlayer_B = loadButtonImage("SinglePlayerButton.png");
-        m_MultiPlayer_B = loadButtonImage("MultiPlayerButton.png");
-        m_ReplayGame_B = loadButtonImage("ReplayGameButton.png");
-        m_ResetLobby_B = loadButtonImage("ResetLobbyButton.png");
-		
-		m_AircraftCarrier_X = loadShipImage("AircraftCarrier.png", Ship.CARRIER_LENGTH, X);
-		m_AircraftCarrier_Y = loadShipImage("AircraftCarrier_Y.png", Ship.CARRIER_LENGTH, Y);
-		
-		m_Battleship_X = loadShipImage("Battleship.png", Ship.BATTLESHIP_LENGTH, X);
-		m_Battleship_Y = loadShipImage("Battleship_Y.png", Ship.BATTLESHIP_LENGTH, Y);
-		
-		m_Destroyer_X = loadShipImage("Destroyer.png", Ship.DESTROYER_LENGTH, X);
-		m_Destroyer_Y = loadShipImage("Destroyer_Y.png", Ship.DESTROYER_LENGTH, Y);
-		
-		m_Submarine_X = loadShipImage("Submarine.png", Ship.SUBMARINE_LENGTH, X);
-		m_Submarine_Y = loadShipImage("Submarine_Y.png", Ship.SUBMARINE_LENGTH, Y);
-		
-		m_Cruiser_X = loadShipImage("Cruiser.png" , Ship.CRUISER_LENGTH, X);
-		m_Cruiser_Y = loadShipImage("Cruiser_Y.png", Ship.CRUISER_LENGTH, Y);
+        m_Assets = new ImageIcon[37];
+        m_Names = new ArrayList<String>();
 	}
 	
 	public ImageIcon getImage(String name)
 	{
-		switch(name)
-		{
-			case "GameBoard": return m_Board;
-            
-            case "MenuHeader": return m_MenuHeader;
-            
-            case "LobbyBG": return m_LobbyBackground;
-            
-            case "LobbyBox": return m_LobbyBox;
-            
-            case "SlotBG": return m_SlotBG;
-            
-            case "ResetLobby": return m_ResetLobby_B;
-            
-            case "ReplayGame": return m_ReplayGame_B;
-			
-			case "GameBoardBlank": return m_BoardBlank;
-			
-			case "GameBG": return m_GameBackground;
-			
-			case "Instructions": return m_Instructions;
-			
-			case "MenuBG": return m_MenuBackground;
-			
-			case "HitMarker": return m_HitMarker;
-            
-            case "GameOverBG": return m_GameOverBG;
-			
-			case "Target": return m_Target;
-			
-			case "Target2": return m_Target2;
-            
-            case "MenuBox": return m_MenuBox;
-			
-            case "SinglePlayerButton": return m_SinglePlayer_B;
-            
-            case "MultiPlayerButton": return m_MultiPlayer_B;
-            
-			case "BackToMainMenuButton": return m_BackToMainMenu_B;
-			
-			case "ExitButton": return m_Exit_B;
-			
-			case "LoadAGameButton": return m_LoadAGame_B;
-			
-			case "PlayGameButton": return m_PlayGame_B;
-			
-			case "SettingsButton": return m_Settings_B;
-			
-			case "StartANewGameButton": return m_StartANewGame_B;
-			
-			case "StartGameButton": return m_StartGame_B;
-			
-			case "AircraftCarrier_X": return m_AircraftCarrier_X;
-			case "AircraftCarrier_Y": return m_AircraftCarrier_Y;
-			
-			case "Battleship_X": return m_Battleship_X;
-			case "Battleship_Y": return m_Battleship_Y;
-			
-			case "Submarine_X": return m_Submarine_X;
-			case "Submarine_Y": return m_Submarine_Y;
-			
-			case "Cruiser_X": return m_Cruiser_X;
-			case "Cruiser_Y": return m_Cruiser_Y;
-			
-			case "Destroyer_X": return m_Destroyer_X;
-			case "Destroyer_Y": return m_Destroyer_Y;
-			
-			default: System.out.println("Image Not Found: " + name); return null;
-		}
-	}
-	public Image getImage(String name, int domb)
-	{
-		return m_Cursor;
+        int index = m_Names.indexOf(name);
+        if(index < 0)
+        {
+            System.out.println("Image not Found  " + name);
+            index = 1;
+        }
+        return m_Assets[index];
 	}
 	
 	private ImageIcon loadGameImage(String name, int w, int h)
@@ -233,8 +114,8 @@ public class LoadAssets
 		path = path.replace('\\','/');
 		path = path.replaceAll("Source", "Assets/Ships/" + name);
 		Image img;
-		int height = m_Board.getIconHeight()/GridRows;
-		int width = m_Board.getIconWidth()/GridCol;
+		int height = 685/GridRows;
+		int width = 577/GridCol;
 		
 		if(orientation)
 		{
@@ -269,8 +150,8 @@ public class LoadAssets
 		path = path.replace('\\','/');
 		path = path.replaceAll("Source", "Assets/Ships/" + name);
 		Image img;
-		int height = m_Board.getIconHeight()/GridRows;
-		int width = m_Board.getIconWidth()/GridCol;
+		int height = 685/GridRows;
+		int width = 577/GridCol;
 		
 		if(orientation)
 		{
@@ -298,4 +179,92 @@ public class LoadAssets
 
 		return null;
 	}
+    public void run()
+    {
+        System.out.println("START LOADING");
+		GraphicsDevice gd = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();// geting size of screen
+		int ScreenWidth = gd.getDisplayMode().getWidth();
+		int ScreenHeight = gd.getDisplayMode().getHeight();
+		boolean X = true;
+		boolean Y = false;
+        
+		m_Assets[0] = loadGameImage("Grid8.png", 577, 685);
+		m_Assets[1] = loadGameImage("GameBoardBlank.png",577, 685);
+		m_Assets[2] = loadGameImage("Instructions.png", ScreenWidth, 100);
+        m_Assets[3] = loadGameImage("GameOverBG.png",550,420);
+		m_Assets[4] = loadGameImage("MenuBG.jpg", ScreenWidth, ScreenHeight);
+		m_Assets[5] = loadGameImage("GameBG1.jpg", ScreenWidth, ScreenHeight);
+        m_Assets[6] = loadGameImage("MenuBox.png",600,700);
+		m_Assets[7] = loadShipImage("Submarine_Y.png", Ship.SUBMARINE_LENGTH, Y);
+        m_Assets[8] = loadGameImage("LobbyBG.jpg", ScreenWidth, ScreenHeight);
+		m_Assets[9] = loadShipImage("Cruiser.png" , Ship.CRUISER_LENGTH, X);
+        m_Assets[10] = loadGameImage("SlotBG.png", ScreenWidth - 400,60);
+        m_Assets[11] = loadGif("Fire.gif",577/GridCol,  685/GridRows);
+		m_Assets[12] = loadGameImage("Target.png",577/GridCol,  685/GridRows);
+		m_Assets[13] = loadGameImage("Target2.png",577/GridCol,  685/GridRows);
+		m_Assets[14] = loadShipImage("Cruiser_Y.png", Ship.CRUISER_LENGTH, Y);
+		m_Assets[15] = loadButtonImage("BackToMainMenuButton.png");
+		m_Assets[16] = loadButtonImage("ExitButton.png");
+		m_Assets[17] = loadButtonImage("LoadAGameButton.png");
+        m_Assets[18] = loadShipImage("Submarine.png", Ship.SUBMARINE_LENGTH, X);
+		m_Assets[19] = loadButtonImage("PlayGameButton.png");
+		m_Assets[20] = loadButtonImage("SettingsButton.png");
+		m_Assets[21] = loadButtonImage("StartANewGameButton.png");
+		m_Assets[22] = loadButtonImage("StartGameButton.png");
+		m_Assets[23] = loadButtonImage("SinglePlayerButton.png");
+		m_Assets[24] = loadButtonImage("MultiPlayerButton.png");
+		m_Assets[25] = loadButtonImage("ReplayGameButton.png");
+        m_Assets[26] = loadButtonImage("ResetLobbyButton.png");
+        m_Assets[27] = loadButtonImage("HostGameButton.png");
+        m_Assets[28] = loadButtonImage("JoinGameButton.png");
+        m_Assets[29] = loadButtonImage("MainMenuButton.png");
+        m_Assets[30] = loadShipImage("AircraftCarrier.png", Ship.CARRIER_LENGTH, X);
+        m_Assets[31] = loadShipImage("AircraftCarrier_Y.png", Ship.CARRIER_LENGTH, Y);
+        m_Assets[32] = loadShipImage("Battleship.png", Ship.BATTLESHIP_LENGTH, X);
+		m_Assets[33] = loadShipImage("Battleship_Y.png", Ship.BATTLESHIP_LENGTH, Y);
+		m_Assets[34] = loadShipImage("Destroyer.png", Ship.DESTROYER_LENGTH, X);
+		m_Assets[35] = loadShipImage("Destroyer_Y.png", Ship.DESTROYER_LENGTH, Y);
+        m_Assets[36] = loadGameImage("GameBoardBlank.png", ScreenWidth,(ScreenHeight-700)/2);
+        
+		m_Names.add("GameBoard");
+		m_Names.add("GameBoardBlank");
+		m_Names.add("Instructions");
+        m_Names.add("GameOverBG");
+		m_Names.add("MenuBG");
+		m_Names.add("GameBG");
+        m_Names.add("MenuBox");
+		m_Names.add("Submarine_Y");
+        m_Names.add("LobbyBG");
+		m_Names.add("Cruiser_X");
+        m_Names.add("SlotBG");
+        m_Names.add("HitMarker");
+		m_Names.add("Target");
+		m_Names.add("Target2");
+		m_Names.add("Cruiser_Y");
+		m_Names.add("BackToMainMenuButton");
+		m_Names.add("ExitButton");
+		m_Names.add("LoadAGameButton");
+        m_Names.add("Submarine_X");
+		m_Names.add("PlayGameButton");
+		m_Names.add("SettingsButton");
+		m_Names.add("StartANewGameButton");
+		m_Names.add("StartGameButton");
+		m_Names.add("SinglePlayerButton"); 
+		m_Names.add("MultiPlayerButton");
+		m_Names.add("ReplayGame");
+        m_Names.add("ResetLobby");
+        m_Names.add("HostGameButton");
+        m_Names.add("JoinGameButton");
+        m_Names.add("MainMenuButton");
+        m_Names.add("AircraftCarrier_X");
+        m_Names.add("AircraftCarrier_Y");
+        m_Names.add("Battleship_X");
+		m_Names.add("Battleship_Y");
+		m_Names.add("Destroyer_X");
+		m_Names.add("Destroyer_Y");
+        m_Names.add("MenuHeader");
+
+
+        System.out.println("DONE LOADING");
+    }
 }
