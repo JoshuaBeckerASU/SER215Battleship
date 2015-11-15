@@ -14,6 +14,7 @@ import javax.swing.JFrame;
 import javax.imageio.*;
 import java.awt.image.*;
 import java.io.*;
+import java.awt.Color.*;
 
 public class LoadingWindow
 {
@@ -21,6 +22,7 @@ public class LoadingWindow
 	private int m_ScreenWidth, m_ScreenHeight;
 	private JLabel m_Background_L, m_Loading_L;
     private ImageIcon m_Background_IC, m_Loading_L_IC;
+    private static JLabel m_Message;
 	
     public LoadingWindow(ImageIcon background, ImageIcon loading)// constructer
     {
@@ -33,6 +35,7 @@ public class LoadingWindow
 		m_Background_L = new JLabel(m_Background_IC);
         m_Loading_L = new JLabel(m_Loading_L_IC);
         m_Loading_F = new JFrame("Loading Window");
+        m_Message = new JLabel("Loading");
         
 		m_Loading_F.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		m_Loading_F.add(m_Background_L);
@@ -44,15 +47,20 @@ public class LoadingWindow
 		m_Loading_F.setLayout(new BorderLayout());
 		m_Loading_F.setSize(new Dimension(m_ScreenWidth,m_ScreenHeight));
         m_Loading_L.setAlignmentX(Component.CENTER_ALIGNMENT);
+        m_Message.setAlignmentX(Component.CENTER_ALIGNMENT);
+        m_Message.setForeground(Color.BLACK);
         
         for(int i = 0; i < m_ScreenHeight/23; i++)
             m_Background_L.add(new JLabel("\n"));//spaceing
         
         m_Background_L.add(m_Loading_L);
+        m_Background_L.add(m_Message);
         
         m_Loading_F.add(m_Background_L);
 		
 		m_Loading_F.pack();
+        
+        m_Loading_F.setVisible(true);
 	}
     public void dispose()
     {
@@ -61,6 +69,10 @@ public class LoadingWindow
     public JFrame getMainFrame()
     {
         return m_Loading_F;
+    }
+    public static void updateMessage(String text)
+    {
+       m_Message.setText(text);
     }
     public void showScreen()
     {
