@@ -1,0 +1,69 @@
+/* 
+Name: Menu Panel 
+Author: Joshua Becker
+Create On: 9/9/15
+Updated On: 9/19/15
+Contributors:
+ */
+
+import java.awt.*;
+import java.awt.event.*; 
+import javax.swing.*;
+import javax.swing.ImageIcon.*;
+import javax.swing.JFrame;
+import javax.imageio.*;
+import java.awt.image.*;
+import java.io.*;
+
+public class LoadingWindow
+{
+	private JFrame m_Loading_F;
+	private int m_ScreenWidth, m_ScreenHeight;
+	private JLabel m_Background_L, m_Loading_L;
+    private ImageIcon m_Background_IC, m_Loading_L_IC;
+	
+    public LoadingWindow(ImageIcon background, ImageIcon loading)// constructer
+    {
+		GraphicsDevice gd = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();// geting size of screen
+		m_ScreenWidth = gd.getDisplayMode().getWidth();
+		m_ScreenHeight = gd.getDisplayMode().getHeight();
+        m_Background_IC = background;
+        m_Loading_L_IC = loading;
+        
+		m_Background_L = new JLabel(m_Background_IC);
+        m_Loading_L = new JLabel(m_Loading_L_IC);
+        m_Loading_F = new JFrame("Loading Window");
+        
+		m_Loading_F.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		m_Loading_F.add(m_Background_L);
+        
+        m_Background_L.setLayout(new BoxLayout(m_Background_L, BoxLayout.Y_AXIS));
+        
+		m_Loading_F.setUndecorated(true);
+        m_Loading_F.getRootPane().setWindowDecorationStyle(JRootPane.NONE);
+		m_Loading_F.setLayout(new BorderLayout());
+		m_Loading_F.setSize(new Dimension(m_ScreenWidth,m_ScreenHeight));
+        m_Loading_L.setAlignmentX(Component.CENTER_ALIGNMENT);
+        
+        for(int i = 0; i < m_ScreenHeight/23; i++)
+            m_Background_L.add(new JLabel("\n"));//spaceing
+        
+        m_Background_L.add(m_Loading_L);
+        
+        m_Loading_F.add(m_Background_L);
+		
+		m_Loading_F.pack();
+	}
+    public void dispose()
+    {
+        m_Loading_F.dispose();
+    }
+    public JFrame getMainFrame()
+    {
+        return m_Loading_F;
+    }
+    public void showScreen()
+    {
+		m_Loading_F.setVisible(true);
+    }
+}

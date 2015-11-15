@@ -26,7 +26,7 @@ public class LoadAssets implements Runnable
 	{
 		GridCol = 16;
 		GridRows = 19;
-        m_Assets = new ImageIcon[40];
+        m_Assets = new ImageIcon[39];
         m_Names = new ArrayList<String>();
 	}
 	
@@ -227,7 +227,6 @@ public class LoadAssets implements Runnable
         m_Assets[36] = loadGameImage("GameBoardBlank.png", ScreenWidth,(ScreenHeight-700)/2);
         m_Assets[37] = loadGameImage("MenuBox.png",ScreenWidth - 250, ScreenHeight- 300);
         m_Assets[38] = loadButtonImage("WaitingForOtherPlayerButton.png");
-        m_Assets[39] = loadGameImage("WaitingScreenBG.png",700,800);
         
 		m_Names.add("GameBoard");
 		m_Names.add("GameBoardBlank");

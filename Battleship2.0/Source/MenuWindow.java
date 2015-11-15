@@ -17,15 +17,16 @@ import java.io.*;
 
 public class MenuWindow implements Runnable
 {
-	private JFrame m_MenuFrame;
+	private JFrame m_MenuFrame, m_OldWindow;
 	private int m_ScreenWidth, m_ScreenHeight;
 	private JButton m_MultiPlayer_B, m_Exit_B, m_Settings_B, m_SinglePlayer_B;
 	private JLabel m_Background_L;
     private JLabel m_MenuButton_L;
 	private LoadAssets m_Assets;
 	
-    public MenuWindow(LoadAssets assets)// constructer
+    public MenuWindow(LoadAssets assets,JFrame oldWindow)// constructer
     {
+        m_OldWindow = oldWindow;
 		m_Assets = assets;
 	}
 	/**createComponents
@@ -164,5 +165,7 @@ public class MenuWindow implements Runnable
 		addActionListeners();
 		
 		addElements();
+        
+        m_OldWindow.dispose();
     }
 }
