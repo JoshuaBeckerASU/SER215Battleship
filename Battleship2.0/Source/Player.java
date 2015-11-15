@@ -87,6 +87,10 @@ public class Player
 		return m_Board;
 	
 	}
+    public void setBoardObject(Board board)
+    {
+        m_Board = board;
+    }
 	public void enableBoard()
     {
         m_Board.enableMouseListeners();

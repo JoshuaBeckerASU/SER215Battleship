@@ -127,10 +127,5 @@ public class GameClient implements Runnable{
 	//again this main is just for testing purposes. will be removed eventually
 	public static void main(String[] args){
 		new GameClient();
-	
-		
 	}
-
-
-
 }

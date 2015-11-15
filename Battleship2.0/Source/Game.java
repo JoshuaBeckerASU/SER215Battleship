@@ -24,7 +24,7 @@ public class Game
     private SetUpBoardWindow m_SetUpBoard_W;
     private WaitingScreenWindow m_WaitingScreen_W;
     private static Game m_CurrentGame;
-    private boolean m_IsMultiPlayer;
+    private boolean m_IsMultiplayer;
 	
 	Game()
 	{
@@ -37,11 +37,11 @@ public class Game
         if(difficulty == MULTIPLAYERGAME)
         {
             m_difficulty = 1;
-            m_IsMultiPlayer = true;
+            m_IsMultiplayer = true;
         }else
         {
             m_difficulty = difficulty;
-            m_IsMultiPlayer = false;
+            m_IsMultiplayer = false;
         }
 		m_CurrentPlayerIndex = 0;
 		m_NumOfGames = 0;
@@ -49,6 +49,10 @@ public class Game
         m_CurrentGame = this;
 
 	}
+    public void setBoardObject(Board board)
+    {
+        m_Players[1].setBoardObject(board);
+    }
     public void setUpGame(Game game)
     {
         m_CurrentGame = game;
@@ -74,7 +78,7 @@ public class Game
 	}
     public boolean isMultiplayer()
     {
-        return m_IsMultiPlayer;
+        return m_IsMultiplayer;
     }
     public void setUpBoards()
     {
@@ -82,7 +86,7 @@ public class Game
         {
             System.out.println("here");
             m_SetUpBoard_W = new SetUpBoardWindow(m_Players[0], m_Assets);
-        }else if(m_Players.length > 1 && m_Players[1].isHuman() && !m_Players[1].allShipsSet() && !m_IsMultiPlayer)
+        }else if(m_Players.length > 1 && m_Players[1].isHuman() && !m_Players[1].allShipsSet() && !m_IsMultiplayer)
         {
             System.out.println("there");
             m_SetUpBoard_W = new SetUpBoardWindow(m_Players[1], m_Assets);
@@ -228,26 +232,24 @@ public class Game
         getOpponentPlayer().disableBoard();
         getOpponentPlayer().setExitedIcon(m_TargetLoc[4].x(),m_TargetLoc[4].y());
         
-		if(m_CurrentPlayerIndex == m_Players.length -1)
-		{
-			m_CurrentPlayer = m_Players[0];
-			m_CurrentPlayerIndex = 0;
-		}else
-		{
-			m_CurrentPlayerIndex++;
-			m_CurrentPlayer = m_Players[m_CurrentPlayerIndex];
-		}
-		
-       //m_CurrentPlayer.disableBoard();
-       //getOpponentPlayer().enableBoard();
-		if(!m_CurrentPlayer.isHuman())
-		{
-			m_CurrentPlayer.resetShots();
-			takeAITurn();
-		}else
-		{
-			takeHumanTurn();
-		}
+        if(m_CurrentPlayerIndex == m_Players.length -1)
+        {
+            m_CurrentPlayer = m_Players[0];
+            m_CurrentPlayerIndex = 0;
+        }else
+        {
+            m_CurrentPlayerIndex++;
+            m_CurrentPlayer = m_Players[m_CurrentPlayerIndex];
+        }
+        
+        if(!m_CurrentPlayer.isHuman())
+        {
+            m_CurrentPlayer.resetShots();
+            takeAITurn();
+        }else
+        {
+            takeHumanTurn();
+        }
 	}
 
 	private void takeAITurn() // Three difficulty levels: 0: Random, 1: Basic Logic, 2: 30% chance of direct hit. (3rd not implemented yet).
@@ -265,12 +267,12 @@ public class Game
 						if(m_CurrentPlayer.getNumOfSelectedTargets() == 4)
 						{
 							m_CurrentPlayer.incNumOfSelTargets();
-							PlayerSelectedTarget(rand.nextInt(15) + 1,rand.nextInt(17)+1);
+							playerSelectedTarget(rand.nextInt(15) + 1,rand.nextInt(17)+1);
 							nextTurn();
 						}else
 						{
 							m_CurrentPlayer.incNumOfSelTargets();
-							PlayerSelectedTarget(rand.nextInt(15) + 1,rand.nextInt(17)+1);
+							playerSelectedTarget(rand.nextInt(15) + 1,rand.nextInt(17)+1);
 						}
 					}break;
 					
@@ -292,7 +294,7 @@ public class Game
 									case 0: // South
 										m_CurrentPlayer.incNumOfSelTargets();
 										shots++;
-										PlayerSelectedTarget(m_CurrentPlayer.getLastHitX(),m_CurrentPlayer.getLastHitY()+1);
+										playerSelectedTarget(m_CurrentPlayer.getLastHitX(),m_CurrentPlayer.getLastHitY()+1);
 										if(getOpponentPlayer().checkHit(m_CurrentPlayer.getLastHitX(),m_CurrentPlayer.getLastHitY()+1) == "MISS"){
 											m_CurrentPlayer.setDirectionsShot(i, 1);
 											m_CurrentPlayer.setLastHitX(m_CurrentPlayer.getOriginHitX());
@@ -304,7 +306,7 @@ public class Game
 									case 1: // North
 										m_CurrentPlayer.incNumOfSelTargets();
 										shots++;
-										PlayerSelectedTarget(m_CurrentPlayer.getLastHitX(),m_CurrentPlayer.getLastHitY()-1);
+										playerSelectedTarget(m_CurrentPlayer.getLastHitX(),m_CurrentPlayer.getLastHitY()-1);
 										if(getOpponentPlayer().checkHit(m_CurrentPlayer.getLastHitX(),m_CurrentPlayer.getLastHitY()-1) == "MISS"){
 											m_CurrentPlayer.setDirectionsShot(i, 1);
 											m_CurrentPlayer.setLastHitX(m_CurrentPlayer.getOriginHitX());
@@ -316,7 +318,7 @@ public class Game
 									case 2: // East
 										m_CurrentPlayer.incNumOfSelTargets();
 										shots++;
-										PlayerSelectedTarget(m_CurrentPlayer.getLastHitX()+1,m_CurrentPlayer.getLastHitY());
+										playerSelectedTarget(m_CurrentPlayer.getLastHitX()+1,m_CurrentPlayer.getLastHitY());
 										if(getOpponentPlayer().checkHit(m_CurrentPlayer.getLastHitX()+1,m_CurrentPlayer.getLastHitY()) == "MISS"){
 											m_CurrentPlayer.setDirectionsShot(i, 1);
 											m_CurrentPlayer.setLastHitX(m_CurrentPlayer.getOriginHitX());
@@ -328,7 +330,7 @@ public class Game
 									case 3: // West
 										m_CurrentPlayer.incNumOfSelTargets();
 										shots++;											
-										PlayerSelectedTarget(m_CurrentPlayer.getLastHitX()-1,m_CurrentPlayer.getLastHitY());
+										playerSelectedTarget(m_CurrentPlayer.getLastHitX()-1,m_CurrentPlayer.getLastHitY());
 										if(getOpponentPlayer().checkHit(m_CurrentPlayer.getLastHitX()-1,m_CurrentPlayer.getLastHitY()) == "MISS"){
 											m_CurrentPlayer.setDirectionsShot(i, 1);
 											m_CurrentPlayer.setLastHitX(m_CurrentPlayer.getOriginHitX());
@@ -360,7 +362,7 @@ public class Game
 						else{
 							System.out.println("IN ELSE");
 							m_CurrentPlayer.incNumOfSelTargets();
-							PlayerSelectedTarget(rand.nextInt(15) + 1,rand.nextInt(17)+1);
+							playerSelectedTarget(rand.nextInt(15) + 1,rand.nextInt(17)+1);
 							shots++;
 							} 
 					}
@@ -378,7 +380,7 @@ public class Game
 										 
 
 	}
-	public void PlayerSelectedTarget(int x,int y)
+	public void playerSelectedTarget(int x,int y)
 	{
 		m_TargetLoc[m_CurrentPlayer.getNumOfSelectedTargets()-1] = new Location(x,y);
 		checkIfHit();
@@ -439,6 +441,8 @@ public class Game
 						m_GameWindow.updateActionConsole(m_CurrentPlayer.getName() + " Sunk " + getOpponentPlayer().getName() + "'s " + result);
 				break;
 		}
+        if(m_IsMultiplayer)
+            //GameClient_.SendTarget(new Location(x,y));
 		if(getOpponentPlayer().getShipsLeft() == 0)
 		{
             gameOver();
