@@ -26,6 +26,7 @@ public class Game
     private static Game m_CurrentGame;
     private boolean m_IsMultiplayer;
     private GameClient_ m_Client;
+    private Thread m_Client_T;
 	
 	Game()
 	{
@@ -79,7 +80,13 @@ public class Game
 	}
 	public void startMultiplayerGame()
 	{
+        
+        System.out.println("here");
         m_Client = new GameClient_(this);
+        m_Client_T = new Thread(m_Client);
+        
+        m_Client_T.start();
+        System.out.println("here");
         m_CurrentPlayer = m_Players[0];
         getOpponentPlayer().enableBoard();
 		m_GameWindow = new GameWindow(m_CurrentGame, m_Assets);

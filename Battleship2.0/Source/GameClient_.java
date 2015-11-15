@@ -106,6 +106,7 @@ public class GameClient_ implements Runnable{
 		try{
 			
 			//looks for the server with InetAddress and port.
+            System.out.println("Trying to connect");
 			socket=new Socket(localHost,port);
 			
 			//connect iostreams
