@@ -98,7 +98,7 @@ public class Game
         {
             System.out.println("there");
             m_SetUpBoard_W = new SetUpBoardWindow(m_Players[1], m_Assets);
-        }else if(m_Players.length > 2 && m_Players[2].isHuman() && !m_Players[2].allShipsSet())
+        }else if(m_Players.length > 2 && m_Players[2].isHuman() && !m_Players[2].allShipsSet() && !m_IsMultiplayer)
         {
             System.out.println("there");
             m_SetUpBoard_W = new SetUpBoardWindow(m_Players[2], m_Assets);
@@ -196,7 +196,7 @@ public class Game
 	private void fillPlayers()
 	{
         int count = 0;
-        for(int i = 0; i < 3; i++)
+        for(int i = 0; i < 2; i++)
         {
             if(m_Slots[i].getisActive().isSelected())count++;
         }

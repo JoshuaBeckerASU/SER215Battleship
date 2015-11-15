@@ -165,10 +165,13 @@ public class MultiPlayerMenuWindow
                     m_Server_T = new Thread(m_Server);
                     m_Server_T.start();
                     
+                    System.out.println("HERE");
                     m_LSlots = new LobbySlot[2];
                     m_LSlots[0] = new LobbySlot(1,m_Assets);
                     m_LSlots[1] = new LobbySlot(2,m_Assets);
                     m_Game = new Game(-1, m_LSlots, m_Assets);
+                    
+                    m_Game.setUpGame(m_Game);
                     
 					break;
                 case "JoinGame": m_OldWindow_F.dispose();
