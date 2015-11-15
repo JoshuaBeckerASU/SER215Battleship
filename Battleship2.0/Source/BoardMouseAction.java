@@ -78,12 +78,12 @@ public class BoardMouseAction extends MouseAdapter
                 if(m_Game.getCurrentPlayer().getNumOfSelectedTargets() == 4)
                 {
                     m_Game.getCurrentPlayer().incNumOfSelTargets();
-                    m_Game.PlayerSelectedTarget(m_x,m_y);
+                    m_Game.playerSelectedTarget(m_x,m_y);
                     m_Game.nextTurn();
                 }else
                 {
                     m_Game.getCurrentPlayer().incNumOfSelTargets();
-                    m_Game.PlayerSelectedTarget(m_x,m_y);
+                    m_Game.playerSelectedTarget(m_x,m_y);
                 }
             }
 		}

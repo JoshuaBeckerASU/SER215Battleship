@@ -44,7 +44,6 @@ public class GameClient implements Runnable{
 
 		System.out.println("Conecting to Server...");
 		connectToServer();
-		
 	}
 
 	public void run(){

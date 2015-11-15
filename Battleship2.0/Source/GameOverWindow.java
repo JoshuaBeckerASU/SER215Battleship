@@ -134,7 +134,7 @@ public class GameOverWindow
 			String command = event.getActionCommand();
 			switch(command)
 			{
-				case "BackToMenu": MenuWindow menu = new MenuWindow(m_Assets);//loading screen...
+				case "BackToMenu": MenuWindow menu = new MenuWindow(m_Assets, new JFrame("domnb"));//loading screen...
                                    m_OldWindow.dispose(); m_GameOverFrame.dispose();
 					break;
 				case "StartGame":

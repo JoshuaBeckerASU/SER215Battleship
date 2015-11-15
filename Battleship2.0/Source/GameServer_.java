@@ -11,7 +11,7 @@ import java.util.*;
 //dont need threading since server will also act as a client
 
 
-public class GameServer_{
+public class GameServer_ implements Runnable{
 	//creates the server socket
 	private ServerSocket serverSocket;
 
@@ -25,6 +25,11 @@ public class GameServer_{
 
 	public GameServer_(String ownerName){
 
+
+		
+	}
+    public void run()
+    {
 		try{
 			//attach serversocket to a port
 			serverSocket=new ServerSocket(port);
@@ -70,9 +75,7 @@ public class GameServer_{
 		}catch(IOException io){
 			System.err.println(io);
 		}
-		
-	}
-
+    }
 	class ChatSession implements Runnable{
 
 		private Socket s_player1,s_player2;

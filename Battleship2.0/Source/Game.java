@@ -25,6 +25,7 @@ public class Game
     private WaitingScreenWindow m_WaitingScreen_W;
     private static Game m_CurrentGame;
     private boolean m_IsMultiplayer;
+    private GameClient_ m_Client;
 	
 	Game()
 	{
@@ -76,6 +77,13 @@ public class Game
         getOpponentPlayer().enableBoard();
 		m_GameWindow = new GameWindow(m_CurrentGame, m_Assets);
 	}
+	public void startMultiplayerGame()
+	{
+        m_Client = new GameClient_(this);
+        m_CurrentPlayer = m_Players[0];
+        getOpponentPlayer().enableBoard();
+		m_GameWindow = new GameWindow(m_CurrentGame, m_Assets);
+	}
     public boolean isMultiplayer()
     {
         return m_IsMultiplayer;
@@ -96,7 +104,10 @@ public class Game
             m_SetUpBoard_W = new SetUpBoardWindow(m_Players[2], m_Assets);
         }else
         {
-            startGame();
+            if(!m_IsMultiplayer)
+                startGame();
+            else
+                startMultiplayerGame();
         }
     }
 	/**getNumOfPlys

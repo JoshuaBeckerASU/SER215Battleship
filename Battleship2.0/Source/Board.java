@@ -14,7 +14,7 @@ import java.awt.image.*;
 import java.io.*;
 import java.util.*;
 
-public class Board
+public class Board implements Serializable
 {	
 	private JLabel  m_GameBoardGrid_L[][], m_GameBoard_Y_P, m_GameBoard_X_P, m_GameBoardTargets_P;
 	private JPanel m_GameBoards_P;

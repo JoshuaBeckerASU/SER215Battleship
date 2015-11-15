@@ -29,6 +29,10 @@ public class MultiPlayerMenuWindow
     private Game m_Game;
 	private LoadAssets m_Assets;
     private LobbySlot [] m_LSlots;
+    private Thread m_Client_T;
+    private Thread m_Server_T;
+    private GameServer_ m_Server;
+    private GameClient_ m_Client;
     //private GameClient m_Client;
 	
     public MultiPlayerMenuWindow(JFrame oldWindow, LoadAssets assets)// constructer
@@ -157,11 +161,22 @@ public class MultiPlayerMenuWindow
 			switch(command)
 			{
 				case "HostGame": m_OldWindow_F.dispose();
-                    System.out.println("hello");
-                    new WaitingScreenWindow();
+                    m_Server = new GameServer_("Josh");
+                    m_Server_T = new Thread(m_Server);
+                    m_Server_T.start();
+                    
+                    m_LSlots = new LobbySlot[2];
+                    m_LSlots[0] = new LobbySlot(1,m_Assets);
+                    m_LSlots[1] = new LobbySlot(2,m_Assets);
+                    m_Game = new Game(-1, m_LSlots, m_Assets);
+                    
 					break;
                 case "JoinGame": m_OldWindow_F.dispose();
-                            //m_Client = new Client();
+                        m_LSlots = new LobbySlot[2];
+                        m_LSlots[0] = new LobbySlot(1,m_Assets);
+                        m_LSlots[1] = new LobbySlot(2,m_Assets);
+                        m_Game = new Game(-1, m_LSlots, m_Assets);
+                        
                     break;
 				case "BackToMainMenu": m_OldWindow_F.setVisible(true); m_MultiPlayerMenu_F.dispose();
 					break;
