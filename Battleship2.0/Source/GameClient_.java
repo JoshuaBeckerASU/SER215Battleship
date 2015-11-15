@@ -23,7 +23,7 @@ public class GameClient_ implements Runnable{
 	private Socket socket;
 
 	//this is the InetAddress address that represents my computer
-	private String localHost="192.168.0.7";
+	private String localHost="209.147.144.26";
 
 	//The port that the server is on
 	private int port=8000;
