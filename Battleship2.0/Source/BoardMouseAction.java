@@ -74,7 +74,6 @@ public class BoardMouseAction extends MouseAdapter
 		{
             if(((JLabel) m_GameBoardTargets_L[m_x].getComponent(m_y)).getText().compareTo("") == 0)
             {
-                ((JLabel) m_GameBoardTargets_L[m_x].getComponent(m_y)).setText("USED");
                 if(m_Game.getCurrentPlayer().getNumOfSelectedTargets() == 4)
                 {
                     m_Game.getCurrentPlayer().incNumOfSelTargets();

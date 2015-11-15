@@ -209,6 +209,10 @@ public class Player
 	{
 		m_NumOfSelectedTargets++;
 	}
+    public void decNumOfSelTargets()
+    {
+        m_NumOfSelectedTargets--;
+    }
 	public void resetShots()
 	{
 		m_NumOfSelectedTargets = 0;
@@ -328,19 +332,25 @@ public class Player
 	public String checkHit(int x, int y)
 	{
 		String loc = m_Board.getTakenLoc()[x][y];
+        System.out.println("board check: " + m_Board.getTakenLoc()[x][y]);
 		String message = "MISS";
 		if(loc.compareTo("NOSHIP") != 0)
 		{
-			getShip(loc).decLives();
-			if(getShip(loc).getLives() <= 0)
+            if(loc.compareTo("USED") == 0)
+            {
+                message = "USED";
+            }else if(getShip(loc).getLives() <= 0)
 			{
+                getShip(loc).decLives();
 				decShipsLeft();
 				message = getShip(loc).getName();
 			}else
 			{
+                getShip(loc).decLives();
 				message = "HIT";
 			}
 		}
+        m_Board.getTakenLoc()[x][y] = "USED";
 		return message;
 	}
 	public boolean checkHit(int x, int y, boolean tmp)

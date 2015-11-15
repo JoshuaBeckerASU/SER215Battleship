@@ -285,12 +285,12 @@ public class Game
 						if(m_CurrentPlayer.getNumOfSelectedTargets() == 4)
 						{
 							m_CurrentPlayer.incNumOfSelTargets();
-							playerSelectedTarget(rand.nextInt(15) + 1,rand.nextInt(17)+1);
+							playerSelectedTarget(rand.nextInt(15),rand.nextInt(18));
 							nextTurn();
 						}else
 						{
 							m_CurrentPlayer.incNumOfSelTargets();
-							playerSelectedTarget(rand.nextInt(15) + 1,rand.nextInt(17)+1);
+							playerSelectedTarget(rand.nextInt(15),rand.nextInt(18));
 						}
 					}break;
 					
@@ -420,7 +420,6 @@ public class Game
 						}else
 						{
 							tmp.setIcon(m_Assets.getImage("HitMarker"));
-                            tmp.setText("HIT");
 							//m_CurrentPlayer.setEnemyWasHit(true); // Enemy was Hit on last turn. 
 							if(m_CurrentPlayer.getOriginHitX() == -1 && m_CurrentPlayer.getOriginHitY() == -1){ // Unnecessary to check both; but for the sake of testing...
 								m_CurrentPlayer.setOriginHitX(x);
@@ -430,11 +429,10 @@ public class Game
 							}
 							m_CurrentPlayer.setLastHitX(x);
 							m_CurrentPlayer.setLastHitY(y);
-							System.out.println("Last Hits Were: " + x + y);
+							System.out.println("Hit at " + x +", "+ y);
 			
 						}
                         m_GameWindow.decFleetHealth(m_CurrentPlayerIndex == 0);
-                        tmp.setText("HIT");
 						m_GameWindow.updateActionConsole("HIT On Location x = " + x + " y = " + y+ "\n\n"+ (5 - m_CurrentPlayer.getNumOfSelectedTargets()) + " Shots Left\n");
 					break;
 					
@@ -445,21 +443,28 @@ public class Game
 						}else
 						{
 							tmp.setIcon(m_Assets.getImage("Target"));
-                            tmp.setText("MISS");
 							System.out.println("Miss at " + x + ", " + y);
 						}
-                        tmp.setText("MISS");
 						m_GameWindow.updateActionConsole("MISS On Location x = " + x + " y = " + y +"\n\n"+ (5 - m_CurrentPlayer.getNumOfSelectedTargets()) + " Shots Left\n");
 					break;
+            case "USED": getCurrentPlayer().decNumOfSelTargets();
+                        System.out.println("used");
+                    break;
 			default: //Ship is Sunk
-                        BoardMouseAction.setIcon(m_Assets.getImage("HitMarker"));
-                        tmp.setText("HIT");
+						if(m_CurrentPlayer.isHuman())
+						{
+							BoardMouseAction.setIcon(m_Assets.getImage("HitMarker"));
+						}else
+						{
+							tmp.setIcon(m_Assets.getImage("HitMarker"));
+							System.out.println("Sunk at " + x + ", " + y);
+						}
 						getOpponentPlayer().showShip(result);
                         m_GameWindow.decFleetHealth(m_CurrentPlayerIndex == 0);
 						m_GameWindow.updateActionConsole(m_CurrentPlayer.getName() + " Sunk " + getOpponentPlayer().getName() + "'s " + result);
 				break;
 		}
-        if(m_IsMultiplayer)
+       // if(m_IsMultiplayer)
             //GameClient_.SendTarget(new Location(x,y));
 		if(getOpponentPlayer().getShipsLeft() == 0)
 		{
