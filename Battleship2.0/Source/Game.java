@@ -6,6 +6,7 @@ Contributors:
 ***********************/
 import javax.swing.*;
 import java.util.*;
+import java.io.*;
 
 
 public class Game
@@ -40,6 +41,7 @@ public class Game
         {
             m_difficulty = 1;
             m_IsMultiplayer = true;
+            m_Client = new GameClient_();
         }else
         {
             m_difficulty = difficulty;
@@ -49,7 +51,6 @@ public class Game
 		m_NumOfGames = 0;
 		m_TargetLoc = new Location[5];
         m_CurrentGame = this;
-
 	}
     public void setBoardObject(Board board)
     {
@@ -80,14 +81,9 @@ public class Game
 	}
 	public void startMultiplayerGame()
 	{
-        
-        System.out.println("here");
-        m_Client = new GameClient_(this);
-        m_Client_T = new Thread(m_Client);
-        
-        m_Client_T.start();
-        System.out.println("here");
+        System.out.println("StartMultiPlayerGame");
         m_CurrentPlayer = m_Players[0];
+        m_CurrentPlayer.disableBoard();
         getOpponentPlayer().enableBoard();
 		m_GameWindow = new GameWindow(m_CurrentGame, m_Assets);
 	}
@@ -101,6 +97,25 @@ public class Game
         {
             System.out.println("here");
             m_SetUpBoard_W = new SetUpBoardWindow(m_Players[0], m_Assets);
+            if(m_IsMultiplayer)
+            {
+                try
+                {
+                    m_Client.getOutputStream().writeObject(m_Players[0].getBoardObject());
+                    WaitingScreenWindow WS = new WaitingScreenWindow();
+                    m_Players[2].setBoardObject((Board) m_Client.getInputStream().readObject());
+                    WS.dispose();
+                }
+                catch(IOException e)
+                {
+                    System.out.println("IOException in setUpBoards");
+                    System.exit(1);
+                }catch(ClassNotFoundException e)
+                {
+                    System.out.println("ClassNotFoundException in setUpBoards");
+                    System.exit(1);
+                }
+            }
         }else if(m_Players.length > 1 && m_Players[1].isHuman() && !m_Players[1].allShipsSet() && !m_IsMultiplayer)
         {
             System.out.println("there");
@@ -246,27 +261,60 @@ public class Game
 	}
 	public void nextTurn()
 	{
-        m_CurrentPlayer.enableBoard();
-        getOpponentPlayer().disableBoard();
         //getOpponentPlayer().setExitedIcon(m_TargetLoc[4].x(),m_TargetLoc[4].y());
-        
-        if(m_CurrentPlayerIndex == m_Players.length -1)
+        if(!m_IsMultiplayer)
         {
-            m_CurrentPlayer = m_Players[0];
-            m_CurrentPlayerIndex = 0;
+            m_CurrentPlayer.enableBoard();
+            getOpponentPlayer().disableBoard();
+            if(m_CurrentPlayerIndex == m_Players.length -1)
+            {
+                m_CurrentPlayer = m_Players[0];
+                m_CurrentPlayerIndex = 0;
+            }else
+            {
+                m_CurrentPlayerIndex++;
+                m_CurrentPlayer = m_Players[m_CurrentPlayerIndex];
+            }
+            
+            if(!m_CurrentPlayer.isHuman())
+            {
+                m_CurrentPlayer.resetShots();
+                takeAITurn();
+            }else
+            {
+                takeHumanTurn();
+            }
         }else
         {
-            m_CurrentPlayerIndex++;
-            m_CurrentPlayer = m_Players[m_CurrentPlayerIndex];
-        }
-        
-        if(!m_CurrentPlayer.isHuman())
-        {
-            m_CurrentPlayer.resetShots();
-            takeAITurn();
-        }else
-        {
-            takeHumanTurn();
+            try
+            {
+                Integer turn = (Integer) m_Client.getInputStream().readObject();
+                
+                if(turn == 1)
+                {
+                    m_CurrentPlayer = m_Players[0];
+                    m_CurrentPlayerIndex = 0;
+                }else
+                {
+                    m_CurrentPlayerIndex++;
+                    m_CurrentPlayer = m_Players[m_CurrentPlayerIndex];
+                    
+                    for(int i = 0; i < 5; i++)
+                    {
+                        Location hitLoc = (Location) m_Client.getInputStream().readObject();
+                        m_CurrentPlayer.incNumOfSelTargets();
+                        playerSelectedTarget(hitLoc.x(), hitLoc.y());
+                    }
+                }
+            }catch(IOException e)
+            {
+                System.out.println("IOException in taketurn");
+                System.exit(1);
+            }catch(ClassNotFoundException e)
+            {
+                System.out.println("ClassNotFoundException in taketurn");
+                System.exit(1);
+            }
         }
 	}
     /*public void takeAITurn()
@@ -461,6 +509,17 @@ public class Game
 					break;
         }
         getOpponentPlayer().getStringBoard()[x][y] = "MARKED";
+        if(m_IsMultiplayer)
+        {
+            try
+            {
+                m_Client.getOutputStream().writeObject(new Location(x,y));
+            }catch(IOException e)
+            {
+                System.out.println("IOException in playerSelectedTarget");
+                System.exit(1);
+            }
+        }
 	}
 	
     public void gameOver()
