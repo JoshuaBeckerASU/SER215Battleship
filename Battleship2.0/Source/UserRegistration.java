@@ -20,6 +20,12 @@ public class UserRegistration
    private Connection conn = null;
    private Statement stmt = null, stmtInsert = null;
    
+   public static void main(String[] args)       //main is for testing purposes only
+   {
+      UserRegistration userReg = new UserRegistration("David", "j");
+      userReg.userReg();
+   }
+   
    public UserRegistration(String user, String pass)
    {
       userName = user;
@@ -49,7 +55,7 @@ public class UserRegistration
          catch(Exception e)
          {
             resultCode = 2;
-            System.out.println(failedConn);
+            System.out.println("You fail");
             return resultCode;
          }
          
@@ -131,7 +137,7 @@ public class UserRegistration
          catch(Exception e)
          {
             resultCode = 2;
-            System.out.println(failedConn);
+            System.out.println("You fail");
             return resultCode;
          }
          
@@ -177,7 +183,7 @@ public class UserRegistration
       catch(SQLException se)
       {
          se.printStackTrace();
-         System.out.println(failedConn);
+         System.out.println("Not Connected");
          resultCode = 2;
          return resultCode;
       }

@@ -25,6 +25,7 @@ public class UserLogin extends JFrame
    private String m_UserName_S, m_Password_S, m_ConfirmPass_S, m_Result_S;
    private FlowLayout m_FrameLayout = new FlowLayout(), m_PanelLayout1 = new FlowLayout(), m_PanelLayout2 = new FlowLayout();
    private GridLayout m_PanelLayoutNew1 = new GridLayout(), m_PanelLayoutNew2 = new GridLayout();
+   private Thread m_loadAssets;
 
    public static void main(String[] args)
    {
@@ -33,6 +34,16 @@ public class UserLogin extends JFrame
    
    public UserLogin()
    {
+      createComponents();
+      buildComponentsLog();
+      addElementsLog();
+      addActionListeners();
+      m_UserLoginFrame.setVisible(true);
+   }
+   
+   public UserLogin(Thread loadAssets)
+   {
+      m_loadAssets = loadAssets;
       createComponents();
       buildComponentsLog();
       addElementsLog();
@@ -261,6 +272,7 @@ public class UserLogin extends JFrame
          {
             //LoadAssets assets = new LoadAssets();
             //MenuWindow menu = new MenuWindow(assets);
+            m_loadAssets.start();
             System.out.println("Game login/registration is successful.");
          }
          
