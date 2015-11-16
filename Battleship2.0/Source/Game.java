@@ -248,7 +248,7 @@ public class Game
 	{
         m_CurrentPlayer.enableBoard();
         getOpponentPlayer().disableBoard();
-        getOpponentPlayer().setExitedIcon(m_TargetLoc[4].x(),m_TargetLoc[4].y());
+        //getOpponentPlayer().setExitedIcon(m_TargetLoc[4].x(),m_TargetLoc[4].y());
         
         if(m_CurrentPlayerIndex == m_Players.length -1)
         {
@@ -269,7 +269,19 @@ public class Game
             takeHumanTurn();
         }
 	}
-
+    /*public void takeAITurn()
+    {
+        m_GameWindow.resetActionConsole();
+        Random rand = new Random();
+		while(m_CurrentPlayer.getNumOfSelectedTargets() < 5)
+		{
+            int x = rand.nextInt(15);
+            int y = rand.nextInt(18); 
+			m_CurrentPlayer.incNumOfSelTargets();
+		    playerSelectedTarget(x,y);
+		}
+        nextTurn();		
+    }*/
 	private void takeAITurn() // Three difficulty levels: 0: Random, 1: Basic Logic, 2: 30% chance of direct hit. (3rd not implemented yet).
 	{
 		Random rand = new Random();
@@ -280,19 +292,15 @@ public class Game
 				
 				// EASY DIFFICULTY
 				case 0: 
-					for(int i = 0; i < 5; i++)
+					while(m_CurrentPlayer.getNumOfSelectedTargets() < 5)
 					{
-						if(m_CurrentPlayer.getNumOfSelectedTargets() == 4)
-						{
-							m_CurrentPlayer.incNumOfSelTargets();
-							playerSelectedTarget(rand.nextInt(15),rand.nextInt(18));
-							nextTurn();
-						}else
-						{
-							m_CurrentPlayer.incNumOfSelTargets();
-							playerSelectedTarget(rand.nextInt(15),rand.nextInt(18));
-						}
-					}break;
+                        int x = rand.nextInt(15);
+                        int y = rand.nextInt(18);
+						m_CurrentPlayer.incNumOfSelTargets();
+					    playerSelectedTarget(x,y);
+					}
+                    nextTurn();
+                    break;
 					
 				// MEDIUM DIFFICULTY	
 				case 1: 
@@ -313,7 +321,7 @@ public class Game
 										m_CurrentPlayer.incNumOfSelTargets();
 										shots++;
 										playerSelectedTarget(m_CurrentPlayer.getLastHitX(),m_CurrentPlayer.getLastHitY()+1);
-										if(getOpponentPlayer().checkHit(m_CurrentPlayer.getLastHitX(),m_CurrentPlayer.getLastHitY()+1) == "MISS"){
+										if(getOpponentPlayer().getStringBoard()[m_CurrentPlayer.getLastHitX()][m_CurrentPlayer.getLastHitY()+1] == "NOSHIP"){
 											m_CurrentPlayer.setDirectionsShot(i, 1);
 											m_CurrentPlayer.setLastHitX(m_CurrentPlayer.getOriginHitX());
 											m_CurrentPlayer.setLastHitY(m_CurrentPlayer.getOriginHitY());
@@ -325,7 +333,7 @@ public class Game
 										m_CurrentPlayer.incNumOfSelTargets();
 										shots++;
 										playerSelectedTarget(m_CurrentPlayer.getLastHitX(),m_CurrentPlayer.getLastHitY()-1);
-										if(getOpponentPlayer().checkHit(m_CurrentPlayer.getLastHitX(),m_CurrentPlayer.getLastHitY()-1) == "MISS"){
+										if(getOpponentPlayer().getStringBoard()[m_CurrentPlayer.getLastHitX()][m_CurrentPlayer.getLastHitY()+1] == "NOSHIP"){
 											m_CurrentPlayer.setDirectionsShot(i, 1);
 											m_CurrentPlayer.setLastHitX(m_CurrentPlayer.getOriginHitX());
 											m_CurrentPlayer.setLastHitY(m_CurrentPlayer.getOriginHitY());
@@ -337,7 +345,7 @@ public class Game
 										m_CurrentPlayer.incNumOfSelTargets();
 										shots++;
 										playerSelectedTarget(m_CurrentPlayer.getLastHitX()+1,m_CurrentPlayer.getLastHitY());
-										if(getOpponentPlayer().checkHit(m_CurrentPlayer.getLastHitX()+1,m_CurrentPlayer.getLastHitY()) == "MISS"){
+										if(getOpponentPlayer().getStringBoard()[m_CurrentPlayer.getLastHitX()][m_CurrentPlayer.getLastHitY()+1] == "NOSHIP"){
 											m_CurrentPlayer.setDirectionsShot(i, 1);
 											m_CurrentPlayer.setLastHitX(m_CurrentPlayer.getOriginHitX());
 											m_CurrentPlayer.setLastHitY(m_CurrentPlayer.getOriginHitY());
@@ -349,7 +357,7 @@ public class Game
 										m_CurrentPlayer.incNumOfSelTargets();
 										shots++;											
 										playerSelectedTarget(m_CurrentPlayer.getLastHitX()-1,m_CurrentPlayer.getLastHitY());
-										if(getOpponentPlayer().checkHit(m_CurrentPlayer.getLastHitX()-1,m_CurrentPlayer.getLastHitY()) == "MISS"){
+										if(getOpponentPlayer().getStringBoard()[m_CurrentPlayer.getLastHitX()][m_CurrentPlayer.getLastHitY()+1] == "NOSHIP"){
 											m_CurrentPlayer.setDirectionsShot(i, 1);
 											m_CurrentPlayer.setLastHitX(m_CurrentPlayer.getOriginHitX());
 											m_CurrentPlayer.setLastHitY(m_CurrentPlayer.getOriginHitY());	
@@ -388,7 +396,7 @@ public class Game
 					nextTurn();		
 					
 			}// End Difficulty Switch block		
-	}	
+	}
 	private void takeHumanTurn()
 	{
 		m_CurrentPlayer.resetShots();
@@ -401,42 +409,16 @@ public class Game
 	public void playerSelectedTarget(int x,int y)
 	{
 		m_TargetLoc[m_CurrentPlayer.getNumOfSelectedTargets()-1] = new Location(x,y);
-		checkIfHit();
-	}
-	
-	public void checkIfHit()
-	{
-		int index = m_CurrentPlayer.getNumOfSelectedTargets()-1;
-		int x = m_TargetLoc[index].x();
-		int y = m_TargetLoc[index].y();
-		String result = getOpponentPlayer().checkHit(x,y);
+        System.out.println(getOpponentPlayer().getStringBoard()[x][y]);
         JLabel tmp = ((JLabel) getOpponentPlayer().getTargetBoard()[x].getComponent(y));
+        String result = getOpponentPlayer().getStringBoard()[x][y];
 		switch(result)
-		{
-			case "HIT":
-						if(m_CurrentPlayer.isHuman())
-						{
-							BoardMouseAction.setIcon(m_Assets.getImage("HitMarker"));
-						}else
-						{
-							tmp.setIcon(m_Assets.getImage("HitMarker"));
-							//m_CurrentPlayer.setEnemyWasHit(true); // Enemy was Hit on last turn. 
-							if(m_CurrentPlayer.getOriginHitX() == -1 && m_CurrentPlayer.getOriginHitY() == -1){ // Unnecessary to check both; but for the sake of testing...
-								m_CurrentPlayer.setOriginHitX(x);
-								m_CurrentPlayer.setOriginHitY(y);
-								m_CurrentPlayer.setEnemyWasHit(true);
-								System.out.println("HERE IN AWT");
-							}
-							m_CurrentPlayer.setLastHitX(x);
-							m_CurrentPlayer.setLastHitY(y);
-							System.out.println("Hit at " + x +", "+ y);
-			
-						}
-                        m_GameWindow.decFleetHealth(m_CurrentPlayerIndex == 0);
-						m_GameWindow.updateActionConsole("HIT On Location x = " + x + " y = " + y+ "\n\n"+ (5 - m_CurrentPlayer.getNumOfSelectedTargets()) + " Shots Left\n");
-					break;
-					
-			case "MISS":
+        {
+            case "MARKED": getCurrentPlayer().decNumOfSelTargets();
+                        break;
+            
+            case "NOSHIP": 
+                        System.out.println("here");
 						if(m_CurrentPlayer.isHuman())
 						{
 							BoardMouseAction.setIcon(m_Assets.getImage("Target"));
@@ -446,31 +428,41 @@ public class Game
 							System.out.println("Miss at " + x + ", " + y);
 						}
 						m_GameWindow.updateActionConsole("MISS On Location x = " + x + " y = " + y +"\n\n"+ (5 - m_CurrentPlayer.getNumOfSelectedTargets()) + " Shots Left\n");
+            default:
+                        if(m_CurrentPlayer.getShip(result) != null)
+                        {
+                            getOpponentPlayer().getShip(result).decLives();
+                                if(getOpponentPlayer().getShip(result).getLives() == 0)
+                                {
+                                    getOpponentPlayer().showShip(result);
+                                    m_GameWindow.decFleetHealth(m_CurrentPlayerIndex == 0);
+                                }
+                            if(m_CurrentPlayer.isHuman())
+                            {
+                            	BoardMouseAction.setIcon(m_Assets.getImage("HitMarker"));
+                            }else
+                            {
+                            	tmp.setIcon(m_Assets.getImage("HitMarker"));
+                            	//m_CurrentPlayer.setEnemyWasHit(true); // Enemy was Hit on last turn. 
+                            	if(m_CurrentPlayer.getOriginHitX() == -1 && m_CurrentPlayer.getOriginHitY() == -1){ // Unnecessary to check both; but for the sake of testing...
+                            		m_CurrentPlayer.setOriginHitX(x);
+                            		m_CurrentPlayer.setOriginHitY(y);
+                            		m_CurrentPlayer.setEnemyWasHit(true);
+                            		System.out.println("HERE IN AWT");
+                            	}
+                            	m_CurrentPlayer.setLastHitX(x);
+                            	m_CurrentPlayer.setLastHitY(y);
+                            	System.out.println("Hit at " + x +", "+ y);
+                            
+                            }
+                            m_GameWindow.decFleetHealth(m_CurrentPlayerIndex == 0);
+                            m_GameWindow.updateActionConsole("HIT On Location x = " + x + " y = " + y+ "\n\n"+ (5 - m_CurrentPlayer.getNumOfSelectedTargets()) + " Shots Left\n");
+                        }
 					break;
-            case "USED": getCurrentPlayer().decNumOfSelTargets();
-                        System.out.println("used");
-                    break;
-			default: //Ship is Sunk
-						if(m_CurrentPlayer.isHuman())
-						{
-							BoardMouseAction.setIcon(m_Assets.getImage("HitMarker"));
-						}else
-						{
-							tmp.setIcon(m_Assets.getImage("HitMarker"));
-							System.out.println("Sunk at " + x + ", " + y);
-						}
-						getOpponentPlayer().showShip(result);
-                        m_GameWindow.decFleetHealth(m_CurrentPlayerIndex == 0);
-						m_GameWindow.updateActionConsole(m_CurrentPlayer.getName() + " Sunk " + getOpponentPlayer().getName() + "'s " + result);
-				break;
-		}
-       // if(m_IsMultiplayer)
-            //GameClient_.SendTarget(new Location(x,y));
-		if(getOpponentPlayer().getShipsLeft() == 0)
-		{
-            gameOver();
-		}
+        }
+        getOpponentPlayer().getStringBoard()[x][y] = "MARKED";
 	}
+	
     public void gameOver()
     {
 		m_GameWindow.updateActionConsole("\nGAME OVER\n" + getOpponentPlayer().getName() + " Has Lost...");

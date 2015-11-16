@@ -97,7 +97,7 @@ public class SinglePlayerWindow
         
         //m_Slots_L.setSize(new Dimension(m_Assets.getImage("MenuBox").getIconWidth(),m_Assets.getImage("MenuBox").getIconHeight()));
         m_HeaderButtons_L.setMaximumSize(new Dimension(1000, 50));
-        m_Header_L.setMaximumSize(new Dimension(1000, 40));
+        //m_Header_L.setMaximumSize(new Dimension(1000, 40));
 		
 		m_SinglePlayer_F.setUndecorated(true);
         m_SinglePlayer_F.getRootPane().setWindowDecorationStyle(JRootPane.NONE);
@@ -140,7 +140,7 @@ public class SinglePlayerWindow
 	* 
 	**/
 	public void addElements()
-	{
+	{   
         m_Slots_L.add(m_Slots[0]);
         m_Slots_L.add(m_Slots[1]);
         //m_Slots_L.add(m_Slots[2]);
@@ -156,6 +156,7 @@ public class SinglePlayerWindow
         m_HeaderText_L.add(new JLabel("Type Of Player"));
         
         m_Header_L.add(m_HeaderButtons_L);
+        m_Header_L.add(new JLabel("hello"));
        // m_Header_L.add(m_HeaderText_L);
         /*m_Body_L.add(new JLabel("\n\n"));
         m_Body_L.add(m_SlotTwo);

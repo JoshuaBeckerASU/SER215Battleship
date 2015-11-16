@@ -140,7 +140,6 @@ public class GameWindow
 		m_Game_F.setUndecorated(true);
         m_Game_F.getRootPane().setWindowDecorationStyle(JRootPane.NONE);
 		m_Game_F.setSize(new Dimension(m_ScreenWidth,m_ScreenHeight));
-		if(m_CurrentGame == null)System.out.println("WHY");
 		updateActionConsole("Waiting for " + m_CurrentGame.getCurrentPlayer().getName() + " To Take Turn\n"
 						    + (5 - m_CurrentGame.getCurrentPlayer().getNumOfSelectedTargets()) + " Shots Left\n");
 	}

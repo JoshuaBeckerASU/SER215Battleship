@@ -329,10 +329,11 @@ public class Player
 	{
 		return m_Board.hasShip(x, y, ship);
 	}
+    /*
 	public String checkHit(int x, int y)
 	{
 		String loc = m_Board.getTakenLoc()[x][y];
-        System.out.println("board check: " + m_Board.getTakenLoc()[x][y]);
+        System.out.println("SHIP: " + loc);
 		String message = "MISS";
 		if(loc.compareTo("NOSHIP") != 0)
 		{
@@ -341,6 +342,7 @@ public class Player
                 message = "USED";
             }else if(getShip(loc).getLives() <= 0)
 			{
+                System.out.println("ship sunk");
                 getShip(loc).decLives();
 				decShipsLeft();
 				message = getShip(loc).getName();
@@ -352,7 +354,11 @@ public class Player
 		}
         m_Board.getTakenLoc()[x][y] = "USED";
 		return message;
-	}
+	}*/
+    public String[][] getStringBoard()
+    {
+        return m_Board.getTakenLoc();
+    }
 	public boolean checkHit(int x, int y, boolean tmp)
 	{
 		JLabel label = m_Board.getTakenLabel(x,y);

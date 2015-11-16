@@ -78,6 +78,7 @@ public class BoardMouseAction extends MouseAdapter
                 {
                     m_Game.getCurrentPlayer().incNumOfSelTargets();
                     m_Game.playerSelectedTarget(m_x,m_y);
+                    System.out.println("Last Shot");
                     m_Game.nextTurn();
                 }else
                 {
