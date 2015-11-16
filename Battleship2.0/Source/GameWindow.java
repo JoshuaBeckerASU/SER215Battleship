@@ -21,8 +21,8 @@ public class GameWindow implements Serializable
 	private int m_ScreenWidth, m_ScreenHeight;
 	private JButton m_Options_B, m_Exit_B;
 	private JLabel m_Background_L, m_Footer_L, m_Header_L;
-	private JTextArea m_ActionConsole_TA, m_Chat_TA;
-	private JLabel m_CurrentPlayerStats_L, m_OtherPlayerStats_L;
+	private JTextArea m_ActionConsole_TA, m_Chat_TA, m_InsertChat_TA;
+	private JLabel m_CurrentPlayerStats_L, m_OtherPlayerStats_L, m_ChatBox_L;
 	private DefaultCaret m_ActionConsolesCaret;
 	private JScrollPane m_ActionConsole_SP;
 	private JLabel m_Boards_P, m_PlayerOneStats, m_PlayerTwoStats;
@@ -60,6 +60,9 @@ public class GameWindow implements Serializable
 		
 		m_ActionConsole_TA = new JTextArea("", 1000, 20);
 		m_Chat_TA = new JTextArea("Press 't' to talk", 50, 4);
+        m_InsertChat_TA = new JTextArea("",50,1);
+        
+        m_ChatBox_L = new JLabel();
 		
 		m_ActionConsolesCaret = new DefaultCaret();
 		m_ActionConsole_SP = new JScrollPane(m_ActionConsole_TA);
@@ -96,7 +99,10 @@ public class GameWindow implements Serializable
 		layout2.setHgap(5);
 		
 		m_Boards_P.setLayout(layout2);
-
+        
+        m_ChatBox_L.setLayout(new BoxLayout(m_ChatBox_L, BoxLayout.Y_AXIS));
+        m_ChatBox_L.setMaximumSize(new Dimension(200, 120));
+        m_ChatBox_L.setMinimumSize(new Dimension(200, 120));
 		
 		m_Footer_L.setPreferredSize(new Dimension(m_ScreenWidth, 100));
 		m_Footer_L.setMaximumSize(new Dimension(m_ScreenWidth, 100));
@@ -128,6 +134,13 @@ public class GameWindow implements Serializable
 		m_Chat_TA.setAlignmentX(Component.CENTER_ALIGNMENT);
 		m_Chat_TA.setBackground(new Color(4, 9, 15));
 		m_Chat_TA.setForeground(Color.WHITE);
+        
+        m_InsertChat_TA.setPreferredSize(new Dimension(200, 20));
+        m_InsertChat_TA.setMaximumSize(new Dimension(200, 20));
+        m_InsertChat_TA.setEditable(false);
+        m_InsertChat_TA.setAlignmentX(Component.CENTER_ALIGNMENT);
+        m_InsertChat_TA.setBackground(Color.WHITE);
+        m_InsertChat_TA.setForeground(Color.BLACK);
 		
 		m_CurrentPlayerStats_L.setLayout(new BoxLayout(m_CurrentPlayerStats_L, BoxLayout.Y_AXIS));
 		m_OtherPlayerStats_L.setLayout(new BoxLayout(m_OtherPlayerStats_L, BoxLayout.Y_AXIS));
@@ -171,8 +184,11 @@ public class GameWindow implements Serializable
 		
 		m_Header_L.add(m_PlayerOneStats);
 		m_Header_L.add(m_PlayerTwoStats);
+        
+        m_ChatBox_L.add(m_Chat_TA);
+        m_ChatBox_L.add(m_InsertChat_TA);
 		
-		m_Footer_L.add(m_Chat_TA, BorderLayout.WEST);
+		m_Footer_L.add(m_ChatBox_L, BorderLayout.WEST);
 		
 		m_Background_L.add(m_Header_L, BorderLayout.NORTH);
 		//m_Background_L.add(new JLabel("\n"));
