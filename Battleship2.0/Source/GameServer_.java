@@ -150,4 +150,60 @@ public class GameServer_ extends JFrame
             return m_Board;
         }
     }
+
+    private class ChatService implements Runnable{
+        private ObjectInputStream fromClient1;
+        private ObjectOutputStream inClient1;
+        private ObjectInputStream fromClient2;
+        private ObjectOutputStream toClient2;
+
+        public ChatService(ObjectInputStream ois1,ObjectOutputStream oos1,ObjectInputStream ois2,ObjectOutputStream oos2){
+            fromClient1=ois1;
+            toClient1=oos1;
+
+            fromClient2=ois2;
+            toClient2=oos2;
+        }
+
+        public void run(){
+            MessageListener clientListener1=new MessageListener(fromClient1);
+            MessageListener clientListener2=new MessageListener(fromClient2);
+
+            Thread listener1=new Thread(clientListener1);
+            Thread listener2=new Thread(clientListener2);
+
+            while(listener1.isAlive() || listener2.isAlive()){
+                if(!(listener1.isAlive())){
+                    String message=clientListener1.getMessage();
+                    toPlayerTwo.writeObject(new String(message));
+                    listener1.start();
+                }
+                else if(!(listener2.isAlive())){
+                    String message=clientListener2.getMessage();
+                    toPlayerOne.writeObject(new String(message));
+                    listener2.start();
+                }
+        }
+
+        }
+
+        private class MessageListener implements Runnable{
+
+            private ObjectInputStream fromClient;
+            private String message;
+
+            public MessageListener(ObjectInputStream ois){
+                fromClient=ois;
+                message="";
+            }
+
+            public getMessage(){
+                return message;
+            }
+
+            public void run(){
+                message=(String)fromClient.readObject();
+            }
+        }
+    }
 }
