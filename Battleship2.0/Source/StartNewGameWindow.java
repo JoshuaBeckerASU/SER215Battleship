@@ -15,8 +15,9 @@ import javax.imageio.*;
 import java.awt.image.*;
 import java.io.*;
 
-public class StartNewGameWindow
+public class StartNewGameWindow implements Serializable
 {
+    
 	private JFrame m_StartNewGameFrame, m_GameSetUpFrame;
 	private int m_ScreenWidth, m_ScreenHeight;
 	private JButton m_BackToMenu_B, m_StartGame_B;
@@ -149,9 +150,9 @@ public class StartNewGameWindow
 					break;
 				case "StartGame":
 						/*Loading Screen...*/
-						Game game = new Game(m_AIDiff_CB.getSelectedIndex(), m_NumOfPly_CB.getSelectedIndex(), m_Assets);
-						SetUpBoardWindow newGame = new SetUpBoardWindow(game, m_Assets, m_StartNewGameFrame);
-						m_GameSetUpFrame.dispose();
+						//Game game = new Game(m_AIDiff_CB.getSelectedIndex(), m_NumOfPly_CB.getSelectedIndex(), m_Assets);
+						//SetUpBoardWindow newGame = new SetUpBoardWindow(game, m_Assets, m_StartNewGameFrame);
+						//m_GameSetUpFrame.dispose();
 				// create default error message
 			}
 		}  

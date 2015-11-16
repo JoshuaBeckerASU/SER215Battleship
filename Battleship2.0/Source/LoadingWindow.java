@@ -16,7 +16,7 @@ import java.awt.image.*;
 import java.io.*;
 import java.awt.Color.*;
 
-public class LoadingWindow
+public class LoadingWindow implements Serializable
 {
 	private JFrame m_Loading_F;
 	private int m_ScreenWidth, m_ScreenHeight;

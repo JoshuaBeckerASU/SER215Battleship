@@ -15,7 +15,7 @@ import java.io.*;
 import java.net.*;
 import java.util.*;
 
-public class LoadAssets implements Runnable
+public class LoadAssets implements Runnable, Serializable
 {	
     private ImageIcon [] m_Assets;
     private ArrayList<String> m_Names;

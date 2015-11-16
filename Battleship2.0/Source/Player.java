@@ -5,8 +5,10 @@ Create On: 10/29/15
 Contributors:
 ***********************/
 import javax.swing.*;
+import java.io.*;
 
-public class Player
+
+public class Player implements Serializable
 {
 	private String m_Name;
 	private boolean m_Type;

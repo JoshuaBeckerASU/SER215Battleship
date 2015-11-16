@@ -20,7 +20,7 @@ import javax.imageio.*;
 import java.awt.image.*;
 import java.io.*;
 
-public class GameSetUpWindow
+public class GameSetUpWindow implements Serializable
 {
 	private JFrame m_GameSetUpFrame, m_MenuFrame;
 	private int m_ScreenWidth, m_ScreenHeight;

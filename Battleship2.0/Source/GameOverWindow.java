@@ -15,7 +15,7 @@ import javax.imageio.*;
 import java.awt.image.*;
 import java.io.*;
 
-public class GameOverWindow
+public class GameOverWindow implements Serializable
 {
 	private JFrame m_GameOverFrame, m_OldWindow;
 	private int m_ScreenWidth, m_ScreenHeight;

@@ -19,7 +19,7 @@ import javax.imageio.*;
 import java.awt.image.*;
 import java.io.*;
 
-public class MultiPlayerMenuWindow
+public class MultiPlayerMenuWindow implements Serializable
 {
 	private JFrame m_MultiPlayerMenu_F, m_OldWindow_F;
 	private int m_ScreenWidth, m_ScreenHeight;

@@ -20,7 +20,7 @@ import javax.imageio.*;
 import java.awt.image.*;
 import java.io.*;
 
-public class SinglePlayerWindow
+public class SinglePlayerWindow implements Serializable
 {
 	private JFrame m_SinglePlayer_F, m_OldWindow;
 	private int m_ScreenWidth, m_ScreenHeight;

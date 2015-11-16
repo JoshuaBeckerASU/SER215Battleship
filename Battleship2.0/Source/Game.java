@@ -9,7 +9,7 @@ import java.util.*;
 import java.io.*;
 
 
-public class Game
+public class Game implements Serializable
 {
     public static int MULTIPLAYERGAME = -1;
 	private Player m_Players[];
@@ -26,7 +26,7 @@ public class Game
     private WaitingScreenWindow m_WaitingScreen_W;
     private static Game m_CurrentGame;
     private boolean m_IsMultiplayer;
-    private GameClient_ m_Client;
+    public GameClient_ m_Client;
     private Thread m_Client_T;
 	
 	Game()
@@ -97,25 +97,6 @@ public class Game
         {
             System.out.println("here");
             m_SetUpBoard_W = new SetUpBoardWindow(m_Players[0], m_Assets);
-            if(m_IsMultiplayer)
-            {
-                try
-                {
-                    m_Client.getOutputStream().writeObject(m_Players[0].getBoardObject());
-                    WaitingScreenWindow WS = new WaitingScreenWindow();
-                    m_Players[2].setBoardObject((Board) m_Client.getInputStream().readObject());
-                    WS.dispose();
-                }
-                catch(IOException e)
-                {
-                    System.out.println("IOException in setUpBoards");
-                    System.exit(1);
-                }catch(ClassNotFoundException e)
-                {
-                    System.out.println("ClassNotFoundException in setUpBoards");
-                    System.exit(1);
-                }
-            }
         }else if(m_Players.length > 1 && m_Players[1].isHuman() && !m_Players[1].allShipsSet() && !m_IsMultiplayer)
         {
             System.out.println("there");
@@ -167,6 +148,10 @@ public class Game
 		}
 		return null;
 	}
+    public Player getPlayer(int index)
+    {
+        return m_Players[index];
+    }
 	
 	/**getNumOfGames
 	* gets the number of games played

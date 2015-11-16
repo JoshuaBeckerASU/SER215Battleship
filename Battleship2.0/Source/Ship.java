@@ -11,7 +11,7 @@ import javax.imageio.*;
 import java.awt.image.*;
 import java.io.*;
 
-public class Ship
+public class Ship implements Serializable
 {
 	public static final boolean Y_AXIS = true;
 	public static final boolean X_AXIS = false;

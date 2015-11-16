@@ -44,6 +44,14 @@ public class Location implements Serializable
 	{
 		return m_y;
 	}
+    public int gety()
+    {
+        return m_y;
+    }
+    public int getx()
+    {
+        return m_x;
+    }
 
 	//im using this to send messages confirming cooridates recieved. At this point mostly for testing 
 	public String getMessage(){
@@ -57,6 +65,6 @@ public class Location implements Serializable
 	@Override
 	public String toString()
 	{
-		return "Location [x = " + m_x + " y = " + m_y + "]";
+		return "Location [x = " + m_x + " y = " + m_y + "] message = " + m_message;
 	}
 }

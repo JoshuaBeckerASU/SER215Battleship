@@ -14,7 +14,7 @@ import javax.imageio.*;
 import java.awt.image.*;
 import java.io.*;
 
-public class SetUpBoardWindow
+public class SetUpBoardWindow implements Serializable
 {
 	private JFrame m_SetUpBoard_F;
 	private int m_ScreenWidth, m_ScreenHeight;
@@ -220,7 +220,9 @@ public class SetUpBoardWindow
 							m_CurrentPlayer.flipAxis(m_CurrentShip);
 							break;
 					case "ENTER":
-							m_CurrentPlayer.addToTaken(m_CurrentShip.x(),m_CurrentShip.y(),m_CurrentShip);
+                            int x = m_CurrentShip.x();
+                            int y = m_CurrentShip.y();
+							m_CurrentPlayer.addToTaken(x,y,m_CurrentShip);
 							m_CurrentShip = m_CurrentPlayer.getNextShip();
 							m_CurrentPlayer.setNextShip();
 							if(m_CurrentPlayer.allShipsSet() && !Game.getCurrentGame().isMultiplayer())
@@ -228,9 +230,55 @@ public class SetUpBoardWindow
 								// DOUBLE CHECK IF THEY ARE READY...
 								Game.getCurrentGame().setUpBoards();
 								// DELETE MEMU BUTTONS AND THINGS...
-							}else
+							}else if(m_CurrentPlayer.allShipsSet())
                             {
-                                //send message to client finnished board set up
+                                try
+                                {
+                                System.out.println("Locaion " + x + " " + y);
+                                Game.getCurrentGame().m_Client.getOutputStream().writeObject(new Location(x,y));
+                                m_CurrentPlayer = Game.getCurrentGame().getOpponentPlayer();
+                                if(Game.getCurrentGame().isMultiplayer())
+                                {
+
+                                       // WaitingScreenWindow WS = new WaitingScreenWindow();
+                                        System.out.println("Getting Ship Locations...");
+                                        for(int i = 0; i < 5; i++)
+                                        {
+                                            Location shipLoc  = ((Location) Game.getCurrentGame().m_Client.getInputStream().readObject());
+                                            System.out.println("Location: " +  shipLoc);
+                                            m_CurrentPlayer.addToTaken(shipLoc.x(),shipLoc.y(),m_CurrentPlayer.getShip(i));
+                                            m_CurrentPlayer.updateBoard(m_CurrentPlayer.getShip(i), shipLoc.x(), shipLoc.y(), "RIGHT");
+                                            m_CurrentPlayer.setNextShip();
+                                        }
+                                        Game.getCurrentGame().setUpBoards();
+                                       // WS.dispose();
+                                }
+                                }
+                                catch(IOException e)
+                                    {
+                                        System.out.println("IOException in KeyAction");
+                                        System.err.println(e);
+                                        System.exit(1);
+                                    }catch(ClassNotFoundException e)
+                                    {
+                                        System.out.println("ClassNotFoundException in setUpBoards");
+                                        System.err.println(e);
+                                        System.exit(1);
+                                    }
+                                
+                            }else
+                            {
+                                try
+                                {
+                                    System.out.println("Locaion " + x + " " + y);
+                                    Game.getCurrentGame().m_Client.getOutputStream().writeObject(new Location(x,y));
+                                }
+                                catch(IOException e)
+                                {
+                                    System.out.println("IOException in KeyAction");
+                                    System.err.println(e);
+                                    System.exit(1);
+                                }
                             }
 							break;
 				}

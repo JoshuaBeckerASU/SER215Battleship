@@ -14,7 +14,7 @@ import javax.imageio.*;
 import java.awt.image.*;
 import java.io.*;
 
-public class LoadGameWindow
+public class LoadGameWindow implements Serializable
 {
 	private JFrame m_LoadGameFrame, m_MenuFrame;
 	private int m_ScreenWidth, m_ScreenHeight;

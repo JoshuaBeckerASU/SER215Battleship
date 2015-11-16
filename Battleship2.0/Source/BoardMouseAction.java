@@ -14,7 +14,7 @@ import javax.imageio.*;
 import java.awt.image.*;
 import java.io.*;
  
-public class BoardMouseAction extends MouseAdapter
+public class BoardMouseAction extends MouseAdapter implements Serializable
 {
 	private int m_x;
 	private int m_y;

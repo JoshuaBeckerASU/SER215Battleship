@@ -15,7 +15,7 @@ import java.awt.image.*;
 import java.io.*;
 import javax.swing.text.*;
 
-public class GameWindow
+public class GameWindow implements Serializable
 {
 	private JFrame m_Game_F;
 	private int m_ScreenWidth, m_ScreenHeight;

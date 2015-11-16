@@ -9,7 +9,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.io.*;
 import javax.imageio.*;
-public class Main
+public class Main implements Serializable
 {
     public static Thread m_LoadAssetsThread;
     public static Thread m_GameThread;

@@ -15,7 +15,7 @@ import javax.imageio.*;
 import java.awt.image.*;
 import java.io.*;
 
-public class MenuWindow implements Runnable
+public class MenuWindow implements Runnable, Serializable
 {
 	private JFrame m_MenuFrame, m_OldWindow;
 	private int m_ScreenWidth, m_ScreenHeight;

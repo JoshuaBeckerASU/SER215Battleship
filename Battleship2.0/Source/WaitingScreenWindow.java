@@ -20,7 +20,7 @@ import javax.imageio.*;
 import java.awt.image.*;
 import java.io.*;
 
-public class WaitingScreenWindow
+public class WaitingScreenWindow implements Serializable
 {
 	private JFrame m_WaitingScreenFrame, m_OldWindow;
 	private int m_ScreenWidth, m_ScreenHeight;
