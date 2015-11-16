@@ -22,7 +22,7 @@ public class UserLogin extends JFrame
    private JPanel m_LabelText_ExistingUser_P, m_LabelText_ExistingPass_P, m_Buttons_Existing_P, m_LabelText_NewUser_P, m_LabelText_NewPass_P, m_LabelText_ConfirmPass_P, m_Buttons_New_P;
    private JLabel m_UserName_L, m_Password_L, m_ConfirmPass_L, m_Results_L;
    private JTextField m_UserName_T, m_Password_T, m_ConfirmPass_T;
-   private String m_UserName_S, m_Password_S, m_Result_S;
+   private String m_UserName_S, m_Password_S, m_ConfirmPass_S, m_Result_S;
    private FlowLayout m_FrameLayout = new FlowLayout(), m_PanelLayout1 = new FlowLayout(), m_PanelLayout2 = new FlowLayout();
    private GridLayout m_PanelLayoutNew1 = new GridLayout(), m_PanelLayoutNew2 = new GridLayout();
 
@@ -81,23 +81,26 @@ public class UserLogin extends JFrame
       boolean isLoggedIn = false;
       int resultCode;
       
-      UserRegistration userReg = new UserRegistration(m_UserName_S, m_Password_S);
-      
-      resultCode = userReg.userReg();
-      
-      switch(resultCode)
+      if(m_Password_S.equals(m_ConfirmPass_S))
       {
-         case 0: m_Result_S = "You have successfully registered.";
-            isLoggedIn = true;
-            break;
+         UserRegistration userReg = new UserRegistration(m_UserName_S, m_Password_S);
+      
+         resultCode = userReg.userReg();
+         
+         switch(resultCode)
+         {
+            case 0: m_Result_S = "You have successfully registered.";
+               isLoggedIn = true;
+               break;
             
-         case 1: m_Result_S = "Username already exists. Username must be unique. Registration failed.";
-            isLoggedIn = false;
-            break;
+            case 1: m_Result_S = "Username already exists. Username must be unique. Registration failed.";
+               isLoggedIn = false;
+               break;
             
-         case 2: m_Result_S = "Database connection failed. Registration failed.";
-            isLoggedIn = false;
-            break;
+            case 2: m_Result_S = "Database connection failed. Registration failed.";
+               isLoggedIn = false;
+               break;
+         }
       }
       
       return isLoggedIn;
@@ -128,8 +131,8 @@ public class UserLogin extends JFrame
       m_Results_L = new JLabel("");
       
       m_UserName_T = new JTextField(20);
-      m_Password_T = new JTextField(35);
-      m_ConfirmPass_T = new JTextField(35);
+      m_Password_T = new JTextField(20);
+      m_ConfirmPass_T = new JTextField(20);
       
       m_LabelText_ExistingUser_P = new JPanel();
       m_LabelText_ExistingPass_P = new JPanel();
@@ -140,10 +143,12 @@ public class UserLogin extends JFrame
       
       m_Buttons_New_P = new JPanel();
       
-      m_LabelText_ExistingUser_P.setLayout(m_PanelLayout1);
-      m_LabelText_ExistingPass_P.setLayout(m_PanelLayout1);
+      //m_LabelText_ExistingUser_P.setLayout(m_PanelLayout1);
+      //m_LabelText_ExistingPass_P.setLayout(m_PanelLayout1);
+      m_LabelText_ExistingUser_P.setLayout(new GridLayout(2,2));
       m_Buttons_Existing_P.setLayout(m_PanelLayout2);
       m_LabelText_NewUser_P.setLayout(new GridLayout(3,2));
+      m_PanelLayoutNew1.layoutContainer(m_LabelText_ExistingUser_P);
       m_PanelLayoutNew1.layoutContainer(m_LabelText_NewUser_P);
       //m_LabelText_NewPass_P.setLayout(m_PanelLayout1);
       //m_LabelText_ConfirmPass_P.setLayout(m_PanelLayout1);
@@ -171,8 +176,8 @@ public class UserLogin extends JFrame
    {
       m_LabelText_ExistingUser_P.add(m_UserName_L, BorderLayout.NORTH);
       m_LabelText_ExistingUser_P.add(m_UserName_T, BorderLayout.NORTH);
-      m_LabelText_ExistingPass_P.add(m_Password_L, BorderLayout.SOUTH);
-      m_LabelText_ExistingPass_P.add(m_Password_T, BorderLayout.SOUTH);
+      m_LabelText_ExistingUser_P.add(m_Password_L, BorderLayout.SOUTH);
+      m_LabelText_ExistingUser_P.add(m_Password_T, BorderLayout.SOUTH);
       m_LabelText_ExistingPass_P.add(m_Results_L);
       
       m_Buttons_Existing_P.add(m_Login);
@@ -233,13 +238,20 @@ public class UserLogin extends JFrame
 			
          switch(command)
          {
-            case "Login": isLogged = loginSuccess();
+            case "Login":
+               m_UserName_S = m_UserName_T.getText();
+               m_Password_S = m_Password_T.getText();
+               isLogged = loginSuccess();
                break;
             case "New User": UserReg();
                break;
             case "Exit": m_UserLoginFrame.dispose(); System.exit(1);
                break;
-            case "Register": isRegged = registrationSuccess();
+            case "Register":
+               m_UserName_S = m_UserName_T.getText();
+               m_Password_S = m_Password_T.getText();
+               m_ConfirmPass_S = m_ConfirmPass_T.getText();
+               isRegged = registrationSuccess();
                break;
             case "Cancel": m_UserRegFrame.dispose();
                break;
@@ -247,8 +259,9 @@ public class UserLogin extends JFrame
          
          if(isLogged == true || isRegged == true)
          {
-            LoadAssets assets = new LoadAssets();
-            MenuWindow menu = new MenuWindow(assets);
+            //LoadAssets assets = new LoadAssets();
+            //MenuWindow menu = new MenuWindow(assets);
+            System.out.println("Game login/registration is successful.");
          }
          
          else
