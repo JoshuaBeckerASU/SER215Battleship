@@ -23,7 +23,16 @@ public class GameClient_
     
             // Create a socket to connect to the server
             System.out.println("Connecting...");
-            m_Socket = new Socket("localhost", 8000);
+            try
+            {
+                m_Socket = new Socket("localhost", 8000);
+            }catch(java.net.ConnectException e)
+            {
+                System.out.println("Not able to cennect to server");
+                System.err.println(e);
+                System.exit(1);
+            }
+                
             System.out.println("Connected...");
             // Create an input stream to receive Object from the server
     

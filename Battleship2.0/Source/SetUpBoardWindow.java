@@ -27,9 +27,16 @@ public class SetUpBoardWindow implements Serializable
 	
     public SetUpBoardWindow(Player player, LoadAssets assets)// constructer
     {
-		m_CurrentPlayer = player;
+        if(Game.getCurrentGame().isMultiplayer())
+        {
+            m_CurrentPlayer = Game.getCurrentGame().getPlayer(0);
+        }
+        else
+        {
+            m_CurrentPlayer = player;
+        }
         m_CurrentPlayer.disableBoard();
-		m_CurrentShip = player.getShip(0);
+        m_CurrentShip = m_CurrentPlayer.getShip(0);
 			
 		m_Assets = assets;
 		
@@ -234,9 +241,9 @@ public class SetUpBoardWindow implements Serializable
                             {
                                 try
                                 {
-                                System.out.println("Locaion " + x + " " + y);
+                                System.out.println(m_CurrentPlayer.getName() + " set Location: " +  x +"  "+ y);
                                 Game.getCurrentGame().m_Client.getOutputStream().writeObject(new Location(x,y));
-                                m_CurrentPlayer = Game.getCurrentGame().getOpponentPlayer();
+                                m_CurrentPlayer = Game.getCurrentGame().getPlayer(1);
                                 if(Game.getCurrentGame().isMultiplayer())
                                 {
 
@@ -245,9 +252,9 @@ public class SetUpBoardWindow implements Serializable
                                         for(int i = 0; i < 5; i++)
                                         {
                                             Location shipLoc  = ((Location) Game.getCurrentGame().m_Client.getInputStream().readObject());
-                                            System.out.println("Location: " +  shipLoc);
-                                            m_CurrentPlayer.addToTaken(shipLoc.x(),shipLoc.y(),m_CurrentPlayer.getShip(i));
+                                            System.out.println(m_CurrentPlayer.getName() + " set Location: " +  shipLoc);
                                             m_CurrentPlayer.updateBoard(m_CurrentPlayer.getShip(i), shipLoc.x(), shipLoc.y(), "RIGHT");
+                                            m_CurrentPlayer.addToTaken(shipLoc.x(),shipLoc.y(),m_CurrentPlayer.getShip(i));
                                             m_CurrentPlayer.setNextShip();
                                         }
                                         Game.getCurrentGame().setUpBoards();

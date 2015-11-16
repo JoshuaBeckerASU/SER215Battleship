@@ -23,7 +23,7 @@ public class GameServer_ extends JFrame
         setSize(500, 300);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setVisible(true); // It is necessary to show the frame here!
-        int turn = 1;
+        boolean turn = true;
     
         try 
         {
@@ -80,8 +80,8 @@ public class GameServer_ extends JFrame
                 while(true)
                 {
                     toPlayerOne.writeObject(turn);// your player one
-                    toPlayerTwo.writeObject(turn);// your player two
-                    if(turn == 1)
+                    toPlayerTwo.writeObject(!turn);// your player two
+                    if(turn)
                     {
                         for(int i = 0; i < 5; i++)
                         {
@@ -89,7 +89,7 @@ public class GameServer_ extends JFrame
                             jta.append("\nLocation Receive from Player One: " + hitLoc + '\n');
                             toPlayerTwo.writeObject(hitLoc);
                         }
-                        turn = 2;
+                        turn = false;
                     }else
                     {
                         for(int i = 0; i < 5; i++)
@@ -98,7 +98,7 @@ public class GameServer_ extends JFrame
                             jta.append("\nLocation Receive from Player Two: " + hitLoc + '\n');
                             toPlayerOne.writeObject(hitLoc);
                         }
-                        turn = 1;
+                        turn = true;
                     }
                 }
             }
