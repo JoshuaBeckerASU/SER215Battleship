@@ -61,11 +61,11 @@ public class SinglePlayerWindow implements Serializable
 		
 		m_Background_L = new JLabel(m_Assets.getImage("LobbyBG"));
         m_Body_L = new JLabel(m_Assets.getImage("LobbyBox"));
-        m_Header_L = new JLabel(m_Assets.getImage("GameBoardBlank"));
+        m_Header_L = new JLabel();
         m_HeaderButtons_L = new JLabel(m_Assets.getImage("GameBoardBlank"));
-        m_HeaderText_L = new JLabel(m_Assets.getImage("GameBoardBlank"));
+        m_HeaderText_L = new JLabel(m_Assets.getImage("Blank"));
         
-        m_Slots_L = new JLabel(m_Assets.getImage("GameBoardBlank"));
+        m_Slots_L = new JLabel();
 		
 		m_SinglePlayer_F = new JFrame("SinglePlayerWindow");
 		
@@ -97,6 +97,19 @@ public class SinglePlayerWindow implements Serializable
         
         //m_Slots_L.setSize(new Dimension(m_Assets.getImage("MenuBox").getIconWidth(),m_Assets.getImage("MenuBox").getIconHeight()));
         m_HeaderButtons_L.setMaximumSize(new Dimension(1000, 50));
+        m_HeaderButtons_L.setMinimumSize(new Dimension(1000, 50));
+        m_HeaderButtons_L.setSize(new Dimension(950, 50));
+        m_HeaderButtons_L.setPreferredSize(new Dimension(1000, 50));
+        
+        m_Header_L.setMaximumSize(new Dimension(1000, 50));
+        m_Header_L.setMinimumSize(new Dimension(1000, 50));
+        m_Header_L.setPreferredSize(new Dimension(1000, 50));
+        m_Header_L.setSize(new Dimension(950, 50));
+        
+        m_Slots_L.setMaximumSize(new Dimension(1000, 200));
+        m_Slots_L.setMinimumSize(new Dimension(1000, 200));
+        m_Slots_L.setPreferredSize(new Dimension(1000, 200));
+        m_Slots_L.setSize(new Dimension(1000, 200));
         //m_Header_L.setMaximumSize(new Dimension(1000, 40));
 		
 		m_SinglePlayer_F.setUndecorated(true);
@@ -156,14 +169,13 @@ public class SinglePlayerWindow implements Serializable
         m_HeaderText_L.add(new JLabel("Type Of Player"));
         
         m_Header_L.add(m_HeaderButtons_L);
-        m_Header_L.add(new JLabel("hello"));
        // m_Header_L.add(m_HeaderText_L);
         /*m_Body_L.add(new JLabel("\n\n"));
         m_Body_L.add(m_SlotTwo);
         m_Body_L.add(new JLabel("\n\n"));
 		m_Body_L.add(m_SlotThree);*/
 		m_Body_L.add(m_Header_L, BorderLayout.NORTH);
-        m_Body_L.add(m_Slots_L, BorderLayout.SOUTH);
+        m_Body_L.add(m_Slots_L, BorderLayout.CENTER);
         
         JLabel tmp = new JLabel(m_Assets.getImage("MenuHeader"));
         tmp.setAlignmentX(Component.CENTER_ALIGNMENT);

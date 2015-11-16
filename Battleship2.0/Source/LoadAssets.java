@@ -253,7 +253,7 @@ public class LoadAssets implements Runnable, Serializable
         LoadingWindow.updateMessage("Loading Game Peaces..");
         LoadingWindow.updateMessage("Done Loading...");
         m_Assets[38] = loadButtonImage("WaitingForOtherPlayerButton.png");
-        m_Assets[39] = loadGameImage("Blank.png", 200, 200);
+        m_Assets[39] = loadGameImage("Blank.png", 1000, 100);
         
 		m_Names.add("GameBoard");
 		m_Names.add("GameBoardBlank");
