@@ -24,6 +24,7 @@ public class UserLogin extends JFrame
    private JTextField m_UserName_T, m_Password_T, m_ConfirmPass_T;
    private String m_UserName_S, m_Password_S, m_Result_S;
    private FlowLayout m_FrameLayout = new FlowLayout(), m_PanelLayout1 = new FlowLayout(), m_PanelLayout2 = new FlowLayout();
+   private GridLayout m_PanelLayoutNew1 = new GridLayout(), m_PanelLayoutNew2 = new GridLayout();
 
    public static void main(String[] args)
    {
@@ -142,12 +143,14 @@ public class UserLogin extends JFrame
       m_LabelText_ExistingUser_P.setLayout(m_PanelLayout1);
       m_LabelText_ExistingPass_P.setLayout(m_PanelLayout1);
       m_Buttons_Existing_P.setLayout(m_PanelLayout2);
-      m_LabelText_NewUser_P.setLayout(m_PanelLayout1);
-      m_LabelText_NewPass_P.setLayout(m_PanelLayout1);
-      m_LabelText_ConfirmPass_P.setLayout(m_PanelLayout1);
+      m_LabelText_NewUser_P.setLayout(new GridLayout(3,2));
+      m_PanelLayoutNew1.layoutContainer(m_LabelText_NewUser_P);
+      //m_LabelText_NewPass_P.setLayout(m_PanelLayout1);
+      //m_LabelText_ConfirmPass_P.setLayout(m_PanelLayout1);
       m_Buttons_New_P.setLayout(m_PanelLayout2);
       m_PanelLayout1.setAlignment(FlowLayout.CENTER);
       m_PanelLayout2.setAlignment(FlowLayout.CENTER);
+      
    }
    
    public void buildComponentsLog()
@@ -195,12 +198,12 @@ public class UserLogin extends JFrame
    
    public void addElementsNew()
    {
-      m_LabelText_NewUser_P.add(m_UserName_L, BorderLayout.NORTH);
-      m_LabelText_NewUser_P.add(m_UserName_T, BorderLayout.NORTH);
-      m_LabelText_NewPass_P.add(m_Password_L, BorderLayout.CENTER);
-      m_LabelText_NewUser_P.add(m_Password_T, BorderLayout.CENTER);
-      m_LabelText_ConfirmPass_P.add(m_ConfirmPass_L, BorderLayout.SOUTH);
-      m_LabelText_ConfirmPass_P.add(m_ConfirmPass_T, BorderLayout.SOUTH);
+      m_LabelText_NewUser_P.add(m_UserName_L);
+      m_LabelText_NewUser_P.add(m_UserName_T);
+      m_LabelText_NewUser_P.add(m_Password_L);
+      m_LabelText_NewUser_P.add(m_Password_T);
+      m_LabelText_NewUser_P.add(m_ConfirmPass_L);
+      m_LabelText_NewUser_P.add(m_ConfirmPass_T);
       
       m_Buttons_New_P.add(m_Register);
       m_Buttons_New_P.add( m_Cancel);
