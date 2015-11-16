@@ -123,7 +123,7 @@ public class WaitingScreenWindow
 			String command = event.getActionCommand();
 			switch(command)
 			{
-				case "BackToMenu": MenuWindow menu = new MenuWindow(m_Assets);//loading screen...
+				case "BackToMenu": MenuWindow menu = new MenuWindow(m_Assets, m_WaitingScreenFrame);//loading screen...
                                    m_OldWindow.dispose(); m_WaitingScreenFrame.dispose();
 					break;
 				case "StartGame":
