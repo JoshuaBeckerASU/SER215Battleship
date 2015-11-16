@@ -150,10 +150,10 @@ public class GameServer_ extends JFrame
             return m_Board;
         }
     }
-
+    /*
     private class ChatService implements Runnable{
         private ObjectInputStream fromClient1;
-        private ObjectOutputStream inClient1;
+        private ObjectOutputStream toClient1;
         private ObjectInputStream fromClient2;
         private ObjectOutputStream toClient2;
 
@@ -197,7 +197,7 @@ public class GameServer_ extends JFrame
                 message="";
             }
 
-            public getMessage(){
+            public String getMessage(){
                 return message;
             }
 
@@ -205,5 +205,5 @@ public class GameServer_ extends JFrame
                 message=(String)fromClient.readObject();
             }
         }
-    }
+    }*/
 }
