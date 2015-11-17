@@ -82,9 +82,7 @@ public class Game implements Serializable
 	public void startMultiplayerGame()
 	{
         System.out.println("StartMultiPlayerGame");
-        m_CurrentPlayer = m_Players[0];
-        m_CurrentPlayer.disableBoard();
-        getOpponentPlayer().enableBoard();
+        nextTurn();
 		m_GameWindow = new GameWindow(m_CurrentGame, m_Assets);
 	}
     public boolean isMultiplayer()
@@ -273,9 +271,9 @@ public class Game implements Serializable
         {
             try
             {
-                Integer turn = (Integer) m_Client.getInputStream().readObject();
+                boolean turn = (boolean) m_Client.getInputStream().readObject();
                 
-                if(turn == 1)
+                if(turn)
                 {
                     m_CurrentPlayer = m_Players[0];
                     m_CurrentPlayerIndex = 0;
@@ -283,6 +281,8 @@ public class Game implements Serializable
                 {
                     m_CurrentPlayerIndex++;
                     m_CurrentPlayer = m_Players[m_CurrentPlayerIndex];
+                    m_CurrentPlayer.disableBoard();
+                    getOpponentPlayer().disableBoard();
                     
                     for(int i = 0; i < 5; i++)
                     {
@@ -290,6 +290,7 @@ public class Game implements Serializable
                         m_CurrentPlayer.incNumOfSelTargets();
                         playerSelectedTarget(hitLoc.x(), hitLoc.y());
                     }
+                    getOpponentPlayer().enableBoard();
                 }
             }catch(IOException e)
             {

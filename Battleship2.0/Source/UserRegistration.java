@@ -45,20 +45,14 @@ public class UserRegistration
       String sqlPassCheck = "SELECT count(*) from bs_player WHERE name = '" + userName + "' AND password = MD5('" + passWord + "');";
       Statement stmtUserPass = null;
       
+      /*String path = "";
+		path = System.getProperty("user.dir");
+		path = path.replace('\\','/');
+		path = path.replaceAll("Source", "Assets/mysql-connector-java-5.1.37/mysql-connector-java-5.1.37-bin.jar");
+      */
+      
       try
-      {
-         try
-         {
-            Class.forName("com.mysql.jdbc.Driver");
-         }
-         
-         catch(Exception e)
-         {
-            resultCode = 2;
-            System.out.println("You fail");
-            return resultCode;
-         }
-         
+      {         
          conn = DriverManager.getConnection(URL,USER,PASS);
          stmtUserPass = conn.createStatement();
          stmt = conn.createStatement();
@@ -79,8 +73,8 @@ public class UserRegistration
                rs.close();
                stmt.close();
                conn.close();
-            
                resultCode = 0;
+               System.out.println(resultCode);
                return resultCode;
             }
             
@@ -89,8 +83,8 @@ public class UserRegistration
                rs.close();
                stmt.close();
                conn.close();
-            
                resultCode = 1;
+               System.out.println(resultCode);
                return resultCode;
             }
          }
