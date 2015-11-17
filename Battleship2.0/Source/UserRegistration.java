@@ -57,9 +57,6 @@ public class UserRegistration
          //if user exists return corresponding code otherwise create new user and return corresponding code
          if(!rs.isBeforeFirst())
          {
-            /*
-            need to create algorithm for checking password
-            */
             ResultSet rsPassCheck = stmtUserPass.executeQuery(sqlPassCheck);
             
             if(!rsPassCheck.isBeforeFirst())
@@ -116,19 +113,7 @@ public class UserRegistration
       Statement stmtUserPass = null;
       
       try
-      {
-         try
-         {
-            Class.forName("com.mysql.jdbc.Driver");
-         }
-         
-         catch(Exception e)
-         {
-            resultCode = 2;
-            System.out.println("You fail");
-            return resultCode;
-         }
-         
+      {         
          conn = DriverManager.getConnection(URL,USER,PASS);
          stmtUserPass = conn.createStatement();
          stmt = conn.createStatement();

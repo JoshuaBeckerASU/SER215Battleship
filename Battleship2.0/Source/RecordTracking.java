@@ -39,16 +39,6 @@ public class RecordTracking
       
       try
       {
-         /*try
-         {
-            Class.forName("com.mysql.jdbc.Driver");
-         }
-         
-         catch(Exception e)
-         {
-            System.out.println("Fail");
-         }*/
-         
          conn = DriverManager.getConnection(URL,USER,PASS);
          stmt = conn.createStatement();
          
