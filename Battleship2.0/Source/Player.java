@@ -2,10 +2,11 @@
 Name: Player Object
 Author: Joshua Becker
 Create On: 10/29/15
-Contributors:
+Contributors: Jacob Leonard
 ***********************/
 import javax.swing.*;
 import java.io.*;
+import java.util.*;
 
 
 public class Player implements Serializable
@@ -23,7 +24,10 @@ public class Player implements Serializable
 	private int m_lastHitX;
 	private int m_lastHitY; 
 	private int[] m_directionsShot;
-	
+	private String m_currentTarget;
+	private	Stack xHits = new Stack();
+	private	Stack yHits = new Stack();
+	private	Stack<String> shipStack = new Stack(); // Associated with xHits and yHits for remember what other ships were hit.
 	private LoadAssets m_Assets;
 	private Board m_Board;
 	private int m_NumOfSelectedTargets;//thats a long name...
@@ -55,11 +59,14 @@ public class Player implements Serializable
 		
 		m_enemyShipsLeft = 5;
 		m_enemyWasHit = false;
+		m_currentTarget = "NULL";
 		m_originHitX = -1;
 		m_originHitY = -1;
 		m_lastHitX = -1;
 		m_lastHitY = -1;
 		m_directionsShot = new int[] {0,0,0,0}; // Cardinal Directions from OriginHit [0]SOUTH, [1]NORTH, [2]EAST, [3]WEST | 0 indicates not Tried. 1 Indicates Tried.
+
+		
 		
 		m_Game = game;
 		m_AirCarr = new Ship("AircraftCarrier", Ship.CARRIER_LENGTH, m_Assets);
@@ -158,6 +165,11 @@ public class Player implements Serializable
 	public void setDirectionsShot(int index, int value){
 		m_directionsShot[index] = value;
 	}
+	
+	public void resetDirectionsShot(){ // Reset the cardinal direction.
+		int newArray[] = {0,0,0,0};
+		m_directionsShot = newArray;
+	}
 
 	public boolean wasEnemyHit(){
 	
@@ -167,6 +179,44 @@ public class Player implements Serializable
 		m_enemyWasHit = bool;
 	}
 	
+	public void setCurrentTarget(String shipName){
+		m_currentTarget = shipName;
+	}
+	
+	public String getCurrentTarget(){
+		return m_currentTarget;
+	}
+	
+	public int popHitX(){
+		return (int)xHits.pop();
+	}
+	public int popHitY(){
+		return (int)yHits.pop();
+	}
+	
+	public void pushHitX(int x){
+		xHits.push(x);
+	}
+	public void pushHitY(int y){
+		yHits.push(y);
+	}
+	
+	/*public boolean isHitXEmpty(){
+		return xHits.empty();
+	}*/
+	
+	public void pushShip(String shipName){
+		shipStack.push(shipName);
+	}
+	public String popShip(){
+		return shipStack.pop();
+	}
+	public boolean isShipStackEmpty(){
+		System.out.println("Checking if ship stack is empty");
+		boolean isEmpty = true;
+		isEmpty = shipStack.isEmpty();
+		return isEmpty;
+	}
 	//////////////////////////////////
 	// END AI IMPLEMENTATION METHODS//
 	//////////////////////////////////		
