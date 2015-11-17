@@ -52,21 +52,7 @@ public class UserRegistration
       */
       
       try
-      {
-         /*try
-         {
-            Class.forName("com.mysql.jdbc.Driver");
-         }
-         
-         catch(Exception e)
-         {
-            resultCode = 2;
-            System.out.println("You fail");
-            System.err.println(e);
-            System.out.println(path);
-            return resultCode;
-         }*/
-         
+      {         
          conn = DriverManager.getConnection(URL,USER,PASS);
          stmtUserPass = conn.createStatement();
          stmt = conn.createStatement();
