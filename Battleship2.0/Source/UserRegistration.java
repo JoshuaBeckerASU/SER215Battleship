@@ -23,7 +23,7 @@ public class UserRegistration
    public static void main(String[] args)       //main is for testing purposes only
    {
       UserRegistration userReg = new UserRegistration("David", "j");
-      userReg.userReg();
+      userReg.userLogin();
    }
    
    public UserRegistration(String user, String pass)
