@@ -44,13 +44,7 @@ public class UserRegistration
       int resultCode;
       String sqlPassCheck = "SELECT count(*) from bs_player WHERE name = '" + userName + "' AND password = MD5('" + passWord + "');";
       Statement stmtUserPass = null;
-      
-      /*String path = "";
-		path = System.getProperty("user.dir");
-		path = path.replace('\\','/');
-		path = path.replaceAll("Source", "Assets/mysql-connector-java-5.1.37/mysql-connector-java-5.1.37-bin.jar");
-      */
-      
+
       try
       {         
          conn = DriverManager.getConnection(URL,USER,PASS);
