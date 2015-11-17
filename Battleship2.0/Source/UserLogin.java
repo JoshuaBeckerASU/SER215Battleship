@@ -154,15 +154,11 @@ public class UserLogin extends JFrame
       
       m_Buttons_New_P = new JPanel();
       
-      //m_LabelText_ExistingUser_P.setLayout(m_PanelLayout1);
-      //m_LabelText_ExistingPass_P.setLayout(m_PanelLayout1);
       m_LabelText_ExistingUser_P.setLayout(new GridLayout(2,2));
       m_Buttons_Existing_P.setLayout(m_PanelLayout2);
       m_LabelText_NewUser_P.setLayout(new GridLayout(3,2));
       m_PanelLayoutNew1.layoutContainer(m_LabelText_ExistingUser_P);
       m_PanelLayoutNew1.layoutContainer(m_LabelText_NewUser_P);
-      //m_LabelText_NewPass_P.setLayout(m_PanelLayout1);
-      //m_LabelText_ConfirmPass_P.setLayout(m_PanelLayout1);
       m_Buttons_New_P.setLayout(m_PanelLayout2);
       m_PanelLayout1.setAlignment(FlowLayout.CENTER);
       m_PanelLayout2.setAlignment(FlowLayout.CENTER);
@@ -263,17 +259,18 @@ public class UserLogin extends JFrame
                m_Password_S = m_Password_T.getText();
                m_ConfirmPass_S = m_ConfirmPass_T.getText();
                isRegged = registrationSuccess();
+               m_UserRegFrame.dispose();
                break;
             case "Cancel": m_UserRegFrame.dispose();
                break;
          }
          
-         if(isLogged == true)
+         if(isLogged == true || isRegged == true)
          {
-            //LoadAssets assets = new LoadAssets();
-            //MenuWindow menu = new MenuWindow(assets);
+            //once logged in or registered closes login window and loads game
             m_loadAssets.start();
             System.out.println("Game login/registration is successful.");
+            m_UserLoginFrame.dispose();
          }
          
          else
