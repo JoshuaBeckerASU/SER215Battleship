@@ -181,7 +181,7 @@ public class MultiPlayerMenuWindow implements Serializable
                         System.out.println("Selected JoinGame");
                         m_Game = new Game(-1, m_LSlots, m_Assets);
                         m_Game.setUpGame(m_Game);
-                        
+                        m_MultiPlayerMenu_F.dispose();
                     break;
 				case "BackToMainMenu": m_OldWindow_F.setVisible(true); m_MultiPlayerMenu_F.dispose();
 					break;

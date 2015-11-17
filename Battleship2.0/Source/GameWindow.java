@@ -15,7 +15,7 @@ import java.awt.image.*;
 import java.io.*;
 import javax.swing.text.*;
 
-public class GameWindow implements Serializable
+public class GameWindow implements Serializable, Runnable
 {
 	private JFrame m_Game_F;
 	private int m_ScreenWidth, m_ScreenHeight;
@@ -153,8 +153,8 @@ public class GameWindow implements Serializable
 		m_Game_F.setUndecorated(true);
         m_Game_F.getRootPane().setWindowDecorationStyle(JRootPane.NONE);
 		m_Game_F.setSize(new Dimension(m_ScreenWidth,m_ScreenHeight));
-		updateActionConsole("Waiting for " + m_CurrentGame.getCurrentPlayer().getName() + " To Take Turn\n"
-						    + (5 - m_CurrentGame.getCurrentPlayer().getNumOfSelectedTargets()) + " Shots Left\n");
+		updateActionConsole("Waiting for " + m_CurrentGame.getPlayer(0).getName() + " To Take Turn\n"
+						    + (5 - m_CurrentGame.getPlayer(0).getNumOfSelectedTargets()) + " Shots Left\n");
 	}
 	/**addElements
 	* add components to panels and
@@ -165,8 +165,15 @@ public class GameWindow implements Serializable
 		setKeyBind();
 		m_Background_L.setForeground(Color.WHITE);
 		
-		JPanel board = m_CurrentGame.getCurrentPlayer().getBoard();
-		JPanel board2 = m_CurrentGame.getOpponentPlayer().getBoardHide();
+		JPanel board = m_CurrentGame.getPlayer(0).getBoard();
+        
+        if(m_CurrentGame.isMultiplayer())
+        for(int i = 0; i < 5; i++)
+        {
+            m_CurrentGame.getPlayer(1).getBoardObject().updateBoard(m_CurrentGame.getPlayer(1).getShip(i), m_CurrentGame.getPlayer(1).getShip(i).getLocation().x(),m_CurrentGame.getPlayer(1).getShip(i).getLocation().y()-1,"SELECT");
+        }
+        
+		JPanel board2 = m_CurrentGame.getPlayer(1).getBoardHide();
 	
 		m_Boards_P.setAlignmentX(Component.CENTER_ALIGNMENT);
 		m_Footer_L.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -178,9 +185,9 @@ public class GameWindow implements Serializable
 		m_Boards_P.add(m_ActionConsole_SP);
 		m_Boards_P.add(board2);
         
-        m_PlayerOneStats = updatePlayerStats(m_CurrentGame.getCurrentPlayer(),m_CurrentPlayerStats_L, 102);
+        m_PlayerOneStats = updatePlayerStats(m_CurrentGame.getPlayer(0),m_CurrentPlayerStats_L, 102);
         
-        m_PlayerTwoStats = updatePlayerStats(m_CurrentGame.getOpponentPlayer(),m_OtherPlayerStats_L, 102);
+        m_PlayerTwoStats = updatePlayerStats(m_CurrentGame.getPlayer(1),m_OtherPlayerStats_L, 102);
 		
 		m_Header_L.add(m_PlayerOneStats);
 		m_Header_L.add(m_PlayerTwoStats);
@@ -338,4 +345,8 @@ public class GameWindow implements Serializable
 		m_ActionConsole_TA.setCaretPosition(m_ActionConsole_TA.getDocument().getLength());
 		m_ActionConsolesCaret.setVisible(true);
 	}
+    public void run()
+    {
+        m_Game_F.setVisible(true);
+    }
 }

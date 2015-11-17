@@ -14,7 +14,8 @@ public class GameServer_ extends JFrame
         new GameServer_();
     }
     
-    public GameServer_() {
+    public GameServer_() 
+    {
     
         // Place text area on the frame
         setLayout(new BorderLayout());
@@ -88,6 +89,7 @@ public class GameServer_ extends JFrame
                             Location hitLoc = (Location) fromPlayerOne.readObject();
                             jta.append("\nLocation Receive from Player One: " + hitLoc + '\n');
                             toPlayerTwo.writeObject(hitLoc);
+                            jta.append("\nLocation sent too Player One: " + hitLoc + '\n');
                         }
                         turn = false;
                     }else
@@ -97,6 +99,7 @@ public class GameServer_ extends JFrame
                             Location hitLoc = (Location) fromPlayerTwo.readObject();
                             jta.append("\nLocation Receive from Player Two: " + hitLoc + '\n');
                             toPlayerOne.writeObject(hitLoc);
+                            jta.append("\nLocation sent too Player One: " + hitLoc + '\n');
                         }
                         turn = true;
                     }

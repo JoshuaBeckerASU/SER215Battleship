@@ -1,3 +1,15 @@
+/******************************
+* @file: GameClient_.java
+* @author: Joshua Becker
+* @date: 11/16/15
+* @description:
+* 
+* @index
+* [
+*     m_: for member variables
+*     g_: for global variables
+* ]
+*******************************/
 import java.io.*;
 import java.net.*;
 import java.awt.*;
@@ -12,20 +24,16 @@ public class GameClient_
     private ObjectInputStream fromServer;
     private Location m_Location;
     
-    /*public static void main(String args[])
-    {
-        new GameClient_();
-    }*/
-    
     public GameClient_() 
     {
-        try {
+        try 
+        {
     
             // Create a socket to connect to the server
             System.out.println("Connecting...");
             try
             {
-                m_Socket = new Socket("localhost", 8000);
+                m_Socket = new Socket("10.143.109.147", 8000);
             }catch(java.net.ConnectException e)
             {
                 System.out.println("Not able to cennect to server");

@@ -75,7 +75,7 @@ public class Board implements Serializable
 	{
 		for(int i = 0; i <5; i++)
 		{
-			showShip(m_CurrentPlayer.getShip(i), m_CurrentPlayer.getShip(i).x(), m_CurrentPlayer.getShip(i).y());
+            showShip(m_CurrentPlayer.getShip(i), m_CurrentPlayer.getShip(i).x(), m_CurrentPlayer.getShip(i).y());
 		}
 		return m_GameBoards_P;
 	}
@@ -270,6 +270,7 @@ public class Board implements Serializable
 							while(!isOutOfBounds(newx, newy, ship) && hasShip(newx,newy,ship))			
 								newx--;
 						break;
+                case "SETTING":break; //multiplayer is setting ships
 				default: System.out.println("INVALID UPDATE OF BOARD"); break;
 			}
 			x = newx;
@@ -280,7 +281,10 @@ public class Board implements Serializable
 		{
 			hideShip(ship, ship.x(), ship.y());
 			
-			showShip(ship, x,y);
+
+            showShip(ship, x,y);
+
+			
 		
 			ship.setLocation(x,y);
 		}
@@ -331,7 +335,7 @@ public class Board implements Serializable
 			shipL.setMaximumSize(new Dimension(ship.getLength()*m_boardWidth/m_NUM_OF_COL, m_boardHight/m_NUM_OF_ROWS));
 			shipL.setPreferredSize(new Dimension(ship.getLength()*m_boardWidth/m_NUM_OF_COL, m_boardHight/m_NUM_OF_ROWS));
 			shipL.setMinimumSize(new Dimension(ship.getLength()*m_boardWidth/m_NUM_OF_COL, m_boardHight/m_NUM_OF_ROWS));
-			
+			System.out.println("LOC: X = " + x + " Y = " + y);
 			m_GameBoard_X_L[y].remove(x);
 			m_GameBoard_X_L[y].add(shipL,x);
 			

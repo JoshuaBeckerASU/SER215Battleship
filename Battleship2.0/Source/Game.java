@@ -28,6 +28,61 @@ public class Game implements Serializable
     private boolean m_IsMultiplayer;
     public GameClient_ m_Client;
     private Thread m_Client_T;
+    private int m_ShotCount = 0;
+    private boolean m_Turn;
+    
+    private class getInputFromServer implements Runnable
+    {
+        private ObjectInputStream m_FromServer_OIS;
+        private Object m_Object;
+        getInputFromServer(ObjectInputStream fromServer)
+        {
+            m_FromServer_OIS = fromServer;
+        }
+        public void run()
+        {
+            try
+            {
+                m_Object = m_FromServer_OIS.readObject();
+            }catch(IOException e)
+            {
+                System.out.println("IOException in get Input From Server class");
+                System.err.println(e);
+            }catch(ClassNotFoundException e)
+            {
+                System.out.println("ClassNotFoundException in get Input From Server class");
+                System.err.println(e);
+                System.exit(1);
+            }
+            if(m_Object instanceof Location)
+            {
+                System.out.println("Getting Location From Server...\n");
+                multiPlayerSelTarget(((Location)m_Object).x(), ((Location)m_Object).y(),m_Players[1],m_Players[0] , false, m_ShotCount);
+                
+                m_ShotCount++;
+                m_Players[1].incNumOfSelTargets();
+                System.out.println("ShotCount = "+m_ShotCount+"Got Location From Server\n" + (Location) m_Object);
+                try
+                {
+                    getShotsFromServer();
+                }catch(IOException e)
+                {
+                    System.out.println("IOException in getInputFromServer line 75");
+                    System.err.println(e);
+                }catch(ClassNotFoundException e)
+                {
+                    System.out.println("ClassNotFoundException in get Input From Server class line 79");
+                    System.err.println(e);
+                    System.exit(1);
+                }
+                
+            }
+        }
+        public Object getObject()
+        {
+            return m_Object;
+        }
+    }
 	
 	Game()
 	{
@@ -52,6 +107,7 @@ public class Game implements Serializable
 		m_TargetLoc = new Location[5];
         m_CurrentGame = this;
 	}
+    
     public void setBoardObject(Board board)
     {
         m_Players[1].setBoardObject(board);
@@ -78,29 +134,15 @@ public class Game implements Serializable
         m_CurrentPlayer = m_Players[0];
         getOpponentPlayer().enableBoard();
 		m_GameWindow = new GameWindow(m_CurrentGame, m_Assets);
+        m_OldWindow = m_GameWindow.getFrame();
 	}
 	public void startMultiplayerGame()
 	{
         System.out.println("StartMultiPlayerGame");
-        try
-        {
-            if((boolean) m_Client.getInputStream().readObject())
-            {
-                m_CurrentPlayer = m_Players[0];
-            }else
-            {
-                m_CurrentPlayer = m_Players[1];
-            }
-        }catch(IOException e)
-        {
-            System.out.println("IOException in taketurn");
-            System.exit(1);
-        }catch(ClassNotFoundException e)
-        {
-            System.out.println("ClassNotFoundException in taketurn");
-            System.exit(1);
-        }
-		m_GameWindow = new GameWindow(m_CurrentGame, m_Assets);
+        m_GameWindow = new GameWindow(m_CurrentGame, m_Assets);
+        m_OldWindow = m_GameWindow.getFrame();
+        
+        nextTurn();
 	}
     public boolean isMultiplayer()
     {
@@ -288,26 +330,25 @@ public class Game implements Serializable
         {
             try
             {
-                boolean turn = (boolean) m_Client.getInputStream().readObject();
+                System.out.println("Taking multiplayer turns");
+                m_Players[0].disableBoard();
+                m_Players[1].disableBoard();
+                System.out.println("Waiting for server boolean values");
+                m_Turn = (boolean) m_Client.getInputStream().readObject();
                 
-                if(turn)
+                if(m_Turn)
                 {
+                    m_Players[1].enableBoard();
+                    System.out.println("Your Players turn");
                     m_CurrentPlayer = m_Players[0];
                     m_CurrentPlayerIndex = 0;
                 }else
                 {
-                    m_CurrentPlayerIndex++;
-                    m_CurrentPlayer = m_Players[m_CurrentPlayerIndex];
-                    m_CurrentPlayer.disableBoard();
-                    getOpponentPlayer().disableBoard();
-                    
-                    for(int i = 0; i < 5; i++)
-                    {
-                        Location hitLoc = (Location) m_Client.getInputStream().readObject();
-                        m_CurrentPlayer.incNumOfSelTargets();
-                        playerSelectedTarget(hitLoc.x(), hitLoc.y());
-                    }
-                    getOpponentPlayer().enableBoard();
+                    System.out.println("Other Players turn");
+                    m_CurrentPlayerIndex = 1;
+                    m_CurrentPlayer = m_Players[1];
+                    getShotsFromServer();
+                    //nextTurn();
                 }
             }catch(IOException e)
             {
@@ -320,6 +361,88 @@ public class Game implements Serializable
             }
         }
 	}
+    public void getShotsFromServer() throws IOException, ClassNotFoundException
+    {
+        if(m_ShotCount != 5)
+        {
+            m_Players[0].disableBoard();
+            m_Players[1].disableBoard();
+            BoardMouseAction.setIcon(BoardMouseAction.getIcon());
+            getInputFromServer input = new getInputFromServer(m_Client.getInputStream());
+            
+            Thread thread = new Thread(input);
+            thread.start();
+
+        }else
+        {
+            nextTurn();
+            m_ShotCount = 0;
+        }
+            
+    }
+    public void multiPlayerSelTarget(int x, int y, Player playerOffence, Player playerDefence, boolean player,int shotNum)
+    {
+        m_GameWindow.resetActionConsole();
+        System.out.println("MultiPlayerSelected Target");
+		m_TargetLoc[shotNum] = new Location(x,y);
+        System.out.println(playerDefence.getStringBoard()[x][y]);
+        JLabel tmp = ((JLabel) playerDefence.getTargetBoard()[x].getComponent(y));
+        String result = playerDefence.getStringBoard()[x][y];
+		switch(result)
+        {
+            case "MARKED": playerOffence.decNumOfSelTargets();
+                        break;
+            
+            case "NOSHIP": 
+                        if(m_Turn)
+                            BoardMouseAction.setIcon(m_Assets.getImage("Target"));
+                        else
+                            tmp.setIcon(m_Assets.getImage("Target"));
+                        m_GameWindow.updateActionConsole("Miss On Location x = " + x + " y = " + y+ "\n\n"+ (4 - shotNum) + " Shots Left\n");
+                        break;
+            default:
+                        if(playerDefence.getShip(result) != null)
+                        {
+                            playerDefence.getShip(result).decLives();
+                            
+                            if(m_Turn)
+                                BoardMouseAction.setIcon(m_Assets.getImage("HitMarker"));
+                            else
+                                tmp.setIcon(m_Assets.getImage("HitMarker"));
+                            
+                            m_GameWindow.decFleetHealth(player);
+                            m_GameWindow.updateActionConsole("HIT On Location x = " + x + " y = " + y+ "\n\n"+ (4 - shotNum) + " Shots Left\n");
+                            
+                            if(playerDefence.getShip(result).getLives() == 0)
+                            {
+                                playerDefence.showShip(result);
+                            }
+                        }
+                        break;
+        }
+        playerDefence.getStringBoard()[x][y] = "MARKED";
+        if(isYourTurn())
+        {
+            try
+            {
+                System.out.println("SENDING NEW Location" +  x + "  " + y);
+                m_Client.getOutputStream().writeObject(new Location(x,y));
+                m_Client.getOutputStream().flush();
+            }catch(IOException e)
+            {
+                System.out.println("IOException in playerSelectedTarget");
+                System.exit(1);
+            }
+        }
+        if(m_Players[0].getFleetHealth() == 0 || m_Players[1].getFleetHealth() == 0)
+        {
+            gameOver();
+        }
+    }
+    public boolean isYourTurn()
+    {
+        return m_Turn;
+    }
     /*public void takeAITurn()
     {
         m_GameWindow.resetActionConsole();
@@ -522,6 +645,7 @@ public class Game implements Serializable
 	}
 	public void playerSelectedTarget(int x,int y)
 	{
+        System.out.println("PlayerSelected Target");
 		m_TargetLoc[m_CurrentPlayer.getNumOfSelectedTargets()-1] = new Location(x,y);
         System.out.println(getOpponentPlayer().getStringBoard()[x][y]);
         JLabel tmp = ((JLabel) getOpponentPlayer().getTargetBoard()[x].getComponent(y));
@@ -593,16 +717,9 @@ public class Game implements Serializable
 					break;
         }
         getOpponentPlayer().getStringBoard()[x][y] = "MARKED";
-        if(m_IsMultiplayer)
+        if(m_Players[0].getFleetHealth() == 0 || m_Players[1].getFleetHealth() == 0)
         {
-            try
-            {
-                m_Client.getOutputStream().writeObject(new Location(x,y));
-            }catch(IOException e)
-            {
-                System.out.println("IOException in playerSelectedTarget");
-                System.exit(1);
-            }
+            gameOver();
         }
 	}
 	
@@ -610,8 +727,7 @@ public class Game implements Serializable
     {
 		m_GameWindow.updateActionConsole("\nGAME OVER\n" + getOpponentPlayer().getName() + " Has Lost...");
         // update player states here
-		GameOverWindow gameOver = new GameOverWindow(m_GameWindow.getFrame(), m_Assets);
-        m_OldWindow.dispose();
+		GameOverWindow gameOver = new GameOverWindow(m_GameWindow.getFrame());
     }
     public static Game getCurrentGame()
     {

@@ -23,9 +23,9 @@ public class GameOverWindow implements Serializable
 	private JLabel m_Background_L;
 	private LoadAssets m_Assets;
 	
-    public GameOverWindow(JFrame window, LoadAssets assets)// Constructor
+    public GameOverWindow(JFrame window)// Constructor
     {
-		m_Assets = assets;
+		m_Assets = Main.m_Assets;
 		
 		m_OldWindow = window;
         m_OldWindow.setEnabled(false);

@@ -247,18 +247,19 @@ public class SetUpBoardWindow implements Serializable
                                 if(Game.getCurrentGame().isMultiplayer())
                                 {
 
-                                       // WaitingScreenWindow WS = new WaitingScreenWindow();
+                                       WaitingScreenWindow WS = new WaitingScreenWindow();
                                         System.out.println("Getting Ship Locations...");
                                         for(int i = 0; i < 5; i++)
                                         {
                                             Location shipLoc  = ((Location) Game.getCurrentGame().m_Client.getInputStream().readObject());
                                             System.out.println(m_CurrentPlayer.getName() + " set Location: " +  shipLoc);
-                                            m_CurrentPlayer.updateBoard(m_CurrentPlayer.getShip(i), shipLoc.x(), shipLoc.y(), "RIGHT");
+                                            m_CurrentPlayer.updateBoard(m_CurrentPlayer.getShip(i), shipLoc.x(), shipLoc.y(), "SETTING");
                                             m_CurrentPlayer.addToTaken(shipLoc.x(),shipLoc.y(),m_CurrentPlayer.getShip(i));
                                             m_CurrentPlayer.setNextShip();
                                         }
                                         Game.getCurrentGame().setUpBoards();
-                                       // WS.dispose();
+                                        m_SetUpBoard_F.dispose();
+                                        WS.dispose();
                                 }
                                 }
                                 catch(IOException e)
@@ -273,7 +274,7 @@ public class SetUpBoardWindow implements Serializable
                                         System.exit(1);
                                     }
                                 
-                            }else
+                            }else if(Game.getCurrentGame().isMultiplayer())
                             {
                                 try
                                 {
