@@ -26,7 +26,7 @@ public class LoadAssets implements Runnable, Serializable
 	{
 		GridCol = 16;
 		GridRows = 19;
-        m_Assets = new ImageIcon[41];
+        m_Assets = new ImageIcon[42];
         m_Names = new ArrayList<String>();
 	}
 	
@@ -254,6 +254,7 @@ public class LoadAssets implements Runnable, Serializable
         LoadingWindow.updateMessage("Done Loading...");
         m_Assets[38] = loadButtonImage("WaitingForOtherPlayerButton.png");
         m_Assets[39] = loadGameImage("Blank.png", 1000, 100);
+        m_Assets[40] = loadGif("ConnectingToServer.gif",214,183);
         
 		m_Names.add("GameBoard");
 		m_Names.add("GameBoardBlank");
@@ -296,6 +297,7 @@ public class LoadAssets implements Runnable, Serializable
         m_Names.add("WaitingScreen");
         m_Names.add("WaitingScreenBG");
         m_Names.add("Blank");
+        m_Names.add("ConnectingToServer");
 
         System.out.println("DONE LOADING");
     }
