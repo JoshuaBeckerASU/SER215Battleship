@@ -27,13 +27,19 @@ public class RecordTracking
       
    }
    
+   public static void main(String[] args)
+   {
+      RecordTracking test = new RecordTracking();
+      test.connect("david");
+   }
+   
    public void connect(String name)
    {
       playerName = name;
       
       try
       {
-         try
+         /*try
          {
             Class.forName("com.mysql.jdbc.Driver");
          }
@@ -41,7 +47,7 @@ public class RecordTracking
          catch(Exception e)
          {
             System.out.println("Fail");
-         }
+         }*/
          
          conn = DriverManager.getConnection(URL,USER,PASS);
          stmt = conn.createStatement();
