@@ -82,7 +82,24 @@ public class Game implements Serializable
 	public void startMultiplayerGame()
 	{
         System.out.println("StartMultiPlayerGame");
-        nextTurn();
+        try
+        {
+            if((boolean) m_Client.getInputStream().readObject())
+            {
+                m_CurrentPlayer = m_Players[0];
+            }else
+            {
+                m_CurrentPlayer = m_Players[1];
+            }
+        }catch(IOException e)
+        {
+            System.out.println("IOException in taketurn");
+            System.exit(1);
+        }catch(ClassNotFoundException e)
+        {
+            System.out.println("ClassNotFoundException in taketurn");
+            System.exit(1);
+        }
 		m_GameWindow = new GameWindow(m_CurrentGame, m_Assets);
 	}
     public boolean isMultiplayer()

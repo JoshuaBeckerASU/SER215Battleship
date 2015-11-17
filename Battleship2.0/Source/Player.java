@@ -25,8 +25,8 @@ public class Player implements Serializable
 	private int m_lastHitY; 
 	private int[] m_directionsShot;
 	private String m_currentTarget;
-	private	Stack xHits = new Stack();
-	private	Stack yHits = new Stack();
+	private	Stack<Integer> xHits = new Stack<Integer>();
+	private	Stack<Integer> yHits = new Stack<Integer>();
 	private	Stack<String> shipStack = new Stack(); // Associated with xHits and yHits for remember what other ships were hit.
 	private LoadAssets m_Assets;
 	private Board m_Board;
