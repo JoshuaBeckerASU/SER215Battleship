@@ -268,7 +268,7 @@ public class UserLogin extends JFrame
                break;
          }
          
-         if(isLogged == true || isRegged == true)
+         if(isLogged == true)
          {
             //LoadAssets assets = new LoadAssets();
             //MenuWindow menu = new MenuWindow(assets);

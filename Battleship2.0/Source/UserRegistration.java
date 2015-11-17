@@ -55,11 +55,11 @@ public class UserRegistration
          ResultSet rs = stmt.executeQuery(sql);
          
          //if user exists return corresponding code otherwise create new user and return corresponding code
-         if(!rs.isBeforeFirst())
+         if(rs.isBeforeFirst())
          {
             ResultSet rsPassCheck = stmtUserPass.executeQuery(sqlPassCheck);
             
-            if(!rsPassCheck.isBeforeFirst())
+            if(rsPassCheck.isBeforeFirst())
             {
                rs.close();
                stmt.close();
@@ -88,6 +88,7 @@ public class UserRegistration
             conn.close();
             
             resultCode = 1;
+            System.out.println(resultCode);
             return resultCode;
          }
       }
