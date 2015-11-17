@@ -13,20 +13,16 @@ public class WaitForConnection extends JFrame{
 	private JButton m_Cancel_jb;
 	private LoadAssets m_Assets;
 	private int m_ScreenWidth,m_ScreenHeight;
-	private ImageIcon m_Gif=new ImageIcon("ConnectingToServer");
 
-	public WaitForConnection(JFrame oldWindow,LoadAssets assets){
+	public WaitForConnection(JFrame oldWindow)
+    {
 		m_OldWindow_jf=oldWindow;
-		m_Assets=assets;
+		m_Assets= Main.m_Assets;
 
-		m_OldWindow_jf.setEnabled(false);
-
-	}
-	public WaitForConnection(){
-
-		createComponents();
+        createComponents();
 		buildCompenents();
 		addElements();
+
 	}
 
 	public void createComponents(){
@@ -36,20 +32,23 @@ public class WaitForConnection extends JFrame{
 
 		m_ConnectionWindow_jf=new JFrame("Connecting");
 
-		m_Background_jl=new JLabel(m_Gif);
+		m_Background_jl=new JLabel(m_Assets.getImage("ConnectingToServer"));
 
 		m_Cancel_jb=new JButton("Cancel");
 	}
 
-	public void buildCompenents(){
+	public void buildCompenents()
+    {
 		m_ConnectionWindow_jf.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		m_ConnectionWindow_jf.add(m_Background_jl);
+        
 		m_Background_jl.setLayout(new BoxLayout(m_Background_jl,BoxLayout.X_AXIS));
+        m_Background_jl.setPreferredSize(new Dimension(400, 400));
 
 		m_ConnectionWindow_jf.setUndecorated(true);
 		m_ConnectionWindow_jf.getRootPane().setWindowDecorationStyle(JRootPane.NONE);
-		m_ConnectionWindow_jf.setSize(new Dimension(m_Gif.getIconWidth(),m_Gif.getIconHeight()));
-		m_ConnectionWindow_jf.setLocation( m_ScreenWidth/2-m_Gif.getIconWidth()/2, m_ScreenHeight/2-m_Gif.getIconHeight()/2);
+		m_ConnectionWindow_jf.setSize(new Dimension(m_ScreenWidth/4,m_ScreenHeight/4));
+		m_ConnectionWindow_jf.setLocation(m_ScreenWidth/4,m_ScreenHeight/4);
 		m_ConnectionWindow_jf.setAlwaysOnTop(true);
 	
 		m_Cancel_jb.setMargin(new Insets(0,0,0,0));
@@ -61,14 +60,12 @@ public class WaitForConnection extends JFrame{
 		m_Background_jl.add(m_Cancel_jb);
 
 		m_ConnectionWindow_jf.add(m_Background_jl);
+        
 		m_ConnectionWindow_jf.pack();
+        
 		m_ConnectionWindow_jf.setVisible(true);
 	}
 
 	public void attachListeners(){}
-
-	public static void main(String[] args){
-		new WaitForConnection();
-	}
 
 }

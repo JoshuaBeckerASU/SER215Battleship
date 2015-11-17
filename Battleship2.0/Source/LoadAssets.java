@@ -69,6 +69,11 @@ public class LoadAssets implements Runnable, Serializable
 		ImageIcon gif;
 		
 		gif = new ImageIcon(path);
+        if(gif == null)
+        {
+            System.out.println("Gif not found" + path);
+            System.exit(1);
+        }
 		return gif;
 	}
 	private ImageIcon loadButtonImage(String name)
@@ -254,7 +259,7 @@ public class LoadAssets implements Runnable, Serializable
         LoadingWindow.updateMessage("Done Loading...");
         m_Assets[38] = loadButtonImage("WaitingForOtherPlayerButton.png");
         m_Assets[39] = loadGameImage("Blank.png", 1000, 100);
-        m_Assets[40] = loadGif("ConnectingToServer.gif",214,183);
+        m_Assets[41] = loadGif("ConnectingToServer.gif",214,183);
         
 		m_Names.add("GameBoard");
 		m_Names.add("GameBoardBlank");

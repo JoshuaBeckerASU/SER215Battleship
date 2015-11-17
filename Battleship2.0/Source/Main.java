@@ -56,6 +56,7 @@ public class Main implements Serializable
                 break;
             }
         }
+        new WaitForConnection(new JFrame());//testing
 		MenuWindow menu = new MenuWindow(m_Assets, loadW.getMainFrame());
         m_GameThread = new Thread(menu);
         
