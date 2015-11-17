@@ -247,7 +247,6 @@ public class SetUpBoardWindow implements Serializable
                                 if(Game.getCurrentGame().isMultiplayer())
                                 {
 
-                                       WaitingScreenWindow WS = new WaitingScreenWindow();
                                         System.out.println("Getting Ship Locations...");
                                         for(int i = 0; i < 5; i++)
                                         {
@@ -259,7 +258,6 @@ public class SetUpBoardWindow implements Serializable
                                         }
                                         Game.getCurrentGame().setUpBoards();
                                         m_SetUpBoard_F.dispose();
-                                        WS.dispose();
                                 }
                                 }
                                 catch(IOException e)
