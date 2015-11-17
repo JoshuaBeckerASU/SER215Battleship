@@ -33,7 +33,7 @@ public class GameClient_
             System.out.println("Connecting...");
             try
             {
-                m_Socket = new Socket("10.143.109.147", 8000);
+                m_Socket = new Socket("10.142.111.41", 8000);
             }catch(java.net.ConnectException e)
             {
                 System.out.println("Not able to cennect to server");
