@@ -21,7 +21,8 @@ public class UserLogin extends JFrame
    private JButton m_Login, m_Register, m_NewUser, m_Cancel, m_Exit; //m_Login button to login as existing user, m_Register button to register new user, m_NewUser button to bring up new user registration
    private JPanel m_LabelText_ExistingUser_P, m_LabelText_ExistingPass_P, m_Buttons_Existing_P, m_LabelText_NewUser_P, m_LabelText_NewPass_P, m_LabelText_ConfirmPass_P, m_Buttons_New_P;
    private JLabel m_UserName_L, m_Password_L, m_ConfirmPass_L, m_Results_L;
-   private JTextField m_UserName_T, m_Password_T, m_ConfirmPass_T;
+   private JTextField m_UserName_T;
+   private JPasswordField m_Password_T, m_ConfirmPass_T;
    private String m_UserName_S, m_Password_S, m_ConfirmPass_S, m_Result_S;
    private FlowLayout m_FrameLayout = new FlowLayout(), m_PanelLayout1 = new FlowLayout(), m_PanelLayout2 = new FlowLayout();
    private GridLayout m_PanelLayoutNew1 = new GridLayout(), m_PanelLayoutNew2 = new GridLayout();
@@ -142,8 +143,8 @@ public class UserLogin extends JFrame
       m_Results_L = new JLabel("");
       
       m_UserName_T = new JTextField(20);
-      m_Password_T = new JTextField(20);
-      m_ConfirmPass_T = new JTextField(20);
+      m_Password_T = new JPasswordField(20);
+      m_ConfirmPass_T = new JPasswordField(20);
       
       m_LabelText_ExistingUser_P = new JPanel();
       m_LabelText_ExistingPass_P = new JPanel();
@@ -249,10 +250,14 @@ public class UserLogin extends JFrame
                m_UserName_S = m_UserName_T.getText();
                m_Password_S = m_Password_T.getText();
                isLogged = loginSuccess();
+               m_UserLoginFrame.dispose();
                break;
-            case "New User": UserReg();
+            case "New User":
+               UserReg();
+               m_UserLoginFrame.dispose();
                break;
-            case "Exit": m_UserLoginFrame.dispose(); System.exit(1);
+            case "Exit":
+               m_UserLoginFrame.dispose(); System.exit(1);
                break;
             case "Register":
                m_UserName_S = m_UserName_T.getText();
@@ -261,7 +266,9 @@ public class UserLogin extends JFrame
                isRegged = registrationSuccess();
                m_UserRegFrame.dispose();
                break;
-            case "Cancel": m_UserRegFrame.dispose();
+            case "Cancel":
+               m_UserRegFrame.dispose();
+               new UserLogin();
                break;
          }
          
@@ -270,7 +277,6 @@ public class UserLogin extends JFrame
             //once logged in or registered closes login window and loads game
             m_loadAssets.start();
             System.out.println("Game login/registration is successful.");
-            m_UserLoginFrame.dispose();
          }
          
          else
