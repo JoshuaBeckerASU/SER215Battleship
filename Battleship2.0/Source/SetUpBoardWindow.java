@@ -24,8 +24,9 @@ public class SetUpBoardWindow implements Serializable
 	private Player m_CurrentPlayer;
 	private Ship m_CurrentShip;
 	private LoadAssets m_Assets;
+    private boolean m_IsWindowed;
 	
-    public SetUpBoardWindow(Player player, LoadAssets assets)// constructer
+    public SetUpBoardWindow(Player player)// constructer
     {
         if(Game.getCurrentGame().isMultiplayer())
         {
@@ -35,10 +36,11 @@ public class SetUpBoardWindow implements Serializable
         {
             m_CurrentPlayer = player;
         }
+        m_IsWindowed = MenuWindow.isWindowed();
         m_CurrentPlayer.disableBoard();
         m_CurrentShip = m_CurrentPlayer.getShip(0);
 			
-		m_Assets = assets;
+		m_Assets = Main.m_Assets;
 		
 		createComponents();
 		
@@ -81,8 +83,15 @@ public class SetUpBoardWindow implements Serializable
 		m_Header_L.setPreferredSize(new Dimension(m_ScreenWidth, 20));
 		
 		m_SetUpBoard_F.setUndecorated(true);
-        m_SetUpBoard_F.getRootPane().setWindowDecorationStyle(JRootPane.NONE);
-		m_SetUpBoard_F.setSize(new Dimension(m_ScreenWidth,m_ScreenHeight));
+        if(m_IsWindowed)
+        {
+            m_SetUpBoard_F.getRootPane().setWindowDecorationStyle(JRootPane.PLAIN_DIALOG);
+            m_SetUpBoard_F.setPreferredSize(new Dimension(m_ScreenWidth-2, m_ScreenHeight-2));
+        }else
+        {
+            m_SetUpBoard_F.getRootPane().setWindowDecorationStyle(JRootPane.NONE);
+        }
+        m_SetUpBoard_F.setLocation(0,0);
 	}
 	/**addElements
 	* add components to panels and

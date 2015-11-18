@@ -33,11 +33,11 @@ public class SinglePlayerWindow implements Serializable
     private LobbySlot m_Slots[];
 	private LoadAssets m_Assets;
 	
-    public SinglePlayerWindow(JFrame oldWindow ,LoadAssets assets)// constructer
+    public SinglePlayerWindow(JFrame oldWindow)// constructer
     {
-		m_Assets = assets;
+		m_Assets = Main.m_Assets;
         m_OldWindow = oldWindow;
-		
+        
 		createComponents();
 		
 		buildComponents();
@@ -113,7 +113,15 @@ public class SinglePlayerWindow implements Serializable
         //m_Header_L.setMaximumSize(new Dimension(1000, 40));
 		
 		m_SinglePlayer_F.setUndecorated(true);
-        m_SinglePlayer_F.getRootPane().setWindowDecorationStyle(JRootPane.NONE);
+        
+        if(MenuWindow.isWindowed())
+        {
+            m_SinglePlayer_F.getRootPane().setWindowDecorationStyle(JRootPane.PLAIN_DIALOG);
+        }else
+            m_SinglePlayer_F.getRootPane().setWindowDecorationStyle(JRootPane.NONE);
+        
+        m_SinglePlayer_F.setLocation(0,0);
+        
 		m_SinglePlayer_F.setLayout(new BorderLayout());
 		m_SinglePlayer_F.setSize(new Dimension(m_ScreenWidth,m_ScreenHeight));
 		
@@ -188,6 +196,7 @@ public class SinglePlayerWindow implements Serializable
 		m_SinglePlayer_F.pack();
 		
 		m_SinglePlayer_F.setVisible(true);
+        m_OldWindow.setVisible(false);
 	}
 	/**addActionListeners
 	* adds ActionListener, which wait till

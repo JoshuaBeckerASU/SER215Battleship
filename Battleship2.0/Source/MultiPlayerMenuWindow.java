@@ -35,10 +35,10 @@ public class MultiPlayerMenuWindow implements Serializable
     private GameClient_ m_Client;
     //private GameClient m_Client;
 	
-    public MultiPlayerMenuWindow(JFrame oldWindow, LoadAssets assets)// constructer
+    public MultiPlayerMenuWindow(JFrame oldWindow)// constructer
     {
         m_OldWindow_F = oldWindow;
-		m_Assets = assets;
+		m_Assets = Main.m_Assets;
 		
 		createComponents();
 		
@@ -63,7 +63,7 @@ public class MultiPlayerMenuWindow implements Serializable
 		m_Background_L = new JLabel(m_Assets.getImage("MenuBG"));
         m_MenuButton_L = new JLabel(m_Assets.getImage("MenuBox"));
 		
-		m_MultiPlayerMenu_F = new JFrame("Menu");
+		m_MultiPlayerMenu_F = new JFrame("MultiPlayer Menu");
 		
 		m_JoinGame_B = new JButton(m_Assets.getImage("JoinGameButton"));
 		m_BackToMainMenu_B = new JButton(m_Assets.getImage("MainMenuButton"));
@@ -83,7 +83,16 @@ public class MultiPlayerMenuWindow implements Serializable
         m_MenuButton_L.setSize(new Dimension(m_Assets.getImage("MenuBox").getIconWidth(),m_Assets.getImage("MenuBox").getIconHeight()));
 		
 		m_MultiPlayerMenu_F.setUndecorated(true);
-        m_MultiPlayerMenu_F.getRootPane().setWindowDecorationStyle(JRootPane.NONE);
+        if(MenuWindow.isWindowed())
+        {
+            m_MultiPlayerMenu_F.getRootPane().setWindowDecorationStyle(JRootPane.PLAIN_DIALOG);
+            m_MultiPlayerMenu_F.setPreferredSize(new Dimension(m_ScreenWidth-2, m_ScreenHeight-2));
+        }else
+        {
+            m_MultiPlayerMenu_F.getRootPane().setWindowDecorationStyle(JRootPane.NONE);
+        }
+        m_MultiPlayerMenu_F.setLocation(0,0);
+        
 		m_MultiPlayerMenu_F.setLayout(new BorderLayout());
 		m_MultiPlayerMenu_F.setSize(new Dimension(m_ScreenWidth,m_ScreenHeight));
 		
@@ -130,6 +139,8 @@ public class MultiPlayerMenuWindow implements Serializable
 		m_MultiPlayerMenu_F.pack();
 		
 		m_MultiPlayerMenu_F.setVisible(true);
+        
+        m_OldWindow_F.setVisible(false);
 	}
 	
 	/**addActionListeners

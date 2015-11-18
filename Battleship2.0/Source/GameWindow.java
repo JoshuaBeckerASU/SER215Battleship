@@ -151,8 +151,17 @@ public class GameWindow implements Serializable, Runnable
 		m_Boards_P.setMaximumSize(new Dimension(m_ScreenWidth,m_BOARD_HEIGHT));
 		
 		m_Game_F.setUndecorated(true);
-        m_Game_F.getRootPane().setWindowDecorationStyle(JRootPane.NONE);
-		m_Game_F.setSize(new Dimension(m_ScreenWidth,m_ScreenHeight));
+        
+        if(MenuWindow.isWindowed())
+        {
+            m_Game_F.getRootPane().setWindowDecorationStyle(JRootPane.FRAME);
+        }else
+        {
+            m_Game_F.getRootPane().setWindowDecorationStyle(JRootPane.NONE);
+            m_Game_F.setSize(new Dimension(m_ScreenWidth,m_ScreenHeight));
+        }
+        m_Game_F.setLocation(0,0);
+
 		updateActionConsole("Waiting for " + m_CurrentGame.getPlayer(0).getName() + " To Take Turn\n"
 						    + (5 - m_CurrentGame.getPlayer(0).getNumOfSelectedTargets()) + " Shots Left\n");
 	}

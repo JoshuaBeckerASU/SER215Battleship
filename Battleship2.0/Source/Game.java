@@ -153,15 +153,15 @@ public class Game implements Serializable
         if(m_Players[0].isHuman() && !m_Players[0].allShipsSet())
         {
             System.out.println("here");
-            m_SetUpBoard_W = new SetUpBoardWindow(m_Players[0], m_Assets);
+            m_SetUpBoard_W = new SetUpBoardWindow(m_Players[0]);
         }else if(m_Players.length > 1 && m_Players[1].isHuman() && !m_Players[1].allShipsSet() && !m_IsMultiplayer)
         {
             System.out.println("there");
-            m_SetUpBoard_W = new SetUpBoardWindow(m_Players[1], m_Assets);
+            m_SetUpBoard_W = new SetUpBoardWindow(m_Players[1]);
         }else if(m_Players.length > 2 && m_Players[2].isHuman() && !m_Players[2].allShipsSet() && !m_IsMultiplayer)
         {
             System.out.println("there");
-            m_SetUpBoard_W = new SetUpBoardWindow(m_Players[2], m_Assets);
+            m_SetUpBoard_W = new SetUpBoardWindow(m_Players[2]);
         }else
         {
             if(!m_IsMultiplayer)
