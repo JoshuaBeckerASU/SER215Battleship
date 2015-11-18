@@ -24,7 +24,7 @@ public class GameWindow implements Serializable, Runnable
 	private JTextArea m_ActionConsole_TA, m_Chat_TA, m_InsertChat_TA;
 	private JLabel m_CurrentPlayerStats_L, m_OtherPlayerStats_L, m_ChatBox_L;
 	private DefaultCaret m_ActionConsolesCaret;
-	private JScrollPane m_ActionConsole_SP;
+	private JScrollPane m_ActionConsole_SP, m_Chat_SP;
 	private JLabel m_Boards_P, m_PlayerOneStats, m_PlayerTwoStats;
 	private Game m_CurrentGame;
 	private LoadAssets m_Assets;
@@ -59,13 +59,14 @@ public class GameWindow implements Serializable, Runnable
 		m_BOARD_HEIGHT = m_Assets.getImage("GameBoard").getIconHeight();
 		
 		m_ActionConsole_TA = new JTextArea("", 1000, 20);
-		m_Chat_TA = new JTextArea("Press 't' to talk", 50, 4);
+		m_Chat_TA = new JTextArea("", 50, 5);
         m_InsertChat_TA = new JTextArea("",50,1);
         
         m_ChatBox_L = new JLabel();
 		
 		m_ActionConsolesCaret = new DefaultCaret();
 		m_ActionConsole_SP = new JScrollPane(m_ActionConsole_TA);
+        m_Chat_SP = new JScrollPane(m_Chat_TA);
 		
 		m_Background_L = new JLabel(m_Assets.getImage("GameBG"));
 		m_Footer_L = new JLabel(m_Assets.getImage("GameBoardBlank"));
@@ -102,7 +103,9 @@ public class GameWindow implements Serializable, Runnable
         
         m_ChatBox_L.setLayout(new BoxLayout(m_ChatBox_L, BoxLayout.Y_AXIS));
         m_ChatBox_L.setMaximumSize(new Dimension(200, 120));
-        m_ChatBox_L.setMinimumSize(new Dimension(200, 120));
+        m_ChatBox_L.setPreferredSize(new Dimension(200,120));
+        m_ChatBox_L.setMinimumSize(new Dimension(200, 60));
+        m_ChatBox_L.setAlignmentX(Component.CENTER_ALIGNMENT);
 		
 		m_Footer_L.setPreferredSize(new Dimension(m_ScreenWidth, 100));
 		m_Footer_L.setMaximumSize(new Dimension(m_ScreenWidth, 100));
@@ -124,23 +127,30 @@ public class GameWindow implements Serializable, Runnable
 		m_ActionConsole_SP.setMaximumSize(new Dimension((m_ScreenWidth -(m_BOARD_WIDTH*2))/3 + 60, m_BOARD_HEIGHT));
 		m_ActionConsole_SP.setMinimumSize(new Dimension((m_ScreenWidth -(m_BOARD_WIDTH*2))/3 + 30, m_BOARD_HEIGHT));
 		m_ActionConsole_SP.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
+        
+        m_Chat_SP.setPreferredSize(new Dimension(300, 100));
+        m_Chat_SP.setMaximumSize(new Dimension(300, 100));
+        m_Chat_SP.setMinimumSize(new Dimension(300, 80));
+        m_Chat_SP.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED );
+        m_Chat_SP.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 		
 		m_ActionConsolesCaret.setUpdatePolicy(DefaultCaret.ALWAYS_UPDATE);
 		m_ActionConsole_TA.setCaret(m_ActionConsolesCaret);
 		
-		m_Chat_TA.setPreferredSize(new Dimension(200, 100));
-		m_Chat_TA.setMaximumSize(new Dimension(200, 100));
+		m_Chat_TA.setPreferredSize(new Dimension(300, 100));
+		m_Chat_TA.setMaximumSize(new Dimension(300, 150));
+        m_Chat_TA.setMinimumSize(new Dimension(300, 80));
 		m_Chat_TA.setEditable(false);
 		m_Chat_TA.setAlignmentX(Component.CENTER_ALIGNMENT);
 		m_Chat_TA.setBackground(new Color(4, 9, 15));
 		m_Chat_TA.setForeground(Color.WHITE);
         
-        m_InsertChat_TA.setPreferredSize(new Dimension(200, 20));
-        m_InsertChat_TA.setMaximumSize(new Dimension(200, 20));
-        m_InsertChat_TA.setEditable(false);
+        m_InsertChat_TA.setPreferredSize(new Dimension(300, 5));
+        m_InsertChat_TA.setMaximumSize(new Dimension(300, 5));
+        m_InsertChat_TA.setEditable(true);
         m_InsertChat_TA.setAlignmentX(Component.CENTER_ALIGNMENT);
-        m_InsertChat_TA.setBackground(Color.WHITE);
-        m_InsertChat_TA.setForeground(Color.BLACK);
+        m_InsertChat_TA.setBackground(Color.BLUE);
+        m_InsertChat_TA.setForeground(Color.WHITE);
 		
 		m_CurrentPlayerStats_L.setLayout(new BoxLayout(m_CurrentPlayerStats_L, BoxLayout.Y_AXIS));
 		m_OtherPlayerStats_L.setLayout(new BoxLayout(m_OtherPlayerStats_L, BoxLayout.Y_AXIS));
@@ -201,10 +211,10 @@ public class GameWindow implements Serializable, Runnable
 		m_Header_L.add(m_PlayerOneStats);
 		m_Header_L.add(m_PlayerTwoStats);
         
-        m_ChatBox_L.add(m_Chat_TA);
+        m_ChatBox_L.add(m_Chat_SP);
         m_ChatBox_L.add(m_InsertChat_TA);
 		
-		m_Footer_L.add(m_ChatBox_L, BorderLayout.WEST);
+		m_Footer_L.add(m_ChatBox_L, BorderLayout.CENTER);
 		
 		m_Background_L.add(m_Header_L, BorderLayout.NORTH);
 		//m_Background_L.add(new JLabel("\n"));
@@ -284,6 +294,14 @@ public class GameWindow implements Serializable, Runnable
                         break;
                 case "W": m_CurrentGame.gameOver();
                         break;
+                case "ENTER CHAT":
+                                String tmp = m_InsertChat_TA.getText();
+                                if(tmp != "")
+                                {
+                                    m_CurrentGame.sendMessage(new String(tmp));
+                                }
+                                m_InsertChat_TA.setText("");
+                        break;
 			}
 		}
     }
@@ -299,7 +317,19 @@ public class GameWindow implements Serializable, Runnable
         m_Background_L.getActionMap().put( "W", new KeyAction("W"));
 		m_ActionConsole_TA.getInputMap().put(KeyStroke.getKeyStroke("ESCAPE"),"EXIT");
 		m_ActionConsole_TA.getActionMap().put( "EXIT", new KeyAction("EXIT"));
-
+        
+        if(m_CurrentGame.isMultiplayer())
+        {
+            m_Background_L.getInputMap().put(KeyStroke.getKeyStroke("ENTER"),"ENTER");
+            m_Background_L.getActionMap().put( "ENTER", new KeyAction("ENTER CHAT"));
+            m_InsertChat_TA.getInputMap().clear();
+            m_InsertChat_TA.getInputMap().put(KeyStroke.getKeyStroke("ENTER"),"ENTER");
+            m_InsertChat_TA.getActionMap().put( "ENTER", new KeyAction("ENTER CHAT"));
+            m_InsertChat_TA.getInputMap().put(KeyStroke.getKeyStroke("ESCAPE"),"EXIT");
+            m_InsertChat_TA.getActionMap().put( "EXIT", new KeyAction("EXIT"));
+            m_ChatBox_L.getInputMap().put(KeyStroke.getKeyStroke("ESCAPE"),"EXIT");
+            m_ChatBox_L.getActionMap().put( "EXIT", new KeyAction("EXIT"));
+        }
 	}
 	
 	private JLabel updatePlayerStats(Player player, JLabel stats, int fleetHealth)
@@ -342,11 +372,15 @@ public class GameWindow implements Serializable, Runnable
     }
 	public void updateChatConsole(Player player, String message)
 	{
-		m_Chat_TA.append("\n"+ player.getName() + " says " + message + "\n");
+		m_Chat_TA.append("\n"+ player.getName() + " -> " + message + "\n");
 	}
 	public void updateChatConsole(String message)
 	{
-		m_Chat_TA.append("\n"+ m_CurrentGame.getCurrentPlayer().getName() + " says " + message + "\n");
+		m_Chat_TA.append("-> " + message + "\n");
+		m_Chat_TA.setCaretPosition(m_Chat_TA.getDocument().getLength());
+		m_Chat_TA.setVisible(true);
+		m_InsertChat_TA.setCaretPosition(m_InsertChat_TA.getDocument().getLength());
+		m_InsertChat_TA.setVisible(true);
 	}
 	public void updateActionConsole(String message)
 	{

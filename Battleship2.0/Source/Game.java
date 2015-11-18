@@ -115,7 +115,10 @@ public class Game implements Serializable
 		m_TargetLoc = new Location[5];
         m_CurrentGame = this;
 	}
-    
+    public void sendMessage(String message)
+    {
+        m_Client.sendMessage(new String(message));
+    }
     public void setBoardObject(Board board)
     {
         m_Players[1].setBoardObject(board);
@@ -150,6 +153,7 @@ public class Game implements Serializable
         m_GameWindow = new GameWindow(m_CurrentGame, m_Assets);
         m_OldWindow = m_GameWindow.getFrame();
         
+        m_Client.setGameWindow(m_GameWindow);
         nextTurn();
 	}
     public boolean isMultiplayer()

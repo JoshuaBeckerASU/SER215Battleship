@@ -1,3 +1,16 @@
+/******************************
+* @file: GameServer_.java
+* @author: Joshua Becker, NOTE: I used some of the code from the
+*                               Server example posted on blackboard
+* @date:
+* @description:
+* 
+* @index
+* [
+*     m_: for member variables
+*     g_: for global variables
+* ]
+*******************************/
 import java.io.*;
 import java.net.*;
 import java.util.*;
@@ -6,9 +19,13 @@ import javax.swing.*;
 
 public class GameServer_ extends JFrame
 {
-
+    private ObjectOutputStream toChatPlayerOne;
+    private ObjectOutputStream toChatPlayerTwo;
+    
+    private Socket m_ChatSocketOne;
+    private Socket m_ChatSocketTwo;
     // Text area for displaying contents
-    private JTextArea jta = new JTextArea();
+    private JTextArea ServerConsole = new JTextArea();
     
     public static void main(String[] args) {
         new GameServer_();
@@ -19,7 +36,7 @@ public class GameServer_ extends JFrame
     
         // Place text area on the frame
         setLayout(new BorderLayout());
-        add(new JScrollPane(jta), BorderLayout.CENTER);
+        add(new JScrollPane(ServerConsole), BorderLayout.CENTER);
         setTitle("GameServer_");
         setSize(500, 300);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -31,28 +48,44 @@ public class GameServer_ extends JFrame
     
             // Create a server socket
             ServerSocket serverSocket = new ServerSocket(8000);
-            jta.append("GameServer_ started at " + new Date() + '\n');
+            ServerConsole.append("GameServer_ started at " + new Date() + '\n');
         
             // Listen for a connection request
-            jta.append("\nSearching for Players... \n");
+            ServerConsole.append("\nSearching for Players... \n");
             Socket socket1 = serverSocket.accept();
-            jta.append("\nConnected Player One: \n");
+            
+            ServerConsole.append("\nConnecting to chat service\n");
+            m_ChatSocketOne = serverSocket.accept();
+            
+            ServerConsole.append("\nConnected Player One: \n");
+            
             Socket socket2 = serverSocket.accept();
-            jta.append("\nConnected Player Two: \n");
+            
+            ServerConsole.append("\nConnecting to chat service\n");
+            m_ChatSocketTwo = serverSocket.accept();
+            
+            ServerConsole.append("\nConnected Player Two: \n");
         
             // Create Object input and output streams
-            jta.append("\nCreate InputStream Player One: \n");
+            ServerConsole.append("\nCreate InputStream Player One: \n");
             ObjectInputStream fromPlayerOne = new ObjectInputStream(socket1.getInputStream());
+            ObjectInputStream fromChatPlayerOne = new ObjectInputStream(m_ChatSocketOne.getInputStream());
             
-            jta.append("\nCreate OutputStream Player One: \n");
+            ServerConsole.append("\nCreate OutputStream Player One: \n");
             ObjectOutputStream toPlayerOne = new ObjectOutputStream(socket1.getOutputStream());
+            toChatPlayerOne = new ObjectOutputStream(m_ChatSocketOne.getOutputStream());
             
-            jta.append("\nCreate InputStream Player Two: \n");
+            ServerConsole.append("\nCreate InputStream Player Two: \n");
             ObjectInputStream fromPlayerTwo = new ObjectInputStream(socket2.getInputStream());
+            ObjectInputStream fromChatPlayerTwo = new ObjectInputStream(m_ChatSocketTwo.getInputStream());
             
-            jta.append("\nCreate OutputStream Player Two: \n");
+            ServerConsole.append("\nCreate OutputStream Player Two: \n");
             ObjectOutputStream toPlayerTwo = new ObjectOutputStream(socket2.getOutputStream());
-            
+            toChatPlayerTwo = new ObjectOutputStream(m_ChatSocketTwo.getOutputStream());
+
+            ChatService chatService = new ChatService(fromChatPlayerOne, fromChatPlayerTwo);
+            Thread chat = new Thread(chatService);
+            chat.start();
             
             while (true) 
             {
@@ -62,14 +95,14 @@ public class GameServer_ extends JFrame
                 Thread one = new Thread(gtBrdOne);
                 Thread two = new Thread(gtBrdTwo);
                 // Receive radius from the client
-                jta.append("\nWaiting For Boards...: \n");
+                ServerConsole.append("\nWaiting For Boards...: \n");
                 one.start();
                 two.start();
                 while(one.isAlive() || two.isAlive())
                 {
                     
                 }
-                jta.append("\nGot Boards...: \n");
+                ServerConsole.append("\nGot Boards...: \n");
                 
                 for(int i = 0; i < 5; i++)
                 {
@@ -87,9 +120,9 @@ public class GameServer_ extends JFrame
                         for(int i = 0; i < 5; i++)
                         {
                             Location hitLoc = (Location) fromPlayerOne.readObject();
-                            jta.append("\nLocation Receive from Player One: " + hitLoc + '\n');
+                            ServerConsole.append("\nLocation Receive from Player One: " + hitLoc + '\n');
                             toPlayerTwo.writeObject(hitLoc);
-                            jta.append("\nLocation sent too Player One: " + hitLoc + '\n');
+                            ServerConsole.append("\nLocation sent too Player One: " + hitLoc + '\n');
                         }
                         turn = false;
                     }else
@@ -97,9 +130,9 @@ public class GameServer_ extends JFrame
                         for(int i = 0; i < 5; i++)
                         {
                             Location hitLoc = (Location) fromPlayerTwo.readObject();
-                            jta.append("\nLocation Receive from Player Two: " + hitLoc + '\n');
+                            ServerConsole.append("\nLocation Receive from Player Two: " + hitLoc + '\n');
                             toPlayerOne.writeObject(hitLoc);
-                            jta.append("\nLocation sent too Player One: " + hitLoc + '\n');
+                            ServerConsole.append("\nLocation sent too Player One: " + hitLoc + '\n');
                         }
                         turn = true;
                     }
@@ -134,7 +167,7 @@ public class GameServer_ extends JFrame
                 for(int i = 0; i < 5; i++)
                 {
                     m_Board[i] = (Location) m_FromPlayer.readObject();
-                    jta.append("\n got Location: " + m_Board[i]);
+                    ServerConsole.append("\n got Location: " + m_Board[i]);
                 }
                     
             }catch(IOException e)
@@ -153,41 +186,58 @@ public class GameServer_ extends JFrame
             return m_Board;
         }
     }
-    /*
-    private class ChatService implements Runnable{
-        private ObjectInputStream fromClient1;
-        private ObjectOutputStream toClient1;
-        private ObjectInputStream fromClient2;
-        private ObjectOutputStream toClient2;
 
-        public ChatService(ObjectInputStream ois1,ObjectOutputStream oos1,ObjectInputStream ois2,ObjectOutputStream oos2){
-            fromClient1=ois1;
-            toClient1=oos1;
-
-            fromClient2=ois2;
-            toClient2=oos2;
+    private class ChatService implements Runnable
+    {
+        private String m_Message;
+        private MessageListener playerOne_ML;
+        private MessageListener playerTwo_ML;
+        private ObjectInputStream m_FromPlayerOneChat;
+        private ObjectInputStream m_FromPlayerTwoChat;
+        public ChatService(ObjectInputStream fromChat, ObjectInputStream fromChat2)
+        {
+            m_FromPlayerOneChat = fromChat;
+            m_FromPlayerTwoChat = fromChat2;
         }
 
-        public void run(){
-            MessageListener clientListener1=new MessageListener(fromClient1);
-            MessageListener clientListener2=new MessageListener(fromClient2);
+        public void run()
+        {
+            playerOne_ML=new MessageListener(m_FromPlayerOneChat);
+            playerTwo_ML=new MessageListener(m_FromPlayerTwoChat);
 
-            Thread listener1=new Thread(clientListener1);
-            Thread listener2=new Thread(clientListener2);
-
-            while(listener1.isAlive() || listener2.isAlive()){
-                if(!(listener1.isAlive())){
-                    String message=clientListener1.getMessage();
-                    toPlayerTwo.writeObject(new String(message));
-                    listener1.start();
+            Thread listener1=new Thread(playerOne_ML);
+            Thread listener2=new Thread(playerTwo_ML);
+            
+            listener1.start();
+            listener2.start();
+            try
+            {
+                while(true)
+                {
+                    if(!(listener1.isAlive()))
+                    {
+                        m_Message =playerOne_ML.getMessage();
+                        ServerConsole.append("\nPlayer One Has a Message = " + m_Message + '\n');
+                        toChatPlayerTwo.writeObject(new String(m_Message));
+                        toChatPlayerOne.writeObject(new String(m_Message));
+                        listener1=new Thread(playerOne_ML);
+                        listener1.start();
+                    }
+                    if(!(listener2.isAlive()))
+                    {
+                        String m_Message=playerTwo_ML.getMessage();
+                        ServerConsole.append("\nPlayer Two Has a Message = " + m_Message + '\n');
+                        toChatPlayerTwo.writeObject(new String(m_Message));
+                        toChatPlayerOne.writeObject(new String(m_Message));
+                        listener2=new Thread(playerTwo_ML);
+                        listener2.start();
+                    }
                 }
-                else if(!(listener2.isAlive())){
-                    String message=clientListener2.getMessage();
-                    toPlayerOne.writeObject(new String(message));
-                    listener2.start();
-                }
-        }
-
+            }catch(IOException e)
+            {
+                System.out.println("IOException in run of ChatService");
+                System.err.println(e);
+            }
         }
 
         private class MessageListener implements Runnable{
@@ -204,9 +254,24 @@ public class GameServer_ extends JFrame
                 return message;
             }
 
-            public void run(){
-                message=(String)fromClient.readObject();
-            }
+            public void run()
+            {
+                try
+                {
+                    System.out.println("WAITING FOR MESSAGE");
+                    message=(String)fromClient.readObject();
+                    System.out.println("GOT A MESSAGE");
+                }catch(IOException e)
+                {
+                    System.out.println("IOException in run of MessageListener");
+                    System.err.println(e);
+                }catch(ClassNotFoundException e)
+                {
+                    System.out.println("ClassNotFoundException in run of MessageListener");
+                    System.err.println(e);
+                }
+                    
+                }
         }
-    }*/
+    }
 }

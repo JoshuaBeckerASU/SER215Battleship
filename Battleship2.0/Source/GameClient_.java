@@ -18,15 +18,29 @@ import javax.swing.*;
 
 public class GameClient_ implements Runnable
 {
-    // IO streams
+    
     private Socket m_Socket;
+    private Socket m_ChatSocket;
+    
     private ObjectOutputStream toServer;
     private ObjectInputStream fromServer;
-    private Location m_Location;
+    private ObjectInputStream fromChatServer;
+    private ObjectOutputStream toChatServer;
+    private GameWindow m_GameWindow;//for chat
+    private String m_IP;
+    private Thread m_ChatServiceThread;
+    private ChatService m_ChatService;
+    private int m_Port;
     
     public GameClient_() 
     {
-
+        m_IP = "10.143.109.147";
+        m_Port = 8000;
+    }
+    public GameClient_(String ip, int port) 
+    {
+        m_IP = ip;
+        m_Port = port;
     }
     public ObjectInputStream getInputStream()
     {
@@ -36,73 +50,80 @@ public class GameClient_ implements Runnable
     {
         return toServer;
     }
-    
-    private class ChatService implements Runnable
+    public void setGameWindow(GameWindow gameWindow)
     {
-        private ObjectInputStream fromServer;
-        private ObjectOutputStream toServer;
-        
-        public ChatService(ObjectInputStream ois,ObjectOutputStream oos){
-            fromServer=ois;
-            toServer=oos;
-
-        }
-
-        public void run()
+        m_GameWindow = gameWindow;
+    }
+    
+    public void sendMessage(String message)
+    {
+        try
         {
-            MessageListener chatListener=new MessageListener(fromServer);
-            
-
-            Thread listener=new Thread(chatListener);
+            System.out.println("Sending a message..." + message);
+            toChatServer.writeObject(new String (message));
+            toChatServer.flush();
+        }catch(IOException e)
+        {
+            System.out.println("IOException in sendMessage");
+            System.err.println(e);
+            System.exit(1);
+        }  
+    }
+    
+    public void run()
+    {
+        try 
+        {
+            System.out.println("Connecting...");
             try
             {
-                while(listener.isAlive())
-                {
-                    if(!(listener.isAlive()))
-                    {
-                        String message=chatListener.getMessage();
-                        toServer.writeObject(new String(message));
-                        listener.start();
-                    }
-                    
-                }
-            }catch(IOException e)
+                m_Socket = new Socket(m_IP, m_Port);
+                
+                System.out.println("Connecting to ChatService...");
+                m_ChatSocket = new Socket(m_IP, m_Port);
+                System.out.println("\nConnected to ChatService...");
+            }catch(java.net.ConnectException e)
             {
-                System.out.println("IOException in ChatService");
+                System.out.println("Not able to cennect to server");
                 System.err.println(e);
                 System.exit(1);
             }
+                
+            System.out.println("Connected...");
+            
+            System.out.println("Getting OutputStream Stream From server...");
+            toServer =  new ObjectOutputStream(m_Socket.getOutputStream());
+            toChatServer = new ObjectOutputStream(m_ChatSocket.getOutputStream());
+            toChatServer.flush();
+            
+            System.out.println("Getting Input Stream From server...");
+            fromServer = new ObjectInputStream(m_Socket.getInputStream());
+            fromChatServer = new ObjectInputStream(m_ChatSocket.getInputStream());
+            
+            m_ChatService = new ChatService();
+            m_ChatServiceThread = new Thread(m_ChatService);
+            m_ChatServiceThread.start();
         }
- 
-        public ObjectInputStream getChatInputStream()
+        catch (IOException ex) {
+            System.err.print(ex);
+        }
+    }
+    
+    private class ChatService implements Runnable
+    {
+        private String m_Message;
+        public ChatService()
         {
-          return fromServer;
         }
         
-        public ObjectOutputStream getChatOutputStream(){
-          return toServer;
-        }
-
-        private class MessageListener implements Runnable
+        public void run()
         {
-
-            private ObjectInputStream fromServer;
-            private String message;
-
-            public MessageListener(ObjectInputStream ois){
-                fromServer=ois;
-                message="";
-            }
-
-            public String getMessage(){
-                return message;
-            }
-
-            public void run()
+            while(true)
             {
                 try
                 {
-                    message=(String)fromServer.readObject();
+                    m_Message=(String)fromChatServer.readObject();
+                    System.out.println("GOT A MESSAGE FOR YEAH");
                 }catch(IOException e)
                 {
                     System.out.println("IOException in MessageListener");
@@ -114,41 +135,8 @@ public class GameClient_ implements Runnable
                     System.err.println(e);
                     System.exit(1);
                 }
+                m_GameWindow.updateChatConsole(m_Message);
             }
-        }
-    }
-    public void run()
-    {
-        try 
-        {
-    
-            // Create a socket to connect to the server
-            System.out.println("Connecting...");
-            try
-            {
-                m_Socket = new Socket("10.142.111.41", 8000);
-            }catch(java.net.ConnectException e)
-            {
-                System.out.println("Not able to cennect to server");
-                System.err.println(e);
-                System.exit(1);
-            }
-                
-            System.out.println("Connected...");
-            // Create an input stream to receive Object from the server
-    
-        
-            // Create an output stream to send Object to the server
-            System.out.println("Getting OutputStream Stream From server...");
-            toServer =  new ObjectOutputStream( m_Socket.getOutputStream() );
-            
-            System.out.println("Getting Input Stream From server...");
-            fromServer = new ObjectInputStream( m_Socket.getInputStream() );
-            
-            
-        }
-        catch (IOException ex) {
-            System.err.print(ex);
         }
     }
 }

@@ -194,7 +194,7 @@ public class MultiPlayerMenuWindow implements Serializable
                         m_Client = new GameClient_();
                         Thread thread = new Thread(m_Client);
                         
-                        WaitForConnection wfc = new WaitForConnection(new JFrame());
+                        //WaitForConnection wfc = new WaitForConnection(new JFrame());
                         //Thread wfcThread = new Thread(wfc);
                         
                         //wfcThread.start();
@@ -205,7 +205,7 @@ public class MultiPlayerMenuWindow implements Serializable
                             
                         }
                         
-                        m_Game = new Game(-1, m_LSlots);
+                        m_Game = new Game(m_Client, m_LSlots);
                         m_Game.setUpGame(m_Game);
                         m_MultiPlayerMenu_F.dispose();
                     break;
