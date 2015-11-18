@@ -16,7 +16,7 @@ import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 
-public class GameClient_
+public class GameClient_ implements Runnable
 {
     // IO streams
     private Socket m_Socket;
@@ -26,37 +26,7 @@ public class GameClient_
     
     public GameClient_() 
     {
-        try 
-        {
-    
-            // Create a socket to connect to the server
-            System.out.println("Connecting...");
-            try
-            {
-                m_Socket = new Socket("10.142.111.41", 8000);
-            }catch(java.net.ConnectException e)
-            {
-                System.out.println("Not able to cennect to server");
-                System.err.println(e);
-                System.exit(1);
-            }
-                
-            System.out.println("Connected...");
-            // Create an input stream to receive Object from the server
-    
-        
-            // Create an output stream to send Object to the server
-            System.out.println("Getting OutputStream Stream From server...");
-            toServer =  new ObjectOutputStream( m_Socket.getOutputStream() );
-            
-            System.out.println("Getting Input Stream From server...");
-            fromServer = new ObjectInputStream( m_Socket.getInputStream() );
-            
-            
-        }
-        catch (IOException ex) {
-            System.err.print(ex);
-        }
+
     }
     public ObjectInputStream getInputStream()
     {
@@ -145,6 +115,40 @@ public class GameClient_
                     System.exit(1);
                 }
             }
+        }
+    }
+    public void run()
+    {
+        try 
+        {
+    
+            // Create a socket to connect to the server
+            System.out.println("Connecting...");
+            try
+            {
+                m_Socket = new Socket("10.142.111.41", 8000);
+            }catch(java.net.ConnectException e)
+            {
+                System.out.println("Not able to cennect to server");
+                System.err.println(e);
+                System.exit(1);
+            }
+                
+            System.out.println("Connected...");
+            // Create an input stream to receive Object from the server
+    
+        
+            // Create an output stream to send Object to the server
+            System.out.println("Getting OutputStream Stream From server...");
+            toServer =  new ObjectOutputStream( m_Socket.getOutputStream() );
+            
+            System.out.println("Getting Input Stream From server...");
+            fromServer = new ObjectInputStream( m_Socket.getInputStream() );
+            
+            
+        }
+        catch (IOException ex) {
+            System.err.print(ex);
         }
     }
 }

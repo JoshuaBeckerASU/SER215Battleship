@@ -232,7 +232,7 @@ public class SinglePlayerWindow implements Serializable
 					break;
 				case "StartGame":
                         m_OldWindow.dispose();
-                        m_Game = new Game(m_Slots[0].getDiff().getSelectedIndex(),m_Slots, m_Assets);
+                        m_Game = new Game(m_Slots[0].getDiff().getSelectedIndex(),m_Slots);
                         m_Game.setUpGame(m_Game);
 					break;
 			}

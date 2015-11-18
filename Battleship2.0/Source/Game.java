@@ -88,20 +88,28 @@ public class Game implements Serializable
 	{
 		
 	}
-	Game(int difficulty, LobbySlot slots[], LoadAssets assets)
+	Game(int difficulty, LobbySlot slots[])//SInglePlayer
 	{
-		m_Assets = assets;
+		m_Assets = Main.m_Assets;
         m_Slots = slots;
-        if(difficulty == MULTIPLAYERGAME)
-        {
-            m_difficulty = 1;
-            m_IsMultiplayer = true;
-            m_Client = new GameClient_();
-        }else
-        {
-            m_difficulty = difficulty;
-            m_IsMultiplayer = false;
-        }
+        
+        m_difficulty = difficulty;
+        m_IsMultiplayer = false;
+        
+		m_CurrentPlayerIndex = 0;
+		m_NumOfGames = 0;
+		m_TargetLoc = new Location[5];
+        m_CurrentGame = this;
+	}
+	Game(GameClient_ client, LobbySlot slots[])//MultiPlayer
+	{
+		m_Assets = Main.m_Assets;
+        m_Slots = slots;
+
+        m_difficulty = 1;
+        m_IsMultiplayer = true;
+        m_Client = client;
+        
 		m_CurrentPlayerIndex = 0;
 		m_NumOfGames = 0;
 		m_TargetLoc = new Location[5];
