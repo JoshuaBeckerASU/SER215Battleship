@@ -5,6 +5,8 @@
 * @date:
 * @description:
 * 
+* @contributors:Alec Shinn
+* 
 * @index
 * [
 *     m_: for member variables
@@ -106,8 +108,8 @@ public class GameServer_ extends JFrame
                 
                 for(int i = 0; i < 5; i++)
                 {
-                    toPlayerOne.writeObject(gtBrdTwo.getBoard()[i]);
-                    toPlayerTwo.writeObject(gtBrdOne.getBoard()[i]);
+                    toPlayerOne.writeObject(new Ship(gtBrdTwo.getShips()[i]));
+                    toPlayerTwo.writeObject(new Ship(gtBrdOne.getShips()[i]));
                 }
 
                 
@@ -153,12 +155,12 @@ public class GameServer_ extends JFrame
     
     private class getBoardFromPlayer implements Runnable
     {
-        private Location m_Board[];
+        private Ship m_Ship[];
         private ObjectInputStream m_FromPlayer;
         getBoardFromPlayer(ObjectInputStream from)
         {
             m_FromPlayer = from;
-            m_Board = new Location[5];
+            m_Ship = new Ship[5];
         }
         public void run()
         {
@@ -166,8 +168,9 @@ public class GameServer_ extends JFrame
             {
                 for(int i = 0; i < 5; i++)
                 {
-                    m_Board[i] = (Location) m_FromPlayer.readObject();
-                    ServerConsole.append("\n got Location: " + m_Board[i]);
+                    ServerConsole.append("\n Getting ship");
+                    m_Ship[i] = (Ship) m_FromPlayer.readObject();
+                    ServerConsole.append("\n got Ship: " + m_Ship[i].getName());
                 }
                     
             }catch(IOException e)
@@ -181,9 +184,9 @@ public class GameServer_ extends JFrame
             }
                 
         }
-        public Location[] getBoard()
+        public Ship[] getShips()
         {
-            return m_Board;
+            return m_Ship;
         }
     }
 

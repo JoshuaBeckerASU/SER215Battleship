@@ -236,6 +236,18 @@ public class SetUpBoardWindow implements Serializable
 							m_CurrentPlayer.flipAxis(m_CurrentShip);
 							break;
 					case "ENTER":
+                            if(Game.getCurrentGame().isMultiplayer())
+                            {
+                                try
+                                {
+                                    Game.getCurrentGame().m_Client.getOutputStream().writeObject(new Ship(m_CurrentShip));
+                                }catch(IOException e)
+                                {
+                                    System.out.println("IOException in actionPerformed");
+                                    System.err.println(e);
+                                    System.exit(1);
+                                }
+                            }
                             int x = m_CurrentShip.x();
                             int y = m_CurrentShip.y();
 							m_CurrentPlayer.addToTaken(x,y,m_CurrentShip);
@@ -248,28 +260,23 @@ public class SetUpBoardWindow implements Serializable
 								// DELETE MEMU BUTTONS AND THINGS...
 							}else if(m_CurrentPlayer.allShipsSet())
                             {
-                                try
-                                {
-                                System.out.println(m_CurrentPlayer.getName() + " set Location: " +  x +"  "+ y);
-                                Game.getCurrentGame().m_Client.getOutputStream().writeObject(new Location(x,y));
                                 m_CurrentPlayer = Game.getCurrentGame().getPlayer(1);
                                 if(Game.getCurrentGame().isMultiplayer())
                                 {
-
+                                    try
+                                    {
                                         System.out.println("Getting Ship Locations...");
                                         for(int i = 0; i < 5; i++)
                                         {
-                                            Location shipLoc  = ((Location) Game.getCurrentGame().m_Client.getInputStream().readObject());
-                                            System.out.println(m_CurrentPlayer.getName() + " set Location: " +  shipLoc);
-                                            m_CurrentPlayer.updateBoard(m_CurrentPlayer.getShip(i), shipLoc.x(), shipLoc.y(), "SETTING");
-                                            m_CurrentPlayer.addToTaken(shipLoc.x(),shipLoc.y(),m_CurrentPlayer.getShip(i));
-                                            m_CurrentPlayer.setNextShip();
+                                            Ship ship  = ((Ship) Game.getCurrentGame().m_Client.getInputStream().readObject());
+                                            m_CurrentPlayer.setShip(i,ship);
+                                            //m_CurrentPlayer.updateBoard(ship,ship.x(),ship.y(),"SELECT");
+                                            m_CurrentPlayer.addToTaken(ship.x(),ship.y(),ship);
+                                            //m_CurrentPlayer.setNextShip();
                                         }
                                         Game.getCurrentGame().setUpBoards();
                                         m_SetUpBoard_F.dispose();
-                                }
-                                }
-                                catch(IOException e)
+                                    }catch(IOException e)
                                     {
                                         System.out.println("IOException in KeyAction");
                                         System.err.println(e);
@@ -280,19 +287,6 @@ public class SetUpBoardWindow implements Serializable
                                         System.err.println(e);
                                         System.exit(1);
                                     }
-                                
-                            }else if(Game.getCurrentGame().isMultiplayer())
-                            {
-                                try
-                                {
-                                    System.out.println("Locaion " + x + " " + y);
-                                    Game.getCurrentGame().m_Client.getOutputStream().writeObject(new Location(x,y));
-                                }
-                                catch(IOException e)
-                                {
-                                    System.out.println("IOException in KeyAction");
-                                    System.err.println(e);
-                                    System.exit(1);
                                 }
                             }
 							break;

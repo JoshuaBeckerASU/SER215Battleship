@@ -53,7 +53,24 @@ public class Ship implements Serializable
 			System.out.println(name + " was not found");
 		}
 	}
-	
+    Ship(Ship ship)
+    {
+        m_Name = ship.getName();
+        m_Length = ship.getLength();
+        m_Lives = ship.getLives();
+        m_Location = ship.getLocation();
+        m_Orientation = ship.getAxis();
+        image_X = ship.getImageX();
+        image_Y = ship.getImageY();
+    }
+	public ImageIcon getImageX()
+    {
+        return image_X;
+    }
+    public ImageIcon getImageY()
+    {
+        return image_Y;
+    }
 	public String getName()
 	{
 		return m_Name;

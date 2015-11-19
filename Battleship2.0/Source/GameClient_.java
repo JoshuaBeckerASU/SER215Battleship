@@ -34,7 +34,7 @@ public class GameClient_ implements Runnable
     
     public GameClient_() 
     {
-        m_IP = "10.143.109.147";
+        m_IP = "10.143.111.97";
         m_Port = 8000;
     }
     public GameClient_(String ip, int port) 

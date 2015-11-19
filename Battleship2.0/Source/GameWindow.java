@@ -189,10 +189,10 @@ public class GameWindow implements Serializable, Runnable
         if(m_CurrentGame.isMultiplayer())
         for(int i = 0; i < 5; i++)
         {
-            m_CurrentGame.getPlayer(1).getBoardObject().updateBoard(m_CurrentGame.getPlayer(1).getShip(i), m_CurrentGame.getPlayer(1).getShip(i).getLocation().x(),m_CurrentGame.getPlayer(1).getShip(i).getLocation().y()-1,"SELECT");
+            //m_CurrentGame.getPlayer(1).getBoardObject().updateBoard(m_CurrentGame.getPlayer(1).getShip(i), m_CurrentGame.getPlayer(1).getShip(i).getLocation().x(),m_CurrentGame.getPlayer(1).getShip(i).getLocation().y()-1,"SELECT");
         }
         
-		JPanel board2 = m_CurrentGame.getPlayer(1).getBoardHide();
+		JPanel board2 = m_CurrentGame.getPlayer(1).getBoard();
 	
 		m_Boards_P.setAlignmentX(Component.CENTER_ALIGNMENT);
 		m_Footer_L.setAlignmentX(Component.CENTER_ALIGNMENT);

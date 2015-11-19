@@ -335,7 +335,7 @@ public class Board implements Serializable
 			shipL.setMaximumSize(new Dimension(ship.getLength()*m_boardWidth/m_NUM_OF_COL, m_boardHight/m_NUM_OF_ROWS));
 			shipL.setPreferredSize(new Dimension(ship.getLength()*m_boardWidth/m_NUM_OF_COL, m_boardHight/m_NUM_OF_ROWS));
 			shipL.setMinimumSize(new Dimension(ship.getLength()*m_boardWidth/m_NUM_OF_COL, m_boardHight/m_NUM_OF_ROWS));
-			System.out.println("LOC: X = " + x + " Y = " + y);
+			//System.out.println("LOC: X = " + x + " Y = " + y);
 			m_GameBoard_X_L[y].remove(x);
 			m_GameBoard_X_L[y].add(shipL,x);
 			

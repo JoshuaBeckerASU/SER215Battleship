@@ -342,21 +342,21 @@ public class Game implements Serializable
         {
             try
             {
-                System.out.println("Taking multiplayer turns");
+                m_GameWindow.resetActionConsole();
                 m_Players[0].disableBoard();
                 m_Players[1].disableBoard();
-                System.out.println("Waiting for server boolean values");
+                //System.out.println("Waiting for server boolean values");
                 m_Turn = (boolean) m_Client.getInputStream().readObject();
                 
                 if(m_Turn)
                 {
                     m_Players[1].enableBoard();
-                    System.out.println("Your Players turn");
+                    //System.out.println("Your Players turn");
                     m_CurrentPlayer = m_Players[0];
                     m_CurrentPlayerIndex = 0;
                 }else
                 {
-                    System.out.println("Other Players turn");
+                    //System.out.println("Other Players turn");
                     m_CurrentPlayerIndex = 1;
                     m_CurrentPlayer = m_Players[1];
                     getShotsFromServer();
@@ -394,10 +394,8 @@ public class Game implements Serializable
     }
     public void multiPlayerSelTarget(int x, int y, Player playerOffence, Player playerDefence, boolean player,int shotNum)
     {
-        m_GameWindow.resetActionConsole();
-        System.out.println("MultiPlayerSelected Target");
 		m_TargetLoc[shotNum] = new Location(x,y);
-        System.out.println(playerDefence.getStringBoard()[x][y]);
+        //System.out.println(playerDefence.getStringBoard()[x][y]);
         JLabel tmp = ((JLabel) playerDefence.getTargetBoard()[x].getComponent(y));
         String result = playerDefence.getStringBoard()[x][y];
 		switch(result)
@@ -437,7 +435,7 @@ public class Game implements Serializable
         {
             try
             {
-                System.out.println("SENDING NEW Location" +  x + "  " + y);
+                //System.out.println("SENDING NEW Location" +  x + "  " + y);
                 m_Client.getOutputStream().writeObject(new Location(x,y));
                 m_Client.getOutputStream().flush();
             }catch(IOException e)
@@ -669,7 +667,7 @@ public class Game implements Serializable
             
             case "NOSHIP": 
                         System.out.println("here");
-						if(m_CurrentPlayer.isHuman())
+						if(m_CurrentPlayer.isHuman() && !isMultiplayer())
 						{
 							BoardMouseAction.setIcon(m_Assets.getImage("Target"));
 						}else
@@ -682,7 +680,7 @@ public class Game implements Serializable
                         if(m_CurrentPlayer.getShip(result) != null)
                         {
                             getOpponentPlayer().getShip(result).decLives();
-							   if(m_CurrentPlayer.isHuman())
+							   if(m_CurrentPlayer.isHuman() && !isMultiplayer())
                             {
                             	BoardMouseAction.setIcon(m_Assets.getImage("HitMarker"));
                             }else

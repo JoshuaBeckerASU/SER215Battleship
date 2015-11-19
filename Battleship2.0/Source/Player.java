@@ -316,6 +316,19 @@ public class Player implements Serializable
 			default:    return null;
 		}
 	}
+    
+    public void setShip(int index, Ship ship)
+    {
+		switch(index)
+		{
+			case 0: 	m_AirCarr = ship;
+			case 1:     m_Battleship = ship;break; 
+			case 2:     m_Sub = ship;break;
+			case 3:     m_Cruiser = ship;break;
+			case 4:     m_Destoyer = ship;break;
+			default:    System.out.println("SHIP NOT FOUND in SETSHIP");break;
+		}
+    }
 	
 	/**updateBoard
 	* updates the board with the ship object and the new x, y values.
