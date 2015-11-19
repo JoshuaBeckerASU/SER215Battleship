@@ -1,10 +1,19 @@
-/**
-Name: Load Game Window
-Author: Joshua Becker
-Create On: 9/9/15
-Updated On: 9/19/15
-Contributors:
- **/
+/*************************************
+* @file: LoadGameWindow.java
+* @author: Joshua Becker
+* @date:9/9/15
+* @description:
+*  
+* @contributors:
+*  
+* @index
+* [
+*     m_: for member variables
+*     g_: for global variables
+*     s_: for static variables
+* ]
+* 
+***************************************/
 import java.awt.*;
 import java.awt.event.*; 
 import javax.swing.*;

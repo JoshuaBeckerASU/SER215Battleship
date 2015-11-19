@@ -1,15 +1,19 @@
-/******************************
-* @file: LobbySlots.java
+/*************************************
+* @file: LobbySlot.java
 * @author: Joshua Becker
 * @date:11/12/15
 * @description:
-* 
+*  
+* @contributors:
+*  
 * @index
 * [
 *     m_: for member variables
 *     g_: for global variables
+*     s_: for static variables
 * ]
-*******************************/
+* 
+***************************************/
 
 import java.awt.*;
 import javax.swing.*;
