@@ -85,6 +85,7 @@ public class GameOverWindow implements Serializable
 		
 		m_BackToMenu_B.setMargin(new Insets(0,0,0,0));
 		m_StartGame_B.setMargin(new Insets(0,0,0,0));
+        m_ReplayGame_B.setMargin(new Insets(0,0,0,0));
 		
 		m_BackToMenu_B.setActionCommand("BackToMenu");
 		m_StartGame_B.setActionCommand("StartGame");
@@ -101,11 +102,14 @@ public class GameOverWindow implements Serializable
 	**/
 	public void addElements()
 	{
-		m_Background_L.add(new JLabel("\n\n"));
+        m_Background_L.add(new JLabel("\n"));
+        m_Background_L.add(new JLabel("\n"));
+        m_Background_L.add(new JLabel("\n"));
+		m_Background_L.add(new JLabel("\n"));
 		m_Background_L.add(m_ReplayGame_B);
-		m_Background_L.add(new JLabel("\n\n"));
+		m_Background_L.add(new JLabel("\n"));
 		m_Background_L.add(m_StartGame_B);
-		m_Background_L.add(new JLabel("\n\n"));
+		m_Background_L.add(new JLabel("\n"));
 		m_Background_L.add(m_BackToMenu_B);
 		
 		m_GameOverFrame.add(m_Background_L);

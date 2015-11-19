@@ -20,8 +20,8 @@ import java.io.*;
 import javax.imageio.*;
 public class Main implements Serializable
 {
-    private static Thread m_LoadAssetsThread;
-    private static Thread m_GameThread;
+    private static Thread s_LoadAssetsThread;
+    private static Thread s_GameThread;
     public static final LoadAssets s_Assets = new LoadAssets();
     public static void main(String[] args)
     {
@@ -54,20 +54,20 @@ public class Main implements Serializable
         
         LoadingWindow loadW = new LoadingWindow(icon, gif);
         
-        m_LoadAssetsThread = new Thread(s_Assets);
+        s_LoadAssetsThread = new Thread(s_Assets);
         
-        m_LoadAssetsThread.start();
+        s_LoadAssetsThread.start();
         while(true)
         {
-            if(!m_LoadAssetsThread.isAlive())
+            if(!s_LoadAssetsThread.isAlive())
             {
                 break;
             }
         }
         //new WaitForConnection(new JFrame());//testing
 		MenuWindow menu = new MenuWindow(loadW.getMainFrame());
-        m_GameThread = new Thread(menu);
+        s_GameThread = new Thread(menu);
         
-        m_GameThread.start();
+        s_GameThread.start();
     }
 }
