@@ -1,18 +1,20 @@
-/******************************
+/*************************************
 * @file: GameServer_.java
 * @author: Joshua Becker, NOTE: I used some of the code from the
 *                               Server example posted on blackboard
-* @date:
+* @date: 11/16/15
 * @description:
-* 
-* @contributors:Alec Shinn
-* 
+*  
+* @contributors: Alec Shinn
+*  
 * @index
 * [
 *     m_: for member variables
 *     g_: for global variables
+*     s_: for static variables
 * ]
-*******************************/
+* 
+***************************************/
 import java.io.*;
 import java.net.*;
 import java.util.*;

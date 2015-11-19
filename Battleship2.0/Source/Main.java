@@ -1,10 +1,19 @@
-/********************** 
-Name: main 
-Author: Joshua Becker
-Create On: 10/28/15
-Updated On: 10/28/15
-Contributors:
-***********************/
+/*************************************
+* @file: Main.java
+* @author: Joshua Becker
+* @date: 10/28/15
+* @description:
+*  
+* @contributors:
+*  
+* @index
+* [
+*     m_: for member variables
+*     g_: for global variables
+*     s_: for static variables
+* ]
+* 
+***************************************/
 import javax.swing.*;
 import java.awt.*;
 import java.io.*;

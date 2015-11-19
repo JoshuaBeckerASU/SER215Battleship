@@ -1,9 +1,19 @@
-/********************** 
-Name: Player Object
-Author: Joshua Becker
-Create On: 10/29/15
-Contributors: Jacob Leonard
-***********************/
+/*************************************
+* @file: Player.java
+* @author: Joshua Becker
+* @date: 10/16/15
+* @description:
+*  
+* @contributors: Jacob Leonard
+*  
+* @index
+* [
+*     m_: for member variables
+*     g_: for global variables
+*     s_: for static variables
+* ]
+* 
+***************************************/
 import javax.swing.*;
 import java.io.*;
 import java.util.*;

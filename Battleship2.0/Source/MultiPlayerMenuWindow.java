@@ -1,15 +1,19 @@
-/******************************
-* @file: MultiPlayerSetUpWindow.java
+/*************************************
+* @file: MultiPlayerMenuWindow.java
 * @author: Joshua Becker
-* @date:
+* @date:11/7/15
 * @description:
-* 
+*  
+* @contributors:
+*  
 * @index
 * [
 *     m_: for member variables
 *     g_: for global variables
+*     s_: for static variables
 * ]
-*******************************/
+* 
+***************************************/
 import java.awt.*;
 import java.awt.event.*; 
 import javax.swing.*;

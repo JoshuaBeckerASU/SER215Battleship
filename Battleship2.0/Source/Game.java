@@ -1,9 +1,19 @@
-/********************** 
-Name: Game Object
-Author: Joshua Becker
-Create On: 10/26/15
-Contributors: Jacob Leonard
-***********************/
+/*************************************
+* @file: Game.java
+* @author: Joshua Becker
+* @date: 10/26/15
+* @description:
+*  
+* @contributors:Jacob Leonard
+*  
+* @index
+* [
+*     m_: for member variables
+*     g_: for global variables
+*     s_: for static variables
+* ]
+* 
+***************************************/
 import javax.swing.*;
 import java.util.*;
 import java.io.*;

@@ -1,9 +1,19 @@
-/* 
-Name: Game Window
-Author: Joshua Becker
-Create On: 10/26/15
-Contributors:
- */
+/*************************************
+* @file: GameWindow.java
+* @author: Joshua Becker
+* @date: 10/26/15
+* @description:
+*  
+* @contributors:
+*  
+* @index
+* [
+*     m_: for member variables
+*     g_: for global variables
+*     s_: for static variables
+* ]
+* 
+***************************************/
 
 import java.awt.*;
 import java.awt.event.*; 
