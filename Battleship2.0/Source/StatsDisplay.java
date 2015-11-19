@@ -5,6 +5,13 @@ Create On: 11/18/15
 Updated On: 
 Contributors:
 ***********************/
+
+/*
+To Do:
+switch to box layout
+create a profile class
+*/
+
 import java.awt.*;
 import java.awt.event.*; 
 import javax.swing.*;
@@ -21,6 +28,7 @@ public class StatsDisplay extends JFrame
    private int m_ScreenWidth, m_ScreenHeight;
    private JLabel m_GamesPlayed_L, m_GamesLost_L, m_GamesWon_L, m_ShipsLost_L, m_ShipsDestroyed_L, m_LossPercent_L, m_WonPercent_L, m_Name_L, m_CurrentGame_L, m_Lost_L, m_Destroyed_L, m_Victory_L, m_Overall_L;
    private JFrame m_StatsDisplay;
+   private JButton m_Exit_B;
    private int gamesPlayed = 1, gamesLost = 1, gamesWon = 1, shipsLost = 1, shipsDestroyed = 1, currentLost = 1, currentDestroyed = 1;
    private String m_Name = "", victory = "You are victorious!", lost = "You have been defeated!";
    private double gamesWonP = 1, gamesLostP = 1;
@@ -30,6 +38,9 @@ public class StatsDisplay extends JFrame
    public static void main(String[] args)
    {
       boolean isWinner = true;
+      GraphicsEnvironment ge = 
+            GraphicsEnvironment.getLocalGraphicsEnvironment();
+      GraphicsDevice gd = ge.getDefaultScreenDevice();
       new StatsDisplay(isWinner);
    }
    
@@ -42,7 +53,8 @@ public class StatsDisplay extends JFrame
       createComponents();
       buildComponents();
       addElements();
-      //m_StatsDisplay.setOpacity(0.55f);
+      addActionListeners();
+      m_StatsDisplay.setOpacity(0.85f);
       m_StatsDisplay.setVisible(true);
       
    }
@@ -54,6 +66,8 @@ public class StatsDisplay extends JFrame
       
       m_StatsDisplay = new JFrame("Statistics");
       m_StatsDisplay.setLayout(new GridLayout(14, 1));
+      
+      m_Exit_B = new JButton("Exit");
       
       m_Overall_L = new JLabel("OVERALL STATISTICS");
       m_GamesPlayed_L = new JLabel("GAMES PLAYED: " + gamesPlayed);
@@ -83,6 +97,9 @@ public class StatsDisplay extends JFrame
    {
       m_StatsDisplay.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
       m_StatsDisplay.setSize(new Dimension(m_ScreenWidth,m_ScreenHeight));
+      m_StatsDisplay.setUndecorated(true);
+      
+      m_Exit_B.setActionCommand("Exit");
    }
    
    public void addElements()
@@ -99,5 +116,27 @@ public class StatsDisplay extends JFrame
       m_StatsDisplay.add(m_ShipsLost_L);
       m_StatsDisplay.add(m_WonPercent_L);
       m_StatsDisplay.add(m_LossPercent_L);
+      m_StatsDisplay.add(m_Exit_B);
+   }
+   
+   private void addActionListeners()
+   {
+      m_Exit_B.addActionListener(new ButtonListener());
+   }
+   
+   private class ButtonListener implements ActionListener
+   {
+      public void actionPerformed(ActionEvent event)
+      {
+         String command = event.getActionCommand();
+         
+         switch(command)
+         {
+            case "Exit":
+               m_StatsDisplay.dispose();
+               System.exit(1);
+               break;
+         }
+      }
    }
 }

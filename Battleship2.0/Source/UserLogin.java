@@ -257,7 +257,8 @@ public class UserLogin extends JFrame
                m_UserLoginFrame.dispose();
                break;
             case "Exit":
-               m_UserLoginFrame.dispose(); System.exit(1);
+               m_UserLoginFrame.dispose();
+               System.exit(1);
                break;
             case "Register":
                m_UserName_S = m_UserName_T.getText();
