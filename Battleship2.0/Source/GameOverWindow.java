@@ -34,7 +34,7 @@ public class GameOverWindow implements Serializable
 	
     public GameOverWindow(JFrame window)// Constructor
     {
-		m_Assets = Main.m_Assets;
+		m_Assets = Main.s_Assets;
 		
 		m_OldWindow = window;
         m_OldWindow.setEnabled(false);
@@ -143,7 +143,7 @@ public class GameOverWindow implements Serializable
 			String command = event.getActionCommand();
 			switch(command)
 			{
-				case "BackToMenu": MenuWindow menu = new MenuWindow(m_Assets, new JFrame("domnb"));//loading screen...
+				case "BackToMenu": MenuWindow menu = new MenuWindow(new JFrame("domnb"));//loading screen...
                                    m_OldWindow.dispose(); m_GameOverFrame.dispose();
 					break;
 				case "StartGame":

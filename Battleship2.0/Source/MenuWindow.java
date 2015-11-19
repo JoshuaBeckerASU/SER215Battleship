@@ -34,10 +34,10 @@ public class MenuWindow implements Runnable, Serializable
 	private LoadAssets m_Assets;
     private static boolean m_IsWindowed;
 	
-    public MenuWindow(LoadAssets assets,JFrame oldWindow)// constructer
+    public MenuWindow(JFrame oldWindow)// constructer
     {
         m_OldWindow = oldWindow;
-		m_Assets = assets;
+		m_Assets = Main.s_Assets;
         m_IsWindowed = false;
 	}
 	/**createComponents

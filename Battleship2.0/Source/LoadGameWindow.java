@@ -32,9 +32,9 @@ public class LoadGameWindow implements Serializable
 	private JLabel m_Background_L;
 	private LoadAssets m_Assets;
 	
-    public LoadGameWindow(JFrame window, LoadAssets assets)// constructer
+    public LoadGameWindow(JFrame window)// constructer
     {
-		m_Assets = assets;
+		m_Assets = Main.s_Assets;
 		
 		m_MenuFrame = window;
 		
@@ -131,7 +131,7 @@ public class LoadGameWindow implements Serializable
 			String command = event.getActionCommand();
 			switch(command)
 			{
-				case "LoadAGame":LoadGameWindow gameMenu1 = new LoadGameWindow(m_LoadGameFrame, m_Assets);m_MenuFrame.setVisible(false);
+				case "LoadAGame":LoadGameWindow gameMenu1 = new LoadGameWindow(m_LoadGameFrame);m_MenuFrame.setVisible(false);
 					break;
 				case "BackToMenu": m_MenuFrame.setVisible(true); m_LoadGameFrame.dispose();
 					break;

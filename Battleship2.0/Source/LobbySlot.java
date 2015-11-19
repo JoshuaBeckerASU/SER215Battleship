@@ -27,10 +27,10 @@ public class LobbySlot extends JLabel implements Serializable
     private JCheckBox m_isActive_CkB;
     private LoadAssets m_Assets;
     private int m_index;
-    LobbySlot(int index, LoadAssets assets)
+    LobbySlot(int index)
     {
         m_index = index;
-        m_Assets = assets;
+        m_Assets = Main.s_Assets;
         
         setIcon(m_Assets.getImage("SlotBG"));
         setLayout(new FlowLayout(FlowLayout.CENTER, 200, 20));

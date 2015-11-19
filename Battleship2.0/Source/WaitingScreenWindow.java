@@ -33,7 +33,7 @@ public class WaitingScreenWindow implements Serializable
 	
     public WaitingScreenWindow()// Constructor
     {
-		m_Assets = Main.m_Assets;
+		m_Assets = Main.s_Assets;
 		
 		createComponents();
 		
@@ -127,12 +127,12 @@ public class WaitingScreenWindow implements Serializable
 			String command = event.getActionCommand();
 			switch(command)
 			{
-				case "BackToMenu": MenuWindow menu = new MenuWindow(m_Assets, m_WaitingScreenFrame);//loading screen...
+				case "BackToMenu": MenuWindow menu = new MenuWindow(m_WaitingScreenFrame);//loading screen...
                                    m_OldWindow.dispose(); m_WaitingScreenFrame.dispose();
 					break;
 				case "StartGame":
 						/*Loading Screen...*/
-                        GameSetUpWindow newGame = new GameSetUpWindow(m_WaitingScreenFrame, m_Assets);
+                        //GameSetUpWindow newGame = new GameSetUpWindow(m_WaitingScreenFrame);
                     break;
 				// create default error message
                 case "ReplayGame":

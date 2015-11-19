@@ -39,7 +39,7 @@ public class SinglePlayerWindow implements Serializable
 	
     public SinglePlayerWindow(JFrame oldWindow)// constructer
     {
-		m_Assets = Main.m_Assets;
+		m_Assets = Main.s_Assets;
         m_OldWindow = oldWindow;
         
 		createComponents();
@@ -77,9 +77,9 @@ public class SinglePlayerWindow implements Serializable
 		m_StartGame_B = new JButton(m_Assets.getImage("StartGameButton"));
 		m_BackToMainMenu_B = new JButton(m_Assets.getImage("BackToMainMenuButton"));
         
-        m_Slots[0] = new LobbySlot(1, m_Assets);
-        m_Slots[1] = new LobbySlot(2, m_Assets);
-        m_Slots[2] = new LobbySlot(3, m_Assets);
+        m_Slots[0] = new LobbySlot(1);
+        m_Slots[1] = new LobbySlot(2);
+        m_Slots[2] = new LobbySlot(3);
 	}
 	/**buildComponents
 	* set up components and there attributes.

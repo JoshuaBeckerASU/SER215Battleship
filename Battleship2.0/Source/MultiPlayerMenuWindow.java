@@ -42,7 +42,7 @@ public class MultiPlayerMenuWindow implements Serializable
     public MultiPlayerMenuWindow(JFrame oldWindow)// constructer
     {
         m_OldWindow_F = oldWindow;
-		m_Assets = Main.m_Assets;
+		m_Assets = Main.s_Assets;
 		
 		createComponents();
 		
@@ -191,8 +191,8 @@ public class MultiPlayerMenuWindow implements Serializable
 					break;
                 case "JoinGame": m_OldWindow_F.dispose();
                         m_LSlots = new LobbySlot[2];
-                        m_LSlots[0] = new LobbySlot(1,m_Assets);
-                        m_LSlots[1] = new LobbySlot(2,m_Assets);
+                        m_LSlots[0] = new LobbySlot(1);
+                        m_LSlots[1] = new LobbySlot(2);
                         System.out.println("Selected JoinGame");
                         
                         m_Client = new GameClient_();

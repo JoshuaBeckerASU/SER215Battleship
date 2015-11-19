@@ -41,11 +41,11 @@ public class GameWindow implements Serializable, Runnable
 	private int m_BOARD_WIDTH;
 	private int m_BOARD_HEIGHT;
 	
-    public GameWindow(Game game, LoadAssets assets)// constructer
+    public GameWindow(Game game)// constructer
     {
 		m_CurrentGame = game;
 		
-		m_Assets = assets;
+		m_Assets = Main.s_Assets;
 		
 		createComponents();
 		

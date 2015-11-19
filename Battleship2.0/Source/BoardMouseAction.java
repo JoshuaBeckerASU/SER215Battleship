@@ -45,7 +45,7 @@ public class BoardMouseAction extends MouseAdapter implements Serializable
 		m_y = y;
 		m_Game = game;
 		m_GameBoardTargets_L = gameBoardTargets_L;
-		m_Assets = assets;
+		m_Assets = Main.s_Assets;
 		m_CurrentPlayersName = name;
 		m_Target1 =  m_Assets.getImage("Target");
 		m_Target2 =  m_Assets.getImage("Target2");

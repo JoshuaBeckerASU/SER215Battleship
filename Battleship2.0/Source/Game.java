@@ -100,7 +100,7 @@ public class Game implements Serializable
 	}
 	Game(int difficulty, LobbySlot slots[])//SInglePlayer
 	{
-		m_Assets = Main.m_Assets;
+		m_Assets = Main.s_Assets;
         m_Slots = slots;
         
         m_difficulty = difficulty;
@@ -113,7 +113,7 @@ public class Game implements Serializable
 	}
 	Game(GameClient_ client, LobbySlot slots[])//MultiPlayer
 	{
-		m_Assets = Main.m_Assets;
+		m_Assets = Main.s_Assets;
         m_Slots = slots;
 
         m_difficulty = 1;
@@ -154,13 +154,13 @@ public class Game implements Serializable
 	{
         m_CurrentPlayer = m_Players[0];
         getOpponentPlayer().enableBoard();
-		m_GameWindow = new GameWindow(m_CurrentGame, m_Assets);
+		m_GameWindow = new GameWindow(m_CurrentGame);
         m_OldWindow = m_GameWindow.getFrame();
 	}
 	public void startMultiplayerGame()
 	{
         System.out.println("StartMultiPlayerGame");
-        m_GameWindow = new GameWindow(m_CurrentGame, m_Assets);
+        m_GameWindow = new GameWindow(m_CurrentGame);
         m_OldWindow = m_GameWindow.getFrame();
         
         m_Client.setGameWindow(m_GameWindow);
@@ -290,11 +290,11 @@ public class Game implements Serializable
         for(int i = 0; i < m_Players.length; i++)
             if(((String) m_Slots[i].getType().getSelectedItem()).compareTo("Computer Player") == 0)
             {
-                m_Players[i] = new Player(m_Slots[i].getNameTA().getText(), false, m_Assets,m_CurrentGame);
+                m_Players[i] = new Player(m_Slots[i].getNameTA().getText(), false,m_CurrentGame);
                 fillAI(m_Players[i]);
             } 
             else
-                m_Players[i] = new Player(m_Slots[i].getNameTA().getText(), true, m_Assets, m_CurrentGame);
+                m_Players[i] = new Player(m_Slots[i].getNameTA().getText(), true, m_CurrentGame);
 	}
 	
 	/*	Primary method utilized in populating 

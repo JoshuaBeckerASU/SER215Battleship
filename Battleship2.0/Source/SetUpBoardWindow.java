@@ -50,7 +50,7 @@ public class SetUpBoardWindow implements Serializable
         m_CurrentPlayer.disableBoard();
         m_CurrentShip = m_CurrentPlayer.getShip(0);
 			
-		m_Assets = Main.m_Assets;
+		m_Assets = Main.s_Assets;
 		
 		createComponents();
 		

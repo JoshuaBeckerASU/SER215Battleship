@@ -17,7 +17,7 @@ public class WaitForConnection extends JFrame{
 	public WaitForConnection(JFrame oldWindow)
     {
 		m_OldWindow_jf=oldWindow;
-		m_Assets= Main.m_Assets;
+		m_Assets= Main.s_Assets;
 
         createComponents();
 		buildCompenents();

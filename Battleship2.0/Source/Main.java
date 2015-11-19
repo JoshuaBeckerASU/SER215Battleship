@@ -20,9 +20,9 @@ import java.io.*;
 import javax.imageio.*;
 public class Main implements Serializable
 {
-    public static Thread m_LoadAssetsThread;
-    public static Thread m_GameThread;
-    public static LoadAssets m_Assets;
+    private static Thread m_LoadAssetsThread;
+    private static Thread m_GameThread;
+    public static final LoadAssets s_Assets = new LoadAssets();
     public static void main(String[] args)
     {
 		GraphicsDevice gd = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();// geting size of screen
@@ -53,9 +53,8 @@ public class Main implements Serializable
 		}
         
         LoadingWindow loadW = new LoadingWindow(icon, gif);
-        m_Assets = new LoadAssets();
         
-        m_LoadAssetsThread = new Thread(m_Assets);
+        m_LoadAssetsThread = new Thread(s_Assets);
         
         m_LoadAssetsThread.start();
         while(true)
@@ -66,7 +65,7 @@ public class Main implements Serializable
             }
         }
         //new WaitForConnection(new JFrame());//testing
-		MenuWindow menu = new MenuWindow(m_Assets, loadW.getMainFrame());
+		MenuWindow menu = new MenuWindow(loadW.getMainFrame());
         m_GameThread = new Thread(menu);
         
         m_GameThread.start();

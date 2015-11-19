@@ -56,9 +56,9 @@ public class Player implements Serializable
 	{
 		
 	}
-	Player(String name, boolean type, LoadAssets assets, Game game)
+	Player(String name, boolean type, Game game)
 	{
-		m_Assets = assets;
+		m_Assets = Main.s_Assets;
 		m_Name = name;
 		m_Type = type;
 		m_Losses = 0;
@@ -79,12 +79,12 @@ public class Player implements Serializable
 		
 		
 		m_Game = game;
-		m_AirCarr = new Ship("AircraftCarrier", Ship.CARRIER_LENGTH, m_Assets);
-		m_Battleship = new Ship("Battleship", Ship.BATTLESHIP_LENGTH, m_Assets);
-		m_Sub = new Ship("Submarine", Ship.SUBMARINE_LENGTH, m_Assets);
-		m_Cruiser = new Ship("Cruiser", Ship.CRUISER_LENGTH, m_Assets);
-		m_Destoyer = new Ship("Destroyer", Ship.DESTROYER_LENGTH, m_Assets);
-		m_Board = new Board(m_Assets, this, m_Game);
+		m_AirCarr = new Ship("AircraftCarrier", Ship.CARRIER_LENGTH);
+		m_Battleship = new Ship("Battleship", Ship.BATTLESHIP_LENGTH);
+		m_Sub = new Ship("Submarine", Ship.SUBMARINE_LENGTH);
+		m_Cruiser = new Ship("Cruiser", Ship.CRUISER_LENGTH);
+		m_Destoyer = new Ship("Destroyer", Ship.DESTROYER_LENGTH);
+		m_Board = new Board(this, m_Game);
 	}
 	public int getFleetHealth()
     {

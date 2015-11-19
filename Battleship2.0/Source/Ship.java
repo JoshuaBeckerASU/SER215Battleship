@@ -46,9 +46,9 @@ public class Ship implements Serializable
 		m_Location = new Location();
 		m_Orientation = Ship.X_AXIS;
 	}
-	Ship(String name, int length, LoadAssets assets)
+	Ship(String name, int length)
 	{
-		m_Assets = assets;
+		m_Assets = Main.s_Assets;
 		m_Name = name;
 		m_Length = length;
 		m_Lives = length;

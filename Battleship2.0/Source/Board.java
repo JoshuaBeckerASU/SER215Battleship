@@ -41,7 +41,7 @@ public class Board implements Serializable
 	private final int m_NUM_OF_COL, m_NUM_OF_ROWS;
 	private String m_HasShip[][];
 	
-	Board(LoadAssets assets, Player currentPlayer, Game game)
+	Board(Player currentPlayer, Game game)
 	{
 		/*Toolkit toolkit = Toolkit.getDefaultToolkit();
 		Cursor m_CrossHair_C = toolkit.createCustomCursor(m_Assets.getImage("BattleShip_Y", 1) , new Point(20, 
@@ -49,7 +49,7 @@ public class Board implements Serializable
 		m_NUM_OF_COL = 16;
 		m_NUM_OF_ROWS = 19;
 		m_Game = game;
-		m_Assets = assets;
+		m_Assets = Main.s_Assets;
 		m_CurrentPlayer = currentPlayer;
 		m_ShipCount = 0;
 	    m_boardHight = m_Assets.getImage("GameBoard").getIconHeight();
