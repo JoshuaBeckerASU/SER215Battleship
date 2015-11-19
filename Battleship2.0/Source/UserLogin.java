@@ -28,10 +28,11 @@ public class UserLogin extends JFrame
    private GridLayout m_PanelLayoutNew1 = new GridLayout(), m_PanelLayoutNew2 = new GridLayout();
    private Thread m_loadAssets;
 
-   public static void main(String[] args)
+   /*public static void main(String[] args)
    {
       new UserLogin();
    }
+   */
    
    public UserLogin()
    {
@@ -120,9 +121,8 @@ public class UserLogin extends JFrame
    
    public void createComponents()
    {
-      GraphicsDevice gd = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();// geting size of screen
-		m_ScreenWidth = 500;                    //gd.getDisplayMode().getWidth();
-		m_ScreenHeight = 200;                   //gd.getDisplayMode().getHeight();
+		m_ScreenWidth = 500;
+		m_ScreenHeight = 200;
       
       m_UserLoginFrame = new JFrame("User Login");
       m_UserRegFrame = new JFrame("Create User");

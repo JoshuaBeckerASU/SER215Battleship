@@ -46,7 +46,7 @@ public class RecordTracking
          ResultSet rs = stmt.executeQuery(sql);
          
          //retrieve stats for existing user
-         if(!rs.isBeforeFirst())
+         if(rs.isBeforeFirst())
          {
              sqlPlayed = "SELECT games_played from bs_player_stats WHERE name = '" + name + "';";
              sqlGWon = "SELECT games_won from bs_player_stats WHERE name = '" + name + "';";
