@@ -27,6 +27,7 @@ public class UserLogin extends JFrame
    private FlowLayout m_FrameLayout = new FlowLayout(), m_PanelLayout1 = new FlowLayout(), m_PanelLayout2 = new FlowLayout();
    private GridLayout m_PanelLayoutNew1 = new GridLayout(), m_PanelLayoutNew2 = new GridLayout();
    private Thread m_loadAssets;
+   private RecordTracking records = new RecordTracking();
 
    /*public static void main(String[] args)
    {
@@ -250,6 +251,8 @@ public class UserLogin extends JFrame
                m_UserName_S = m_UserName_T.getText();
                m_Password_S = m_Password_T.getText();
                isLogged = loginSuccess();
+               records.connect(m_UserName_S);
+               records.createProfile();
                m_UserLoginFrame.dispose();
                break;
             case "New User":

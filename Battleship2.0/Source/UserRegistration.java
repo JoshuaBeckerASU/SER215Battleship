@@ -37,7 +37,7 @@ public class UserRegistration
    {
       /*
       resultCode meaning:
-      0 usernameand password are correct, successfully logged in
+      0 username and password are correct, successfully logged in
       1 username and password combination doesn't exist
       2 database connection failed
       */
@@ -65,7 +65,7 @@ public class UserRegistration
                stmt.close();
                conn.close();
                resultCode = 0;
-               System.out.println(resultCode);
+               //System.out.println(resultCode);
                return resultCode;
             }
             
@@ -75,7 +75,7 @@ public class UserRegistration
                stmt.close();
                conn.close();
                resultCode = 1;
-               System.out.println(resultCode);
+               //System.out.println(resultCode);
                return resultCode;
             }
          }
@@ -88,7 +88,7 @@ public class UserRegistration
             conn.close();
             
             resultCode = 1;
-            System.out.println(resultCode);
+            //System.out.println(resultCode);
             return resultCode;
          }
       }

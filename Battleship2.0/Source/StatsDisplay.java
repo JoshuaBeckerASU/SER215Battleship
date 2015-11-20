@@ -9,7 +9,6 @@ Contributors:
 /*
 To Do:
 switch to box layout
-create a profile class
 */
 
 import java.awt.*;
@@ -29,13 +28,14 @@ public class StatsDisplay extends JFrame
    private JLabel m_GamesPlayed_L, m_GamesLost_L, m_GamesWon_L, m_ShipsLost_L, m_ShipsDestroyed_L, m_LossPercent_L, m_WonPercent_L, m_Name_L, m_CurrentGame_L, m_Lost_L, m_Destroyed_L, m_Victory_L, m_Overall_L;
    private JFrame m_StatsDisplay;
    private JButton m_Exit_B;
-   private int gamesPlayed = 1, gamesLost = 1, gamesWon = 1, shipsLost = 1, shipsDestroyed = 1, currentLost = 1, currentDestroyed = 1;
+   private int gamesPlayed, gamesLost, gamesWon, shipsLost, shipsDestroyed, currentLost, currentDestroyed;
    private String m_Name = "", victory = "You are victorious!", lost = "You have been defeated!";
-   private double gamesWonP = 1, gamesLostP = 1;
+   private double gamesWonP, gamesLostP;
    private boolean isVictorious = false;
    private DecimalFormat myFormatter = new DecimalFormat("##.##");
+   private UserProfile profile = null;
    
-   public static void main(String[] args)
+   /*public static void main(String[] args)
    {
       boolean isWinner = true;
       GraphicsEnvironment ge = 
@@ -43,13 +43,45 @@ public class StatsDisplay extends JFrame
       GraphicsDevice gd = ge.getDefaultScreenDevice();
       new StatsDisplay(isWinner);
    }
+   */
    
-   public StatsDisplay(boolean isWinner)
+   public StatsDisplay(boolean isWinner, int sLost, int destroyed)
    {
       super("TranslucentWindow");
-      RecordTracking records = new RecordTracking();
+      
+      String path = "";
+		path = System.getProperty("user.dir");
+		path = path.replace('\\','/');
+		path = path.replaceAll("Source", "Assets/");
+      
+      try
+      {
+         FileInputStream fileIn = new FileInputStream(path + "profile.ser");
+         ObjectInputStream in = new ObjectInputStream(fileIn);
+         profile = (UserProfile) in.readObject();
+         in.close();
+         fileIn.close();
+      }
+      
+      catch(IOException i)
+      {
+         i.printStackTrace();
+         return;
+      }
+      
+      catch(ClassNotFoundException c)
+      {
+         c.printStackTrace();
+         return;
+      }
+      
+      updateProfile(isWinner, sLost, destroyed);
+      
+      getRecords();
+      
       isVictorious = isWinner;
-      //records.connect(m_Name);
+      currentLost = sLost;
+      currentDestroyed = destroyed;
       createComponents();
       buildComponents();
       addElements();
@@ -138,5 +170,22 @@ public class StatsDisplay extends JFrame
                break;
          }
       }
+   }
+   
+   public void updateProfile(boolean isWinner, int sLost, int destroyed)
+   {
+      profile.modifyRecords(isWinner, destroyed, sLost);
+   }
+   
+   public void getRecords()
+   {
+      gamesPlayed = profile.getPlayed();
+      gamesLost = profile.getLost();
+      gamesWon = profile.getWon();
+      shipsLost = profile.getSLost();
+      shipsDestroyed = profile.getDestroyed();
+      gamesWonP = profile.getWonP();
+      gamesLostP = profile.getLostP();
+      m_Name = profile.getUser();
    }
 }

@@ -7,6 +7,7 @@ Contributors:
 ***********************/
 
 import java.sql.*;
+import java.io.*;
 
 public class RecordTracking
 {
@@ -21,17 +22,20 @@ public class RecordTracking
    private String sqlPlayed, sqlGWon, sqlGLost, sqlDestroyed, sqlSLost, sqlPWon, sqlPLost;
    private String sql, createRecords;
    private String playerName;
+   private UserProfile profile;
    
    public RecordTracking()
    {
       
    }
    
+   /*
    public static void main(String[] args)
    {
       RecordTracking test = new RecordTracking();
       test.connect("david");
    }
+   */
    
    public void connect(String name)
    {
@@ -99,7 +103,8 @@ public class RecordTracking
       }
    }
    
-   //return records for display
+   /*
+   //return records for display now done in UserProfile class
    public String getUserName()
    {
       return playerName;
@@ -134,6 +139,7 @@ public class RecordTracking
    {
       return pLost;
    }
+   */
    
    public void modifyRecords(boolean isVictorious, int sDestroyed, int sLost)
    {
@@ -160,16 +166,6 @@ public class RecordTracking
       
       try
       {
-         try
-         {
-            Class.forName("com.mysql.jdbc.Driver");
-         }
-         
-         catch(Exception e)
-         {
-            System.out.println("Fail");
-         }
-         
          stmtUpdate = conn.createStatement();
          
          stmtUpdate.executeUpdate(sqlUpdate);
@@ -185,5 +181,30 @@ public class RecordTracking
          se.printStackTrace();
       }
       
+   }
+   
+   public void createProfile()
+   {
+      profile = new UserProfile(playerName, intPlayed, intGWon, intGLost, intSLost, intDestroyed, pLost, pWon);
+      
+      String path = "";
+		path = System.getProperty("user.dir");
+		path = path.replace('\\','/');
+		path = path.replaceAll("Source", "Assets/");
+      
+      try
+      {
+         FileOutputStream fileOut =
+            new FileOutputStream(path + "profile.ser");
+         ObjectOutputStream out = new ObjectOutputStream(fileOut);
+         out.writeObject(profile);
+         out.close();
+         fileOut.close();
+      }
+      
+      catch(IOException i)
+      {
+          i.printStackTrace();
+      }
    }
 }
