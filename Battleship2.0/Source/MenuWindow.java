@@ -41,9 +41,8 @@ public class MenuWindow implements Runnable, Serializable
         m_IsWindowed = false;
 	}
 	/**createComponents
-	* creates components and gives them
-	* default values.
-	* J.B.
+	* @details: creates components and gives them
+	*          default values.
 	**/
 	public void createComponents()
 	{
@@ -64,8 +63,8 @@ public class MenuWindow implements Runnable, Serializable
         m_SwitchToWindow_B = new JButton(m_Assets.getImage("SwitchToWindow"));
 	}
 	/**buildComponents
-	* set up components and there attributes.
-	* J.B.
+	* @details: set up components and there attributes.
+	* 
 	**/
 	public void buildComponents()
 	{
@@ -101,9 +100,8 @@ public class MenuWindow implements Runnable, Serializable
         m_SwitchToWindow_B.setAlignmentX(Component.CENTER_ALIGNMENT);
 	}
 	/**addElements
-	* add components to panels and
-	* adds panels to Frame
-	* J.B.
+	* @details:add components to panels and
+	*          adds panels to Frame
 	**/
 	public void addElements()
 	{
@@ -132,12 +130,10 @@ public class MenuWindow implements Runnable, Serializable
 		
 		m_Menu_F.setVisible(true);
 	}
-	
 	/**addActionListeners
-	* adds ActionListener, which wait till
-	* an action is Performed then sends 
-	* a event to the type of listener.
-	* J.B.
+	* @details:adds ActionListener, which wait till
+	*          an action is Performed then sends 
+	*          a event to the type of listener.
 	**/
 	private void addActionListeners()
 	{
@@ -152,9 +148,6 @@ public class MenuWindow implements Runnable, Serializable
 	* Once an event occurs the program goes here
 	* and decides what to do with each event.
 	*
-	*@peram MenuPanel.
-	*@peram nothing.
-	* J.B.
 	**/
 	private class ButtonListener implements ActionListener
 	{
@@ -200,6 +193,10 @@ public class MenuWindow implements Runnable, Serializable
 			}
 		}  
 	}
+    /**run
+    * @details: sets up the gui, 
+    *           than displays it.
+    **/
     public void run()
     {
 		createComponents();
@@ -212,6 +209,11 @@ public class MenuWindow implements Runnable, Serializable
         
         m_OldWindow.dispose();
     }
+    /**isWindowed
+    * @details: if the window mode
+    *           is on.
+    * 
+    **/
     public static boolean isWindowed()
     {
         return m_IsWindowed;

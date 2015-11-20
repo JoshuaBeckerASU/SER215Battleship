@@ -106,6 +106,7 @@ public class GameOverWindow implements Serializable
         m_Background_L.add(new JLabel("\n"));
         m_Background_L.add(new JLabel("\n"));
 		m_Background_L.add(new JLabel("\n"));
+        
 		m_Background_L.add(m_ReplayGame_B);
 		m_Background_L.add(new JLabel("\n"));
 		m_Background_L.add(m_StartGame_B);

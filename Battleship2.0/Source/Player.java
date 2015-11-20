@@ -396,6 +396,10 @@ public class Player implements Serializable
 		m_Board.addToTaken(x,y,ship);
 		m_ShipsPlaced++;
 	}
+    public int getNumShipsPlaced()
+    {
+        return m_ShipsPlaced;
+    }
 	public boolean allShipsSet()
 	{
 		return m_ShipsPlaced == 5;

@@ -272,31 +272,18 @@ public class SetUpBoardWindow implements Serializable
                             {
                                 m_CurrentPlayer = Game.getCurrentGame().getPlayer(1);
                                 if(Game.getCurrentGame().isMultiplayer())
-                                {
-                                    try
+                                {  
+                                    System.out.println("Getting Ship Locations...");
+                                    for(int i = 0; i < 5; i++)
                                     {
-                                        System.out.println("Getting Ship Locations...");
-                                        for(int i = 0; i < 5; i++)
-                                        {
-                                            Ship ship  = ((Ship) Game.getCurrentGame().m_Client.getInputStream().readObject());
-                                            m_CurrentPlayer.setShip(i,ship);
-                                            //m_CurrentPlayer.updateBoard(ship,ship.x(),ship.y(),"SELECT");
-                                            m_CurrentPlayer.addToTaken(ship.x(),ship.y(),ship);
-                                            //m_CurrentPlayer.setNextShip();
-                                        }
-                                        Game.getCurrentGame().setUpBoards();
-                                        m_SetUpBoard_F.dispose();
-                                    }catch(IOException e)
-                                    {
-                                        System.out.println("IOException in KeyAction");
-                                        System.err.println(e);
-                                        System.exit(1);
-                                    }catch(ClassNotFoundException e)
-                                    {
-                                        System.out.println("ClassNotFoundException in setUpBoards");
-                                        System.err.println(e);
-                                        System.exit(1);
+                                        Game.getCurrentGame().getInputFromServer();
+                                        
+                                        //m_CurrentPlayer.updateBoard(ship,ship.x(),ship.y(),"SELECT");
+                                        
+                                        //m_CurrentPlayer.setNextShip();
                                     }
+                                    Game.getCurrentGame().setUpBoards();
+                                    m_SetUpBoard_F.dispose();
                                 }
                             }
 							break;

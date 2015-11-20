@@ -41,11 +41,16 @@ public class Game implements Serializable
     private int m_ShotCount = 0;
     private boolean m_Turn;
     
-    private class getInputFromServer implements Runnable
+/**getInputFromServer Class
+* @Details: will get information from the
+* connected server. if this object is
+* of type Locaiton set hit...
+**/
+    private class GetInputFromServer implements Runnable
     {
         private ObjectInputStream m_FromServer_OIS;
         private Object m_Object;
-        getInputFromServer(ObjectInputStream fromServer)
+        GetInputFromServer(ObjectInputStream fromServer)
         {
             m_FromServer_OIS = fromServer;
         }
@@ -86,8 +91,17 @@ public class Game implements Serializable
                     System.exit(1);
                 }
                 
+            }else if(m_Object instanceof Ship)
+            {
+                Ship ship = (Ship) m_Object;
+                m_Players[1].setShip(m_Players[1].getNumShipsPlaced(),new Ship(ship));
+                m_Players[1].addToTaken(ship.x(),ship.y(),new Ship(ship));
             }
         }
+        /**getObject
+        * @details: gets the object that was sent from the server
+        * @return: Object: the object from the server
+        **/
         public Object getObject()
         {
             return m_Object;
@@ -125,6 +139,10 @@ public class Game implements Serializable
 		m_TargetLoc = new Location[5];
         m_CurrentGame = this;
 	}
+    public void getInputFromServer()
+    {
+        new GetInputFromServer(m_Client.getInputStream());
+    }
     public void sendMessage(String message)
     {
         m_Client.sendMessage(new String(message));
@@ -390,7 +408,7 @@ public class Game implements Serializable
             m_Players[0].disableBoard();
             m_Players[1].disableBoard();
             BoardMouseAction.setIcon(BoardMouseAction.getIcon());
-            getInputFromServer input = new getInputFromServer(m_Client.getInputStream());
+            GetInputFromServer input = new GetInputFromServer(m_Client.getInputStream());
             
             Thread thread = new Thread(input);
             thread.start();
