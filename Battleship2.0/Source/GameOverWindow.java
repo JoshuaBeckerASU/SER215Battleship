@@ -26,7 +26,7 @@ import java.io.*;
 
 public class GameOverWindow implements Serializable
 {
-	private JFrame m_GameOverFrame, m_OldWindow;
+	private JFrame m_GameOver_F, m_OldWindow;
 	private int m_ScreenWidth, m_ScreenHeight;
 	private JButton m_BackToMenu_B, m_StartGame_B, m_ReplayGame_B;
 	private JLabel m_Background_L;
@@ -60,7 +60,7 @@ public class GameOverWindow implements Serializable
 		
 		m_Background_L = new JLabel(m_Assets.getImage("GameOverBG"));
 		
-		m_GameOverFrame = new JFrame("GAME OVER");
+		m_GameOver_F = new JFrame("GAME OVER");
 		
 		m_BackToMenu_B = new JButton(m_Assets.getImage("BackToMainMenuButton"));
 		m_StartGame_B = new JButton(m_Assets.getImage("StartGameButton"));
@@ -72,16 +72,16 @@ public class GameOverWindow implements Serializable
 	**/
 	public void buildComponents()
 	{
-		m_GameOverFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		m_GameOverFrame.add(m_Background_L);
+		m_GameOver_F.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		m_GameOver_F.add(m_Background_L);
 		
 		m_Background_L.setLayout(new BoxLayout(m_Background_L, BoxLayout.Y_AXIS));
 		
-		m_GameOverFrame.setUndecorated(true);
-        m_GameOverFrame.getRootPane().setWindowDecorationStyle(JRootPane.NONE);
-        m_GameOverFrame.setSize(new Dimension(m_Assets.getImage("GameOverBG").getIconWidth(), m_Assets.getImage("GameOverBG").getIconHeight()));
-        m_GameOverFrame.setLocation( m_ScreenWidth/2-m_Assets.getImage("GameOverBG").getIconWidth()/2, m_ScreenHeight/2-m_Assets.getImage("GameOverBG").getIconHeight()/2);//centering
-        m_GameOverFrame.setAlwaysOnTop(true);
+		m_GameOver_F.setUndecorated(true);
+        m_GameOver_F.getRootPane().setWindowDecorationStyle(JRootPane.NONE);
+        m_GameOver_F.setSize(new Dimension(m_Assets.getImage("GameOverBG").getIconWidth(), m_Assets.getImage("GameOverBG").getIconHeight()));
+        m_GameOver_F.setLocation( m_ScreenWidth/2-m_Assets.getImage("GameOverBG").getIconWidth()/2, m_ScreenHeight/2-m_Assets.getImage("GameOverBG").getIconHeight()/2);//centering
+        m_GameOver_F.setAlwaysOnTop(true);
 		
 		m_BackToMenu_B.setMargin(new Insets(0,0,0,0));
 		m_StartGame_B.setMargin(new Insets(0,0,0,0));
@@ -113,11 +113,11 @@ public class GameOverWindow implements Serializable
 		m_Background_L.add(new JLabel("\n"));
 		m_Background_L.add(m_BackToMenu_B);
 		
-		m_GameOverFrame.add(m_Background_L);
+		m_GameOver_F.add(m_Background_L);
 		
-		m_GameOverFrame.pack();
+		m_GameOver_F.pack();
 		
-		m_GameOverFrame.setVisible(true);
+		m_GameOver_F.setVisible(true);
 	}
 	
 	/**addActionListeners
@@ -149,13 +149,10 @@ public class GameOverWindow implements Serializable
 			switch(command)
 			{
 				case "BackToMenu": MenuWindow menu = new MenuWindow(new JFrame("domnb"));//loading screen...
-                                   m_OldWindow.dispose(); m_GameOverFrame.dispose();
+                                   m_OldWindow.dispose(); m_GameOver_F.dispose();
 					break;
 				case "StartGame":
-						/*Loading Screen...*/
-                        GameSetUpWindow newGame = new GameSetUpWindow(m_GameOverFrame, m_Assets);
                     break;
-				// create default error message
                 case "ReplayGame":
                     break;
 			}

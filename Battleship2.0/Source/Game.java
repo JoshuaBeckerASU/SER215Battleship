@@ -94,6 +94,7 @@ public class Game implements Serializable
             }else if(m_Object instanceof Ship)
             {
                 Ship ship = (Ship) m_Object;
+                System.out.println(m_Players[1].getNumShipsPlaced() + " ship = " + ship.getName());
                 m_Players[1].setShip(m_Players[1].getNumShipsPlaced(),new Ship(ship));
                 m_Players[1].addToTaken(ship.x(),ship.y(),new Ship(ship));
             }
@@ -141,7 +142,13 @@ public class Game implements Serializable
 	}
     public void getInputFromServer()
     {
-        new GetInputFromServer(m_Client.getInputStream());
+        GetInputFromServer getShip = new GetInputFromServer(m_Client.getInputStream());
+        Thread thread = new Thread(getShip, "getShipThread");
+        thread.start();
+        while(thread.isAlive())
+        {
+            
+        }
     }
     public void sendMessage(String message)
     {

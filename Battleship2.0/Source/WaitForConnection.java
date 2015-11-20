@@ -7,7 +7,8 @@ import javax.imageio.*;
 import java.awt.image.*;
 import java.io.*;
 
-public class WaitForConnection extends JFrame{
+public class WaitForConnection extends JFrame implements Runnable
+{
 	private JFrame m_OldWindow_jf,m_ConnectionWindow_jf;
 	private JLabel m_Background_jl;
 	private JButton m_Cancel_jb;
@@ -17,6 +18,15 @@ public class WaitForConnection extends JFrame{
 	public WaitForConnection(JFrame oldWindow)
     {
 		m_OldWindow_jf=oldWindow;
+		m_Assets= Main.s_Assets;
+
+        createComponents();
+		buildCompenents();
+		addElements();
+
+	}
+	public WaitForConnection()
+    {
 		m_Assets= Main.s_Assets;
 
         createComponents();
@@ -63,9 +73,17 @@ public class WaitForConnection extends JFrame{
         
 		m_ConnectionWindow_jf.pack();
         
-		m_ConnectionWindow_jf.setVisible(true);
 	}
 
 	public void attachListeners(){}
-
+    
+    public void run()
+    {
+        m_ConnectionWindow_jf.setVisible(true);
+    }
+    
+    public void dispose()
+    {
+        m_ConnectionWindow_jf.dispose();
+    }
 }

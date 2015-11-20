@@ -195,8 +195,11 @@ public class MultiPlayerMenuWindow implements Serializable
                         m_LSlots[1] = new LobbySlot(2);
                         System.out.println("Selected JoinGame");
                         
+                        WaitForConnection wfc = new WaitForConnection();
+                        Thread wfcThread = new Thread(wfc, "WaitingForPlayerThread");
+                        wfcThread.start();
                         m_Client = new GameClient_();
-                        Thread thread = new Thread(m_Client);
+                        Thread thread = new Thread(m_Client,"ClientThread");
                         
                         //WaitForConnection wfc = new WaitForConnection(new JFrame());
                         //Thread wfcThread = new Thread(wfc);
@@ -208,7 +211,7 @@ public class MultiPlayerMenuWindow implements Serializable
                         {
                             
                         }
-                        
+                        wfc.dispose();
                         m_Game = new Game(m_Client, m_LSlots);
                         m_Game.setUpGame(m_Game);
                         m_MultiPlayerMenu_F.dispose();

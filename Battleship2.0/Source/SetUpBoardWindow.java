@@ -273,15 +273,14 @@ public class SetUpBoardWindow implements Serializable
                                 m_CurrentPlayer = Game.getCurrentGame().getPlayer(1);
                                 if(Game.getCurrentGame().isMultiplayer())
                                 {  
-                                    System.out.println("Getting Ship Locations...");
+                                    WaitForConnection wfc = new WaitForConnection();
+                                    Thread thread = new Thread(wfc, "WaitingForPlayerThread");
+                                    thread.start();
                                     for(int i = 0; i < 5; i++)
                                     {
                                         Game.getCurrentGame().getInputFromServer();
-                                        
-                                        //m_CurrentPlayer.updateBoard(ship,ship.x(),ship.y(),"SELECT");
-                                        
-                                        //m_CurrentPlayer.setNextShip();
                                     }
+                                    wfc.dispose();
                                     Game.getCurrentGame().setUpBoards();
                                     m_SetUpBoard_F.dispose();
                                 }
