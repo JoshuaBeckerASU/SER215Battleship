@@ -335,8 +335,8 @@ public class Game implements Serializable
 		// Placing Ships on Board
 		for(int i=0;i<5;i++){
 			// RANDOM VALUE INSTANTIATION
-			randX = random.nextInt(AI_Board.getNumCols())+1; // Shifting from 0-15 --> 1 - 16
-			randY = random.nextInt(AI_Board.getNumRows())+1;
+			randX = random.nextInt(AI_Board.getNumCols()); // Shifting from 0-15 --> 1 - 16
+			randY = random.nextInt(AI_Board.getNumRows());
 			int randOrientation = random.nextInt(2); // boolean interpretation for randomly flipping ships. 
 			System.out.println("X: " + randX + "Y: " + randY);
 			
@@ -515,6 +515,12 @@ public class Game implements Serializable
 				{
 					int x = rand.nextInt(16);
 					int y = rand.nextInt(18);
+					
+					while(getOpponentPlayer().getStringBoard()[x][y] == "MARKED"){
+						x = rand.nextInt(16);
+						y = rand.nextInt(19);
+					}
+					
 					m_CurrentPlayer.incNumOfSelTargets();
 					playerSelectedTarget(x,y);
 				}
@@ -525,12 +531,8 @@ public class Game implements Serializable
 			case 1: 
 				int shots = 0;
 				int i = 0;
-				System.out.println("HERE");
-				/*if(currentTarget == "NULL" && m_CurrentPlayer.isShipStackEmpty()){
-					System.out.println("Ship is empty.");
-					currentTarget = m_CurrentPlayer.getCurrentTarget();
-			
-				}*/
+				System.out.println("After shots and i assigned to 0.");
+
 				if(m_CurrentPlayer.getCurrentTarget() == "NULL" && !(m_CurrentPlayer.isShipStackEmpty())){
 					m_CurrentPlayer.setCurrentTarget(m_CurrentPlayer.popShip());
 					System.out.println("\nPOPPED SHIP: " + m_CurrentPlayer.getCurrentTarget());
