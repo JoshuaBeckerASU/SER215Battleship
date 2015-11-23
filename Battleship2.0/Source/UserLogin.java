@@ -28,13 +28,17 @@ public class UserLogin extends JFrame
    private GridLayout m_PanelLayoutNew1 = new GridLayout(), m_PanelLayoutNew2 = new GridLayout();
    private Thread m_loadAssets;
    private RecordTracking records = new RecordTracking();
-
-   /*public static void main(String[] args)
+   
+   /*
+   //for testing
+   public static void main(String[] args)
    {
       new UserLogin();
    }
    */
    
+   /*
+   //for testing purposes
    public UserLogin()
    {
       createComponents();
@@ -43,6 +47,7 @@ public class UserLogin extends JFrame
       addActionListeners();
       m_UserLoginFrame.setVisible(true);
    }
+   */
    
    public UserLogin(Thread loadAssets)
    {
@@ -54,6 +59,7 @@ public class UserLogin extends JFrame
       m_UserLoginFrame.setVisible(true);
    }
    
+   //called for new user registration
    public void UserReg()
    {
       buildComponentsNew();
@@ -120,6 +126,7 @@ public class UserLogin extends JFrame
       return isLoggedIn;
    }
    
+   //creating components for UI
    public void createComponents()
    {
 		m_ScreenWidth = 500;
@@ -164,9 +171,9 @@ public class UserLogin extends JFrame
       m_Buttons_New_P.setLayout(m_PanelLayout2);
       m_PanelLayout1.setAlignment(FlowLayout.CENTER);
       m_PanelLayout2.setAlignment(FlowLayout.CENTER);
-      
    }
    
+   //the following 2 methods are used for building and adding components specific to existing user login
    public void buildComponentsLog()
    {
       m_UserLoginFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -198,6 +205,7 @@ public class UserLogin extends JFrame
       m_UserLoginFrame.add(m_Buttons_Existing_P, BorderLayout.SOUTH);
    }
    
+   //the following 2 methods are used for building and adding components specific to new user registration
    public void buildComponentsNew()
    {
       m_UserRegFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -237,6 +245,7 @@ public class UserLogin extends JFrame
       m_Exit.addActionListener(new ButtonListener());
    }
    
+   //button actions defined
    private class ButtonListener implements ActionListener
    {
       private boolean isRegged = false, isLogged = false;
@@ -252,7 +261,6 @@ public class UserLogin extends JFrame
                m_Password_S = m_Password_T.getText();
                isLogged = loginSuccess();
                records.connect(m_UserName_S);
-               records.createProfile();
                m_UserLoginFrame.dispose();
                break;
             case "New User":

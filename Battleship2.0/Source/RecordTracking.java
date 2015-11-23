@@ -22,21 +22,21 @@ public class RecordTracking
    private String sqlPlayed, sqlGWon, sqlGLost, sqlDestroyed, sqlSLost, sqlPWon, sqlPLost;
    private String sql, createRecords;
    private String playerName;
-   private UserProfile profile;
    
    public RecordTracking()
    {
       
    }
    
-   
+   /*
+   //for testing
    public static void main(String[] args)
    {
       RecordTracking test = new RecordTracking();
       test.connect("userName");
       test.createProfile();
    }
-   
+   */
    
    public void connect(String name)
    {
@@ -111,11 +111,15 @@ public class RecordTracking
       }
    }
    
-   /*
-   //return records for display now done in UserProfile class
+   //return records for display
    public String getUserName()
    {
       return playerName;
+   }
+   
+   public int getGamesPlayed()
+   {
+      return intPlayed;
    }
    
    public int getGamesWon()
@@ -147,9 +151,8 @@ public class RecordTracking
    {
       return pLost;
    }
-   */
    
-   public void modifyRecords(boolean isVictorious, int sDestroyed, int sLost)
+   public void modifyRecords(boolean isVictorious, int sLost, int sDestroyed)
    {
       String sqlUpdate;
       if(isVictorious)
@@ -169,11 +172,12 @@ public class RecordTracking
       intDestroyed += sDestroyed;
       intSLost += sLost;
       
-      sqlUpdate = "UPDATE bs_player_stats WHERE name = 'userName' SET games_played = " + intPlayed + ", games_won = " + intGWon + ", games_lost = " + intGLost + ", ships_destroyed = " + intDestroyed
-         + ", ships_lost = " + intSLost + ", win_percentage = " + pWon + ", loss_percentage = " + pLost + ";";
+      sqlUpdate = "UPDATE bs_player_stats  SET games_played = " + intPlayed + ", games_won = " + intGWon + ", games_lost = " + intGLost + ", ships_destroyed = " + intDestroyed
+         + ", ships_lost = " + intSLost + ", win_percentage = " + pWon + ", loss_percentage = " + pLost + " WHERE name = '" + playerName + "';";
       
       try
       {
+         conn = DriverManager.getConnection(URL,USER,PASS);
          stmtUpdate = conn.createStatement();
          
          stmtUpdate.executeUpdate(sqlUpdate);
@@ -187,32 +191,6 @@ public class RecordTracking
       catch(SQLException se)
       {
          se.printStackTrace();
-      }
-      
-   }
-   
-   public void createProfile()
-   {
-      profile = new UserProfile(playerName, intPlayed, intGWon, intGLost, intSLost, intDestroyed, pLost, pWon);
-      
-      String path = "";
-		path = System.getProperty("user.dir");
-		path = path.replace('\\','/');
-		path = path.replaceAll("Source", "Assets/");
-      
-      try
-      {
-         FileOutputStream fileOut =
-            new FileOutputStream(path + "profile.ser");
-         ObjectOutputStream out = new ObjectOutputStream(fileOut);
-         out.writeObject(profile);
-         out.close();
-         fileOut.close();
-      }
-      
-      catch(IOException i)
-      {
-          i.printStackTrace();
       }
    }
 }

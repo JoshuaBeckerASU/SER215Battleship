@@ -5,6 +5,12 @@ Create On: 11/20/15
 Updated On: 
 Contributors:
 ***********************/
+
+/*
+   was meant for profile loading
+   not implemented
+*/
+
 import java.io.*;
 
 public class UserProfile implements java.io.Serializable
@@ -13,7 +19,7 @@ public class UserProfile implements java.io.Serializable
    private int gamesPlayed, gamesLost, gamesWon, shipsLost, shipsDestroyed;
    private double gamesWonP, gamesLostP;
    
-   
+
    public UserProfile(String name, int played, int won, int lost, int sLost, int destroyed, double lostP, double wonP)
    {
       username = name;

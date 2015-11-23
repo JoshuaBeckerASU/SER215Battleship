@@ -33,49 +33,27 @@ public class StatsDisplay extends JFrame
    private double gamesWonP, gamesLostP;
    private boolean isVictorious = false;
    private DecimalFormat myFormatter = new DecimalFormat("##.##");
-   private UserProfile profile = null;
+   private RecordTracking records = null;
    
+   /*
+   //for testing
    public static void main(String[] args)
    {
       boolean isWinner = true;
       GraphicsEnvironment ge = 
             GraphicsEnvironment.getLocalGraphicsEnvironment();
       GraphicsDevice gd = ge.getDefaultScreenDevice();
-      StatsDisplay stats = new StatsDisplay(isWinner, 2, 5);
+      StatsDisplay stats = new StatsDisplay("userName, isWinner, 2, 5);
    }
+   */
    
-   
-   public StatsDisplay(boolean isWinner, int sLost, int destroyed)
+   public StatsDisplay(String userName, boolean isWinner, int sLost, int destroyed)
    {
       super("TranslucentWindow");
       
-      String path = "";
-		path = System.getProperty("user.dir");
-		path = path.replace('\\','/');
-		path = path.replaceAll("Source", "Assets/");
-      
-      try
-      {
-         FileInputStream fileIn = new FileInputStream(path + "profile.ser");
-         ObjectInputStream in = new ObjectInputStream(fileIn);
-         profile = (UserProfile) in.readObject();
-         in.close();
-         fileIn.close();
-      }
-      
-      catch(IOException i)
-      {
-         i.printStackTrace();
-         return;
-      }
-      
-      catch(ClassNotFoundException c)
-      {
-         c.printStackTrace();
-         return;
-      }
-      
-      updateProfile(isWinner, sLost, destroyed);
+      records = new RecordTracking();
+      records.connect(userName);
+      records.modifyRecords(isWinner, sLost, destroyed);
       
       getRecords();
       
@@ -172,20 +150,15 @@ public class StatsDisplay extends JFrame
       }
    }
    
-   public void updateProfile(boolean isWinner, int sLost, int destroyed)
-   {
-      profile.modifyRecords(isWinner, destroyed, sLost);
-   }
-   
    public void getRecords()
    {
-      gamesPlayed = profile.getPlayed();
-      gamesLost = profile.getLost();
-      gamesWon = profile.getWon();
-      shipsLost = profile.getSLost();
-      shipsDestroyed = profile.getDestroyed();
-      gamesWonP = profile.getWonP();
-      gamesLostP = profile.getLostP();
-      m_Name = profile.getUser();
+      gamesPlayed = records.getGamesPlayed();
+      gamesLost = records.getGamesLost();
+      gamesWon = records.getGamesWon();
+      shipsLost = records.getShipsLost();
+      shipsDestroyed = records.getShipsDestroyed();
+      gamesWonP = records.getPWon();
+      gamesLostP = records.getPLost();
+      m_Name = records.getUserName();
    }
 }
