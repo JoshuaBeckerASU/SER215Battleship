@@ -34,6 +34,7 @@ public class RecordTracking
    {
       RecordTracking test = new RecordTracking();
       test.connect("userName");
+      test.createProfile();
    }
    
    
@@ -52,7 +53,7 @@ public class RecordTracking
          //retrieve stats for existing user
          if(rs.isBeforeFirst())
          {
-             //need to jump to first row
+             rs.first();
              
              sqlPlayed = "SELECT games_played from bs_player_stats WHERE name = '" + name + "';";
              sqlGWon = "SELECT games_won from bs_player_stats WHERE name = '" + name + "';";
@@ -63,18 +64,23 @@ public class RecordTracking
              sqlPLost = "SELECT loss_percentage from bs_player_stats WHERE name = '" + name + "';";
              
              ResultSet rsPlayed = stmt.executeQuery(sqlPlayed);
+             rsPlayed.first();
              intPlayed = ((Number) rsPlayed.getObject(1)).intValue();
              
-             ResultSet rsGWon = stmt.executeQuery(sqlGWon);             
+             ResultSet rsGWon = stmt.executeQuery(sqlGWon);
+             rsGWon.first();
              intGWon = ((Number) rsGWon.getObject(1)).intValue();
              
              ResultSet rsGLost = stmt.executeQuery(sqlGLost);
+             rsGLost.first();
              intGLost = ((Number) rsGLost.getObject(1)).intValue();
              
              ResultSet rsDestroyed = stmt.executeQuery(sqlDestroyed);
+             rsDestroyed.first();
              intDestroyed = ((Number) rsDestroyed.getObject(1)).intValue();
              
              ResultSet rsSLost = stmt.executeQuery(sqlSLost);
+             rsSLost.first();
              intSLost = ((Number) rsSLost.getObject(1)).intValue();
              
              pWon = ((double) intGWon / intPlayed) * 100;
@@ -163,7 +169,7 @@ public class RecordTracking
       intDestroyed += sDestroyed;
       intSLost += sLost;
       
-      sqlUpdate = "UPDATE bs_player_stats SET games_played = " + intPlayed + ", games_won = " + intGWon + ", games_lost = " + intGLost + ", ships_destroyed = " + intDestroyed
+      sqlUpdate = "UPDATE bs_player_stats WHERE name = 'userName' SET games_played = " + intPlayed + ", games_won = " + intGWon + ", games_lost = " + intGLost + ", ships_destroyed = " + intDestroyed
          + ", ships_lost = " + intSLost + ", win_percentage = " + pWon + ", loss_percentage = " + pLost + ";";
       
       try

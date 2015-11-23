@@ -44,6 +44,9 @@ public class UserProfile implements java.io.Serializable
       
       shipsDestroyed += sDestroyed;
       shipsLost += sLost;
+      
+      RecordTracking records = new RecordTracking();
+      records.modifyRecords(isVictorious, sDestroyed, sLost);
    }
    
    public String getUser()
