@@ -29,13 +29,13 @@ public class RecordTracking
       
    }
    
-   /*
+   
    public static void main(String[] args)
    {
       RecordTracking test = new RecordTracking();
-      test.connect("david");
+      test.connect("userName");
    }
-   */
+   
    
    public void connect(String name)
    {
@@ -52,6 +52,8 @@ public class RecordTracking
          //retrieve stats for existing user
          if(rs.isBeforeFirst())
          {
+             //need to jump to first row
+             
              sqlPlayed = "SELECT games_played from bs_player_stats WHERE name = '" + name + "';";
              sqlGWon = "SELECT games_won from bs_player_stats WHERE name = '" + name + "';";
              sqlGLost = "SELECT games_lost from bs_player_stats WHERE name = '" + name + "';";

@@ -35,15 +35,15 @@ public class StatsDisplay extends JFrame
    private DecimalFormat myFormatter = new DecimalFormat("##.##");
    private UserProfile profile = null;
    
-   /*public static void main(String[] args)
+   public static void main(String[] args)
    {
       boolean isWinner = true;
       GraphicsEnvironment ge = 
             GraphicsEnvironment.getLocalGraphicsEnvironment();
       GraphicsDevice gd = ge.getDefaultScreenDevice();
-      new StatsDisplay(isWinner);
+      new StatsDisplay(isWinner, 2, 5);
    }
-   */
+   
    
    public StatsDisplay(boolean isWinner, int sLost, int destroyed)
    {
@@ -54,7 +54,7 @@ public class StatsDisplay extends JFrame
 		path = path.replace('\\','/');
 		path = path.replaceAll("Source", "Assets/");
       
-      try
+      /*try
       {
          FileInputStream fileIn = new FileInputStream(path + "profile.ser");
          ObjectInputStream in = new ObjectInputStream(fileIn);
@@ -67,13 +67,13 @@ public class StatsDisplay extends JFrame
       {
          i.printStackTrace();
          return;
-      }
+      }*/
       
-      catch(ClassNotFoundException c)
+      /*catch(ClassNotFoundException c)
       {
          c.printStackTrace();
          return;
-      }
+      }*/
       
       updateProfile(isWinner, sLost, destroyed);
       
@@ -97,9 +97,10 @@ public class StatsDisplay extends JFrame
 		m_ScreenHeight = 800;
       
       m_StatsDisplay = new JFrame("Statistics");
-      m_StatsDisplay.setLayout(new GridLayout(14, 1));
+      m_StatsDisplay.setLayout(new GridLayout(13, 1));
       
       m_Exit_B = new JButton("Exit");
+      m_Exit_B.setPreferredSize(new Dimension(10, 35));
       
       m_Overall_L = new JLabel("OVERALL STATISTICS");
       m_GamesPlayed_L = new JLabel("GAMES PLAYED: " + gamesPlayed);
