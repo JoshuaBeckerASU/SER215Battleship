@@ -105,21 +105,6 @@ public class StatsDisplay extends JFrame
       {
          m_Victory_L = new JLabel(lost);
       }
-      
-       m_Overall_L.setAlignmentX(Component.CENTER_ALIGNMENT);
-       m_GamesPlayed_L.setAlignmentX(Component.CENTER_ALIGNMENT);
-       m_GamesLost_L.setAlignmentX(Component.CENTER_ALIGNMENT);
-       m_GamesWon_L.setAlignmentX(Component.CENTER_ALIGNMENT);
-       m_ShipsLost_L.setAlignmentX(Component.CENTER_ALIGNMENT);
-       m_ShipsDestroyed_L.setAlignmentX(Component.CENTER_ALIGNMENT);
-       m_LossPercent_L.setAlignmentX(Component.CENTER_ALIGNMENT);
-       m_WonPercent_L.setAlignmentX(Component.CENTER_ALIGNMENT);
-       m_Name_L.setAlignmentX(Component.CENTER_ALIGNMENT);
-       m_CurrentGame_L.setAlignmentX(Component.CENTER_ALIGNMENT);
-       m_Lost_L.setAlignmentX(Component.CENTER_ALIGNMENT);
-       m_Destroyed_L.setAlignmentX(Component.CENTER_ALIGNMENT);
-       m_Victory_L.setAlignmentX(Component.CENTER_ALIGNMENT);
-       m_Exit_B.setAlignmentX(Component.CENTER_ALIGNMENT);
    }
    
    public void buildComponents()
