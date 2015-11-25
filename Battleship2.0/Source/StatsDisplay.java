@@ -77,7 +77,7 @@ public class StatsDisplay extends JFrame
       m_StatsDisplay = new JFrame("Statistics");
       m_StatsDisplay.setLayout(new BorderLayout());
       panel = new JPanel();
-      panel.setLayout(new BoxLayout(panel, BoxLayout.PAGE_AXIS));
+      panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
       
       m_Exit_B = new JButton("Exit");
       
