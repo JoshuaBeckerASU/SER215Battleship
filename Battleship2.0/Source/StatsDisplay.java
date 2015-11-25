@@ -78,6 +78,8 @@ public class StatsDisplay extends JFrame
       m_StatsDisplay.setLayout(new BorderLayout());
       panel = new JPanel();
       panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+      panel.setAlignmentX(Component.CENTER_ALIGNMENT);
+      panel.setMinimumSize(new Dimension(m_ScreenWidth,m_ScreenHeight));
       
       m_Exit_B = new JButton("Exit");
       
@@ -103,6 +105,21 @@ public class StatsDisplay extends JFrame
       {
          m_Victory_L = new JLabel(lost);
       }
+      
+       m_Overall_L.setAlignmentX(Component.CENTER_ALIGNMENT);
+       m_GamesPlayed_L.setAlignmentX(Component.CENTER_ALIGNMENT);
+       m_GamesLost_L.setAlignmentX(Component.CENTER_ALIGNMENT);
+       m_GamesWon_L.setAlignmentX(Component.CENTER_ALIGNMENT);
+       m_ShipsLost_L.setAlignmentX(Component.CENTER_ALIGNMENT);
+       m_ShipsDestroyed_L.setAlignmentX(Component.CENTER_ALIGNMENT);
+       m_LossPercent_L.setAlignmentX(Component.CENTER_ALIGNMENT);
+       m_WonPercent_L.setAlignmentX(Component.CENTER_ALIGNMENT);
+       m_Name_L.setAlignmentX(Component.CENTER_ALIGNMENT);
+       m_CurrentGame_L.setAlignmentX(Component.CENTER_ALIGNMENT);
+       m_Lost_L.setAlignmentX(Component.CENTER_ALIGNMENT);
+       m_Destroyed_L.setAlignmentX(Component.CENTER_ALIGNMENT);
+       m_Victory_L.setAlignmentX(Component.CENTER_ALIGNMENT);
+       m_Exit_B.setAlignmentX(Component.CENTER_ALIGNMENT);
    }
    
    public void buildComponents()
@@ -111,19 +128,20 @@ public class StatsDisplay extends JFrame
       m_StatsDisplay.setSize(new Dimension(m_ScreenWidth,m_ScreenHeight));
       m_StatsDisplay.setUndecorated(true);
 
-      m_GamesPlayed_L.setAlignmentX(Component.LEFT_ALIGNMENT);
-      m_GamesLost_L.setAlignmentX(Component.LEFT_ALIGNMENT);
-      m_GamesWon_L.setAlignmentX(Component.LEFT_ALIGNMENT);
-      m_ShipsLost_L.setAlignmentX(Component.LEFT_ALIGNMENT);
-      m_ShipsDestroyed_L.setAlignmentX(Component.LEFT_ALIGNMENT);
-      m_LossPercent_L.setAlignmentX(Component.LEFT_ALIGNMENT);
-      m_WonPercent_L.setAlignmentX(Component.LEFT_ALIGNMENT);
-      m_Name_L.setAlignmentX(Component.LEFT_ALIGNMENT);
-      m_CurrentGame_L.setAlignmentX(Component.LEFT_ALIGNMENT);
-      m_Lost_L.setAlignmentX(Component.LEFT_ALIGNMENT);
-      m_Destroyed_L.setAlignmentX(Component.LEFT_ALIGNMENT);
-      m_Victory_L.setAlignmentX(Component.LEFT_ALIGNMENT);
-      m_Overall_L.setAlignmentX(Component.LEFT_ALIGNMENT);
+     m_Overall_L.setAlignmentX(Component.CENTER_ALIGNMENT);
+     m_GamesPlayed_L.setAlignmentX(Component.CENTER_ALIGNMENT);
+     m_GamesLost_L.setAlignmentX(Component.CENTER_ALIGNMENT);
+     m_GamesWon_L.setAlignmentX(Component.CENTER_ALIGNMENT);
+     m_ShipsLost_L.setAlignmentX(Component.CENTER_ALIGNMENT);
+     m_ShipsDestroyed_L.setAlignmentX(Component.CENTER_ALIGNMENT);
+     m_LossPercent_L.setAlignmentX(Component.CENTER_ALIGNMENT);
+     m_WonPercent_L.setAlignmentX(Component.CENTER_ALIGNMENT);
+     m_Name_L.setAlignmentX(Component.CENTER_ALIGNMENT);
+     m_CurrentGame_L.setAlignmentX(Component.CENTER_ALIGNMENT);
+     m_Lost_L.setAlignmentX(Component.CENTER_ALIGNMENT);
+     m_Destroyed_L.setAlignmentX(Component.CENTER_ALIGNMENT);
+     m_Victory_L.setAlignmentX(Component.CENTER_ALIGNMENT);
+     m_Exit_B.setAlignmentX(Component.CENTER_ALIGNMENT);
       
       m_Exit_B.setMargin(new Insets(0,0,0,0));
       m_Exit_B.setAlignmentX(Component.CENTER_ALIGNMENT);
