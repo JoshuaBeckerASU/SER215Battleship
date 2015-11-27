@@ -34,18 +34,18 @@ public class StatsDisplay extends JFrame
    private boolean isVictorious = false;
    private DecimalFormat myFormatter = new DecimalFormat("##.##");
    private RecordTracking records = null;
+   private JPanel panel = null;
    
-   /*
-   //for testing
+
    public static void main(String[] args)
    {
       boolean isWinner = true;
       GraphicsEnvironment ge = 
             GraphicsEnvironment.getLocalGraphicsEnvironment();
       GraphicsDevice gd = ge.getDefaultScreenDevice();
-      StatsDisplay stats = new StatsDisplay("userName, isWinner, 2, 5);
+      StatsDisplay stats = new StatsDisplay("userName", isWinner, 2, 5);
    }
-   */
+
    
    public StatsDisplay(String userName, boolean isWinner, int sLost, int destroyed)
    {
@@ -72,10 +72,14 @@ public class StatsDisplay extends JFrame
    public void createComponents()
    {
 		m_ScreenWidth = 350;
-		m_ScreenHeight = 800;
+		m_ScreenHeight = 400;
       
       m_StatsDisplay = new JFrame("Statistics");
-      m_StatsDisplay.setLayout(new GridLayout(13, 0));
+      m_StatsDisplay.setLayout(new BorderLayout());
+      panel = new JPanel();
+      panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+      panel.setAlignmentX(Component.CENTER_ALIGNMENT);
+      panel.setMinimumSize(new Dimension(m_ScreenWidth,m_ScreenHeight));
       
       m_Exit_B = new JButton("Exit");
       
@@ -108,25 +112,44 @@ public class StatsDisplay extends JFrame
       m_StatsDisplay.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
       m_StatsDisplay.setSize(new Dimension(m_ScreenWidth,m_ScreenHeight));
       m_StatsDisplay.setUndecorated(true);
+
+     m_Overall_L.setAlignmentX(Component.CENTER_ALIGNMENT);
+     m_GamesPlayed_L.setAlignmentX(Component.CENTER_ALIGNMENT);
+     m_GamesLost_L.setAlignmentX(Component.CENTER_ALIGNMENT);
+     m_GamesWon_L.setAlignmentX(Component.CENTER_ALIGNMENT);
+     m_ShipsLost_L.setAlignmentX(Component.CENTER_ALIGNMENT);
+     m_ShipsDestroyed_L.setAlignmentX(Component.CENTER_ALIGNMENT);
+     m_LossPercent_L.setAlignmentX(Component.CENTER_ALIGNMENT);
+     m_WonPercent_L.setAlignmentX(Component.CENTER_ALIGNMENT);
+     m_Name_L.setAlignmentX(Component.CENTER_ALIGNMENT);
+     m_CurrentGame_L.setAlignmentX(Component.CENTER_ALIGNMENT);
+     m_Lost_L.setAlignmentX(Component.CENTER_ALIGNMENT);
+     m_Destroyed_L.setAlignmentX(Component.CENTER_ALIGNMENT);
+     m_Victory_L.setAlignmentX(Component.CENTER_ALIGNMENT);
+     m_Exit_B.setAlignmentX(Component.CENTER_ALIGNMENT);
       
+      m_Exit_B.setMargin(new Insets(0,0,0,0));
+      m_Exit_B.setAlignmentX(Component.CENTER_ALIGNMENT);
       m_Exit_B.setActionCommand("Exit");
    }
    
    public void addElements()
    {
-      m_StatsDisplay.add(m_CurrentGame_L);
-      m_StatsDisplay.add(m_Victory_L);
-      m_StatsDisplay.add(m_Destroyed_L);
-      m_StatsDisplay.add(m_Lost_L);
-      m_StatsDisplay.add(m_Overall_L);
-      m_StatsDisplay.add(m_GamesPlayed_L);
-      m_StatsDisplay.add(m_GamesWon_L);
-      m_StatsDisplay.add(m_GamesLost_L);
-      m_StatsDisplay.add(m_ShipsDestroyed_L);
-      m_StatsDisplay.add(m_ShipsLost_L);
-      m_StatsDisplay.add(m_WonPercent_L);
-      m_StatsDisplay.add(m_LossPercent_L);
-      m_StatsDisplay.add(m_Exit_B);
+      panel.add(m_CurrentGame_L);
+      panel.add(m_Victory_L);
+      panel.add(m_Destroyed_L);
+      panel.add(m_Lost_L);
+      panel.add(m_Overall_L);
+      panel.add(m_GamesPlayed_L);
+      panel.add(m_GamesWon_L);
+      panel.add(m_GamesLost_L);
+      panel.add(m_ShipsDestroyed_L);
+      panel.add(m_ShipsLost_L);
+      panel.add(m_WonPercent_L);
+      panel.add(m_LossPercent_L);
+      panel.add(m_Exit_B);
+      
+      m_StatsDisplay.add(panel, BorderLayout.CENTER);
    }
    
    private void addActionListeners()
