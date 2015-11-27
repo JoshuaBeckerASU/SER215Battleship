@@ -4,7 +4,7 @@
 * @date: 10/26/15
 * @description:
 *  
-* @contributors:
+* @contributors: Jacob Leonard
 *  
 * @index
 * [
@@ -72,7 +72,7 @@ public class Board implements Serializable
 		m_GameBoards_P.add(m_GameBoard_X_P);
 		m_GameBoards_P.add(new JLabel(m_Assets.getImage("GameBoard")));
 		
-		GraphicsDevice gd = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();// geting size of screen
+		GraphicsDevice gd = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();// Getting size of screen
 		m_ScreenWidth = gd.getDisplayMode().getWidth();
 		m_ScreenHeight = gd.getDisplayMode().getHeight();
 	}

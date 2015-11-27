@@ -37,13 +37,15 @@ public class Player implements Serializable
 	private String m_currentTarget;
 	private	Stack<Integer> xHits = new Stack<Integer>();
 	private	Stack<Integer> yHits = new Stack<Integer>();
-	private	Stack<String> shipStack = new Stack<String>(); // Associated with xHits and yHits for remember what other ships were hit.
+	private	Stack<String> shipStack = new Stack<String>(); // Associated with xHits and yHits Stack for remembering which other ships were hit.
+	
 	private LoadAssets m_Assets;
 	private Board m_Board;
 	private int m_NumOfSelectedTargets;//thats a long name...
 	private int m_ShipsPlaced;
 	private int m_ShipsLeft;
-	private String m_ShipLocaions[][];
+	private Location[] m_ShipLocations = new Location[17]; // Storing location of ships for auto-hitting on Hard difficulty. 
+	
 	private Game m_Game;
 	public Ship m_AirCarr;
 	public Ship m_Battleship;
@@ -74,8 +76,10 @@ public class Player implements Serializable
 		m_originHitY = -1;
 		m_lastHitX = -1;
 		m_lastHitY = -1;
-		m_directionsShot = new int[] {0,0,0,0}; // Cardinal Directions from OriginHit [0]SOUTH, [1]NORTH, [2]EAST, [3]WEST | 0 indicates not Tried. 1 Indicates Tried.
-
+		m_directionsShot = new int[] {0,0,0,0}; // Cardinal Directions from OriginHit [0]SOUTH, [1]NORTH, [2]EAST, [3]WEST | 0 indicates not Tried. 1 Indicates Tried & Exhausted.
+		
+		for(int i=0;i<17;i++)
+			m_ShipLocations[i] = new Location();
 		
 		
 		m_Game = game;
@@ -210,6 +214,23 @@ public class Player implements Serializable
 	public void pushHitY(int y){
 		yHits.push(y);
 	}
+	
+	public void setShipLocations(int index, int x, int y){ // Tracks coordinate pairs for auto-targeting of the AI.
+			System.out.println("INDEX: " + index + " x " + x + " y " + y);
+			Location loc = m_ShipLocations[index];
+			System.out.println("HERE.");
+			loc.setLocation(x, y);
+	}
+	
+	public int getShipLocationX(int x){
+	
+		return m_ShipLocations[x].getx();
+	}
+	public int getShipLocationY(int y){
+	
+		return m_ShipLocations[y].gety();
+	}
+
 	
 	/*public boolean isHitXEmpty(){
 		return xHits.empty();

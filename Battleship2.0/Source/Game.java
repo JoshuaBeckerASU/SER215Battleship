@@ -211,8 +211,26 @@ public class Game implements Serializable
             m_SetUpBoard_W = new SetUpBoardWindow(m_Players[2]);
         }else
         {
-            if(!m_IsMultiplayer)
+            if(!m_IsMultiplayer){
+			
+				// SETS ARRAY IN PLAYER CLASS CONTAINING ALL COORDINATE VALUES FOR EVERY SHIP. USED FOR AI Implementation (auto-targeting).
+				for(int i=0;i<2;i++){
+					Board board = m_Players[i].getBoardObject();
+					int index = 0;
+					String result = "";
+					for(int x=0;x<board.getNumCols();x++){
+						for(int y=0;y<board.getNumRows();y++){
+							result = m_Players[i].getStringBoard()[x][y];
+							if(!(result.equals("NULL")) && !(result.equals("NOSHIP"))){
+								System.out.println("Set " + result + " at " + x + " " + y);
+								m_Players[i].setShipLocations(index, x, y);
+								index++;
+							}
+						}
+					}
+				}
                 startGame();
+			}
             else
                 startMultiplayerGame();
         }
@@ -320,11 +338,13 @@ public class Game implements Serializable
             } 
             else
                 m_Players[i] = new Player(m_Slots[i].getNameTA().getText(), true, m_CurrentGame);
+
 	}
 	
 	/*	Primary method utilized in populating 
 	*	the designated AI player's pieces to the board upon setup.
 	*/
+
 	public void fillAI(Player player)
 	{
 		Board AI_Board = player.getBoardObject(); // Need to access A.I. Board owned by Player. 
@@ -510,7 +530,7 @@ public class Game implements Serializable
 		switch (m_difficulty){			
 			
 			// EASY DIFFICULTY
-			case 0: 
+			case 0: {
 				while(m_CurrentPlayer.getNumOfSelectedTargets() < 5)
 				{
 					int x = rand.nextInt(16);
@@ -526,9 +546,10 @@ public class Game implements Serializable
 				}
 				nextTurn();
 				break;
+			}
 				
 			// MEDIUM DIFFICULTY	
-			case 1: 
+			case 1: {
 				int shots = 0;
 				int i = 0;
 				System.out.println("After shots and i assigned to 0.");
@@ -677,7 +698,188 @@ public class Game implements Serializable
 					} 
 				}
 				System.out.println("### AI TURN ENDED ###");
-				nextTurn();		
+				nextTurn();
+				break;
+			}
+				
+			case 2: { // HARD Difficulty (Medium-Difficulty Logic + 5% chance of auto-hit)
+				
+				int shots = 0;
+				int i = 0;
+				System.out.println("After shots and i assigned to 0.");
+
+				if(m_CurrentPlayer.getCurrentTarget() == "NULL" && !(m_CurrentPlayer.isShipStackEmpty())){
+					m_CurrentPlayer.setCurrentTarget(m_CurrentPlayer.popShip());
+					System.out.println("\nPOPPED SHIP: " + m_CurrentPlayer.getCurrentTarget());
+					int x = m_CurrentPlayer.popHitX();
+					int y = m_CurrentPlayer.popHitY();
+					m_CurrentPlayer.setOriginHitX(x);
+					m_CurrentPlayer.setOriginHitY(y);
+					m_CurrentPlayer.setLastHitX(x);
+					m_CurrentPlayer.setLastHitY(y);
+					
+					System.out.println("\n\nCURRENT SHIP TO HUNT: " + m_CurrentPlayer.getCurrentTarget());
+					System.out.println("ORIGIN TARGET: " + x + ", " + y);
+				
+				}			 
+				// Get a past target and coordinates.
+				System.out.println("\n Case 2: Hard Difficulty\n");
+
+				while(shots < 5){ // For five shots...
+					System.out.println("After For Loop: SHOT #: " + shots);
+					if(m_CurrentPlayer.getCurrentTarget() != "NULL"){ // Then last turn, there was a hit, but ship count didn't change: thus not sunk // getOpponentPlayer().getShipsLeft() == m_CurrentPlayer.getEnemyShipsLeft() && m_CurrentPlayer.wasEnemyHit() == true
+						System.out.println("After Conditional" + m_CurrentPlayer.getCurrentTarget());
+						System.out.println("CARDINAL DIRECTION VALUE: " + m_CurrentPlayer.getDirectionsShot()[i]);
+						System.out.println("Cardinal Direction INDEX Value: " + i);
+						if(m_CurrentPlayer.getDirectionsShot()[i] == 0){ // If AI hasn't previously tried this direction...
+							switch (i){ // Discerning direction based on i
+								case 0: // South
+									System.out.println("TRYING SOUTH");
+									
+									if(!(m_CurrentPlayer.getLastHitY()+1 > 18)){
+										m_CurrentPlayer.incNumOfSelTargets();
+										shots++;
+										playerSelectedTarget(m_CurrentPlayer.getLastHitX(),m_CurrentPlayer.getLastHitY()+1);
+									}
+									
+									if(!(m_CurrentPlayer.getLastHitY()+1 > 18) && getOpponentPlayer().getStringBoard()[m_CurrentPlayer.getLastHitX()][m_CurrentPlayer.getLastHitY()+1] == "MARKED"){
+										m_CurrentPlayer.setDirectionsShot(i, 1);
+										m_CurrentPlayer.setLastHitX(m_CurrentPlayer.getOriginHitX());
+										m_CurrentPlayer.setLastHitY(m_CurrentPlayer.getOriginHitY());
+										System.out.println("MISS!");
+										i++;
+									}
+									if(m_CurrentPlayer.getLastHitY() == 18){
+										m_CurrentPlayer.setDirectionsShot(i, 1);
+										System.out.println("\n\n AT BORDER");
+									}
+									break;
+								case 1: // North
+									System.out.println("TRYING NORTH");
+									
+									if(!(m_CurrentPlayer.getLastHitY()-1 < 0)){
+										m_CurrentPlayer.incNumOfSelTargets();
+										shots++;
+										playerSelectedTarget(m_CurrentPlayer.getLastHitX(),m_CurrentPlayer.getLastHitY()-1);
+									}
+				
+									if(!(m_CurrentPlayer.getLastHitY()-1 < 0) && getOpponentPlayer().getStringBoard()[m_CurrentPlayer.getLastHitX()][m_CurrentPlayer.getLastHitY()-1] == "MARKED"){
+										m_CurrentPlayer.setDirectionsShot(i, 1);
+										m_CurrentPlayer.setLastHitX(m_CurrentPlayer.getOriginHitX());
+										m_CurrentPlayer.setLastHitY(m_CurrentPlayer.getOriginHitY());
+										System.out.println("MISS!");
+										i++;											
+									}
+									if(m_CurrentPlayer.getLastHitY() == 0){
+										m_CurrentPlayer.setDirectionsShot(i, 1);
+										System.out.println("\n\n AT BORDER");
+									}								
+									break;
+									
+								case 2: // East
+									System.out.println("TRYING EAST");
+									
+									if(!(m_CurrentPlayer.getLastHitX()+1 > 15)){
+										m_CurrentPlayer.incNumOfSelTargets();
+										shots++;
+										playerSelectedTarget(m_CurrentPlayer.getLastHitX()+1,m_CurrentPlayer.getLastHitY());
+									}
+									
+									if(!(m_CurrentPlayer.getLastHitX()+1 > 15) && getOpponentPlayer().getStringBoard()[m_CurrentPlayer.getLastHitX()+1][m_CurrentPlayer.getLastHitY()] == "MARKED"){
+										m_CurrentPlayer.setDirectionsShot(i, 1);
+										m_CurrentPlayer.setLastHitX(m_CurrentPlayer.getOriginHitX());
+										m_CurrentPlayer.setLastHitY(m_CurrentPlayer.getOriginHitY());
+										System.out.println("MISS!");
+										i++;											
+									}
+									if(m_CurrentPlayer.getLastHitX() == 15){
+										m_CurrentPlayer.setDirectionsShot(i, 1);
+										System.out.println("\n\n AT BORDER");
+									}
+									break;	
+									
+								case 3: // West
+									System.out.println("TRYING WEST");		
+
+									if(!(m_CurrentPlayer.getLastHitX()-1 < 0)){
+										m_CurrentPlayer.incNumOfSelTargets();
+										shots++;											
+										playerSelectedTarget(m_CurrentPlayer.getLastHitX()-1,m_CurrentPlayer.getLastHitY());
+									}
+								
+									if(!(m_CurrentPlayer.getLastHitX()-1 < 0) && getOpponentPlayer().getStringBoard()[m_CurrentPlayer.getLastHitX()-1][m_CurrentPlayer.getLastHitY()] == "MARKED"){
+										m_CurrentPlayer.setDirectionsShot(i, 1);
+										m_CurrentPlayer.setLastHitX(m_CurrentPlayer.getOriginHitX());
+										m_CurrentPlayer.setLastHitY(m_CurrentPlayer.getOriginHitY());	
+										System.out.println("MISS at!");										
+									}
+									if(m_CurrentPlayer.getLastHitX() == 0){
+										m_CurrentPlayer.setDirectionsShot(i, 1);
+										System.out.println("\n\n AT BORDER");
+									}
+									break;
+									
+								default: // Should there be an error, circle back directionIndex (i) to 0.
+									System.out.println("i is " + i);
+									i = 0;
+							}
+						}else if(m_CurrentPlayer.getDirectionsShot()[i] == 1 ){
+							if(i<3){
+								System.out.println("Incrementing i...");
+								i++;
+							}
+							else{
+								i = 0;
+								m_CurrentPlayer.resetDirectionsShot();
+							}
+						}	
+					}
+					else{
+						System.out.println("IN ELSE");
+						m_CurrentPlayer.incNumOfSelTargets();
+						
+						double chanceAutoHit = rand.nextDouble();
+						int randX = rand.nextInt(16);
+						int randY = rand.nextInt(19);
+						int randCoord = rand.nextInt(17); // Random Coordinates (based on randomizing index of location array)
+						int chanceX = getOpponentPlayer().getShipLocationX(randCoord);
+						int chanceY = getOpponentPlayer().getShipLocationY(randCoord);
+						
+						System.out.println("\n\nAUTO HIT VALUE: " + chanceAutoHit);
+						// AUTO-HIT CHANCE
+						if(chanceAutoHit >= .95){ // 5% chance to auto-hit per shot.
+							
+							while(getOpponentPlayer().getStringBoard()[chanceX][chanceY] == "MARKED"){ // Selecting random coordinate values that are not already marked (all Hits on ships turn to Marked after processing).
+							
+								randCoord = rand.nextInt(17);
+								chanceX = getOpponentPlayer().getShipLocationX(randCoord);
+								chanceY = getOpponentPlayer().getShipLocationY(randCoord);								
+							
+							}
+							System.out.println("\n\n### CHANCE HIT PROC ###: X: " + chanceX + " Y " + chanceY);
+							playerSelectedTarget(chanceX,chanceY);
+							shots++;						
+						}
+					
+						else{
+						
+							while(getOpponentPlayer().getStringBoard()[randX][randY] == "MARKED"){
+							
+								randX = rand.nextInt(16);
+								randY = rand.nextInt(19);
+
+							}
+							playerSelectedTarget(randX,randY);
+							shots++;
+						}
+					} 
+				}
+				System.out.println("### AI TURN ENDED ###");
+				nextTurn();
+				break;
+			}
+				
+				
 				
 		}// End Difficulty Switch block		
 	}
