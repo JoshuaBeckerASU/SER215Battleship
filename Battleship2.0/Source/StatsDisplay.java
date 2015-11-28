@@ -71,8 +71,8 @@ public class StatsDisplay extends JFrame
    
    public void createComponents()
    {
-		m_ScreenWidth = 350;
-		m_ScreenHeight = 400;
+		m_ScreenWidth = 225;
+		m_ScreenHeight = 225;
       
       m_StatsDisplay = new JFrame("Statistics");
       m_StatsDisplay.setLayout(new BorderLayout());
