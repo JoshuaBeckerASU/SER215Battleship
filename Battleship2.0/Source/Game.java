@@ -889,8 +889,7 @@ public class Game implements Serializable
 		m_GameWindow.resetActionConsole();
 		m_GameWindow.updateActionConsole("Waiting for " + m_CurrentPlayer.getName() + " To Take Turn\n\n" +
 										 "Has " + (5 - m_CurrentPlayer.getNumOfSelectedTargets()) + "left");
-										 
-
+										
 	}
 	public void playerSelectedTarget(int x,int y)
 	{
@@ -902,6 +901,8 @@ public class Game implements Serializable
 		switch(result)
         {
             case "MARKED": getCurrentPlayer().decNumOfSelTargets();
+						if(m_CurrentPlayer.isHuman())
+							m_Assets.playSound("invalid.wav");
                         break;
             
             case "NOSHIP": 
@@ -922,6 +923,7 @@ public class Game implements Serializable
 							   if(m_CurrentPlayer.isHuman() && !isMultiplayer())
                             {
                             	BoardMouseAction.setIcon(m_Assets.getImage("HitMarker"));
+								m_Assets.playSound("cannon_shot2.wav");
                             }else
                             {
                             	tmp.setIcon(m_Assets.getImage("HitMarker"));

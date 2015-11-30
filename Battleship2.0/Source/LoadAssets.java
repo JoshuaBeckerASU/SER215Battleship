@@ -24,11 +24,13 @@ import java.awt.image.*;
 import java.io.*;
 import java.net.*;
 import java.util.*;
+import javax.sound.sampled.*;
 
 public class LoadAssets implements Runnable, Serializable
 {	
     private ImageIcon [] m_Assets;
     private ArrayList<String> m_Names;
+	private Map<String, File> soundMap; // Attempting utilization of a Map datastructure for storage and retrieval of sounds when needed.
 	private final int GridCol;
 	private final int GridRows;
     
@@ -38,6 +40,7 @@ public class LoadAssets implements Runnable, Serializable
 		GridRows = 19;
         m_Assets = new ImageIcon[43];
         m_Names = new ArrayList<String>();
+		soundMap = new HashMap<String, File>();
 	}
 	
 	public ImageIcon getImage(String name)
@@ -315,7 +318,48 @@ public class LoadAssets implements Runnable, Serializable
         m_Names.add("Blank");
         m_Names.add("ConnectingToServer");
         m_Names.add("SwitchToWindow");
+		
+		LoadingWindow.updateMessage("Loading Sounds...");
+		
+		LoadingWindow.updateMessage("Loading cannon_shot2.wav");
+		soundMap.put("cannon_shot2.wav", loadGameSound("cannon_shot2.wav"));
+		LoadingWindow.updateMessage("Loading invalid.wav");
+		soundMap.put("invalid.wav", loadGameSound("invalid.wav"));
 
         System.out.println("DONE LOADING");
     }
+	
+	
+	private File loadGameSound(String fileName){
+		
+		String path = "";
+		path = System.getProperty("user.dir");
+		path = path.replace('\\','/');
+		path = path.replaceAll("Source", "Assets/Sounds/" + fileName);
+	
+		File sound = new File(path);
+		
+		return sound;
+	}
+	
+	
+	// SOUND PLAYER - Consider moving to game.java? Does this make sense?
+	public void playSound(final String fileName) {
+
+		try{
+			AudioInputStream stream;
+			AudioFormat format;
+			DataLine.Info info;
+			Clip clip;
+			
+			stream = AudioSystem.getAudioInputStream(soundMap.get(fileName));
+			format = stream.getFormat();
+			info = new DataLine.Info(Clip.class, format);
+			clip = (Clip) AudioSystem.getLine(info);
+			clip.open(stream);
+			clip.start();
+	
+		}catch (Exception e){}
+	}
+	
 }
