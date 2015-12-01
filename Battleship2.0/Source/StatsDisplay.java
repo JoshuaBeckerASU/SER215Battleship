@@ -36,7 +36,7 @@ public class StatsDisplay extends JFrame
    private RecordTracking records = null;
    private JPanel panel = null;
    
-   
+   /*
    //used for testing
    public static void main(String[] args)
    {
@@ -46,7 +46,7 @@ public class StatsDisplay extends JFrame
       GraphicsDevice gd = ge.getDefaultScreenDevice();
       StatsDisplay stats = new StatsDisplay("userName", isWinner, 2, 5);
    }
-   
+   */
    
    public StatsDisplay(String userName, boolean isWinner, int sLost, int destroyed)
    {
