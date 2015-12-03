@@ -4,7 +4,7 @@
 * @date: 10/26/15
 * @description:
 *  
-* @contributors:
+* @contributors: Jacob Leonard
 *  
 * @index
 * [
