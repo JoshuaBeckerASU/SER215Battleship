@@ -25,6 +25,10 @@ public class Main implements Serializable
     public static final LoadAssets s_Assets = new LoadAssets();
     public static void main(String[] args)
     {
+        new UserLogin();
+    }
+    public static void startGame()
+    {
 		GraphicsDevice gd = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();// Getting size of screen
 		int ScreenWidth = gd.getDisplayMode().getWidth();
 		int ScreenHeight = gd.getDisplayMode().getHeight();

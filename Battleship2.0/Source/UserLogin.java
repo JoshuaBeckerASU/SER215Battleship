@@ -3,7 +3,7 @@ Name: PlayerRecords
 Author: David Ward
 Create On: 11/02/15
 Updated On: 
-Contributors:
+Contributors: Joshua Becker
 ***********************/
 import java.awt.*;
 import java.awt.event.*; 
@@ -17,7 +17,8 @@ import java.io.*;
 public class UserLogin extends JFrame
 {
    private JFrame m_UserLoginFrame, m_UserRegFrame;
-   private int m_ScreenWidth, m_ScreenHeight;
+   private int m_FrameWidth, m_FrameHeight;
+   private int m_ScreenHeight,m_ScreenWidth;
    private JButton m_Login, m_Register, m_NewUser, m_Cancel, m_Exit; //m_Login button to login as existing user, m_Register button to register new user, m_NewUser button to bring up new user registration
    private JPanel m_LabelText_ExistingUser_P, m_LabelText_ExistingPass_P, m_Buttons_Existing_P, m_LabelText_NewUser_P, m_LabelText_NewPass_P, m_LabelText_ConfirmPass_P, m_Buttons_New_P;
    private JLabel m_UserName_L, m_Password_L, m_ConfirmPass_L, m_Results_L;
@@ -27,9 +28,11 @@ public class UserLogin extends JFrame
    private FlowLayout m_FrameLayout = new FlowLayout(), m_PanelLayout1 = new FlowLayout(), m_PanelLayout2 = new FlowLayout();
    private GridLayout m_PanelLayoutNew1 = new GridLayout(), m_PanelLayoutNew2 = new GridLayout();
    private RecordTracking records = new RecordTracking();
+   private JPanel m_Content_P;
    
-   /*
+   
    //for testing
+   /*
    public static void main(String[] args)
    {
       new UserLogin();
@@ -107,6 +110,8 @@ public class UserLogin extends JFrame
                isLoggedIn = false;
                break;
          }
+         new UserLogin();
+         m_UserRegFrame.dispose();
       }
       
       return isLoggedIn;
@@ -115,14 +120,15 @@ public class UserLogin extends JFrame
    //creating components for UI
    public void createComponents()
    {
-		m_ScreenWidth = 500;
-		m_ScreenHeight = 200;
+	  m_FrameWidth = 250;
+	  m_FrameHeight = 400;
+      
+	  GraphicsDevice gd = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();// Getting size of screen
+	  m_ScreenWidth = gd.getDisplayMode().getWidth();
+	  m_ScreenHeight = gd.getDisplayMode().getHeight();
       
       m_UserLoginFrame = new JFrame("User Login");
       m_UserRegFrame = new JFrame("Create User");
-      m_UserLoginFrame.setLayout(m_FrameLayout);
-      m_UserRegFrame.setLayout(m_FrameLayout);
-      m_FrameLayout.setAlignment(FlowLayout.CENTER);
       
       m_Login = new JButton("Sign in");
       m_NewUser = new JButton("New User");
@@ -133,41 +139,52 @@ public class UserLogin extends JFrame
       
       m_UserName_L = new JLabel("Username:");
       m_Password_L = new JLabel("Password:");
-      m_ConfirmPass_L = new JLabel("Confirm:");
+      m_ConfirmPass_L = new JLabel("Confirm Password:");
       m_Results_L = new JLabel("");
       
       m_UserName_T = new JTextField(20);
       m_Password_T = new JPasswordField(20);
       m_ConfirmPass_T = new JPasswordField(20);
       
-      m_LabelText_ExistingUser_P = new JPanel();
-      m_LabelText_ExistingPass_P = new JPanel();
+      m_LabelText_ExistingUser_P = new JPanel(new FlowLayout());
+      m_LabelText_ExistingPass_P = new JPanel(new FlowLayout());
       m_Buttons_Existing_P = new JPanel();
       m_LabelText_NewUser_P = new JPanel();
       m_LabelText_NewPass_P = new JPanel();
       m_LabelText_ConfirmPass_P = new JPanel();
+      m_Content_P = new JPanel();
       
       m_Buttons_New_P = new JPanel();
-      
-      m_LabelText_ExistingUser_P.setLayout(new GridLayout(2,2));
-      m_Buttons_Existing_P.setLayout(m_PanelLayout2);
-      m_LabelText_NewUser_P.setLayout(new GridLayout(3,2));
-      m_PanelLayoutNew1.layoutContainer(m_LabelText_ExistingUser_P);
-      m_PanelLayoutNew1.layoutContainer(m_LabelText_NewUser_P);
-      m_Buttons_New_P.setLayout(m_PanelLayout2);
-      m_PanelLayout1.setAlignment(FlowLayout.CENTER);
-      m_PanelLayout2.setAlignment(FlowLayout.CENTER);
    }
    
    //the following 2 methods are used for building and adding components specific to existing user login
    public void buildComponentsLog()
    {
+      m_Content_P.setLayout(new BoxLayout(m_Content_P,BoxLayout.Y_AXIS));
+       
       m_UserLoginFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-      m_UserLoginFrame.setSize(new Dimension(m_ScreenWidth,m_ScreenHeight));
+      m_UserLoginFrame.setSize(new Dimension(m_FrameWidth,m_FrameHeight));
+      m_UserLoginFrame.setLocation((m_ScreenWidth/2) - (m_FrameWidth/2),(m_ScreenHeight/2) - (m_FrameHeight/2));
+      m_UserLoginFrame.setResizable(false);
+      m_UserName_T.setBackground(new Color(150,150,150));
+      m_Password_T.setBackground(new Color(150,150,150));
+      m_UserName_T.setForeground(Color.BLACK);
+      m_Password_T.setForeground(Color.BLACK);
       
-      m_Login.setMargin(new Insets(0,0,0,0));
-      m_NewUser.setMargin(new Insets(0,0,0,0));
-      m_Exit.setMargin(new Insets(0,0,0,0));
+      m_Login.setMargin(new Insets(5,5,5,5));
+      m_NewUser.setMargin(new Insets(5,5,5,5));
+      m_Exit.setMargin(new Insets(5,5,5,5));
+      
+      m_LabelText_ExistingPass_P.setMaximumSize(new Dimension(m_FrameWidth,50));
+      m_LabelText_ExistingPass_P.setMinimumSize(new Dimension(m_FrameWidth,40));
+      m_LabelText_ExistingPass_P.setPreferredSize(new Dimension(m_FrameWidth,45));
+      m_LabelText_ExistingUser_P.setMinimumSize(new Dimension(m_FrameWidth,40));
+      m_LabelText_ExistingUser_P.setMaximumSize(new Dimension(m_FrameWidth,45));
+      m_LabelText_ExistingUser_P.setPreferredSize(new Dimension(m_FrameWidth,45));
+      
+      m_Login.setPreferredSize(new Dimension(70,20));
+      m_Exit.setPreferredSize(new Dimension(70,20));
+      m_NewUser.setPreferredSize(new Dimension(75,20));
       
       m_Login.setActionCommand("Login");
       m_NewUser.setActionCommand("New User");
@@ -176,29 +193,39 @@ public class UserLogin extends JFrame
    
    public void addElementsLog()
    {
-      m_LabelText_ExistingUser_P.add(m_UserName_L, BorderLayout.NORTH);
-      m_LabelText_ExistingUser_P.add(m_UserName_T, BorderLayout.NORTH);
-      m_LabelText_ExistingUser_P.add(m_Password_L, BorderLayout.SOUTH);
-      m_LabelText_ExistingUser_P.add(m_Password_T, BorderLayout.SOUTH);
-      m_LabelText_ExistingPass_P.add(m_Results_L);
+      m_LabelText_ExistingUser_P.add(m_UserName_L);
+      m_LabelText_ExistingUser_P.add(m_UserName_T);
+      m_LabelText_ExistingPass_P.add(m_Password_L);
+      m_LabelText_ExistingPass_P.add(m_Password_T);
       
       m_Buttons_Existing_P.add(m_Login);
       m_Buttons_Existing_P.add(m_NewUser);
       m_Buttons_Existing_P.add(m_Exit);
       
-      m_UserLoginFrame.add(m_LabelText_ExistingUser_P, BorderLayout.NORTH);
-      m_UserLoginFrame.add(m_LabelText_ExistingPass_P, BorderLayout.CENTER);
-      m_UserLoginFrame.add(m_Buttons_Existing_P, BorderLayout.SOUTH);
+      m_Content_P.add(m_LabelText_ExistingUser_P);
+      m_Content_P.add(m_LabelText_ExistingPass_P);
+      m_Content_P.add(m_Buttons_Existing_P);
+      
+      m_UserLoginFrame.add(m_Content_P);
    }
    
    //the following 2 methods are used for building and adding components specific to new user registration
    public void buildComponentsNew()
    {
       m_UserRegFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-      m_UserRegFrame.setSize(new Dimension(m_ScreenWidth,m_ScreenHeight));
+      m_UserRegFrame.setSize(new Dimension(m_FrameWidth,m_FrameHeight));
+      m_UserRegFrame.setLocation((m_ScreenWidth/2) - (m_FrameWidth/2),(m_ScreenHeight/2) - (m_FrameHeight/2));
+      m_UserRegFrame.setResizable(false);
       
-      m_Register.setMargin(new Insets(0,0,0,0));
-      m_Cancel.setMargin(new Insets(0,0,0,0));
+      m_Login.setMargin(new Insets(5,5,5,5));
+      m_NewUser.setMargin(new Insets(5,5,5,5));
+      m_Exit.setMargin(new Insets(5,5,5,5));
+      
+      m_ConfirmPass_T.setForeground(Color.WHITE);
+      m_ConfirmPass_T.setBackground(new Color(150,150,150));
+      
+      m_Register.setPreferredSize(new Dimension(90,20));
+      m_Cancel.setPreferredSize(new Dimension(90,20));
       
       m_Register.setActionCommand("Register");
       m_Cancel.setActionCommand("Cancel");
@@ -214,12 +241,13 @@ public class UserLogin extends JFrame
       m_LabelText_NewUser_P.add(m_ConfirmPass_T);
       
       m_Buttons_New_P.add(m_Register);
-      m_Buttons_New_P.add( m_Cancel);
+      m_Buttons_New_P.add(m_Cancel);
       
-      m_UserRegFrame.add(m_LabelText_NewUser_P, BorderLayout.NORTH);
-      m_UserRegFrame.add(m_LabelText_NewPass_P, BorderLayout.CENTER);
-      m_UserRegFrame.add(m_LabelText_ConfirmPass_P, BorderLayout.CENTER);
-      m_UserRegFrame.add(m_Buttons_New_P, BorderLayout.SOUTH);
+      m_Content_P.removeAll();
+      m_Content_P.add(m_LabelText_NewUser_P);
+      m_Content_P.add(m_Buttons_New_P);
+      
+      m_UserRegFrame.add(m_Content_P);
    }
    
    private void addActionListeners()
@@ -248,6 +276,7 @@ public class UserLogin extends JFrame
                isLogged = loginSuccess();
                records.connect(m_UserName_S);
                m_UserLoginFrame.dispose();
+               Main.startGame();
                break;
             case "New User":
                UserReg();
