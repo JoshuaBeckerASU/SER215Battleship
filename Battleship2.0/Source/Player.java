@@ -26,9 +26,8 @@ public class Player implements Serializable
 	private int m_Wins;
 	private int m_Losses;
 	
-	// AI Implementation: condense once implemented
+	// AI Implementation
 	private int m_enemyShipsLeft;
-	private boolean m_enemyWasHit;
 	private int m_originHitX;
 	private int m_originHitY;
 	private int m_lastHitX;
@@ -38,13 +37,14 @@ public class Player implements Serializable
 	private	Stack<Integer> xHits = new Stack<Integer>();
 	private	Stack<Integer> yHits = new Stack<Integer>();
 	private	Stack<String> shipStack = new Stack<String>(); // Associated with xHits and yHits Stack for remembering which other ships were hit.
+	private Location[] m_ShipLocations = new Location[17]; // Storing location of ships for auto-hitting on Hard difficulty. 
 	
 	private LoadAssets m_Assets;
 	private Board m_Board;
-	private int m_NumOfSelectedTargets;//thats a long name...
+	private int m_NumOfSelectedTargets;
 	private int m_ShipsPlaced;
 	private int m_ShipsLeft;
-	private Location[] m_ShipLocations = new Location[17]; // Storing location of ships for auto-hitting on Hard difficulty. 
+
 	
 	private Game m_Game;
 	public Ship m_AirCarr;
@@ -70,7 +70,6 @@ public class Player implements Serializable
 		m_ShipsLeft = 5;
 		
 		m_enemyShipsLeft = 5;
-		m_enemyWasHit = false;
 		m_currentTarget = "NULL";
 		m_originHitX = -1;
 		m_originHitY = -1;
@@ -146,7 +145,6 @@ public class Player implements Serializable
 	public void decEnemyShipsLeft(){
 		m_enemyShipsLeft--;
 	}
-	
 	public int getLastHitX(){
 		return m_lastHitX;
 	}
@@ -159,7 +157,6 @@ public class Player implements Serializable
 	public void setLastHitY(int lastHitY){
 		m_lastHitY = lastHitY;
 	}
-	
 	public int getOriginHitX(){
 		return m_originHitX;
 	}
@@ -184,14 +181,6 @@ public class Player implements Serializable
 		int newArray[] = {0,0,0,0};
 		m_directionsShot = newArray;
 	}
-
-	public boolean wasEnemyHit(){
-	
-		return m_enemyWasHit;
-	}
-	public void setEnemyWasHit(boolean bool){
-		m_enemyWasHit = bool;
-	}
 	
 	public void setCurrentTarget(String shipName){
 		m_currentTarget = shipName;
@@ -215,7 +204,7 @@ public class Player implements Serializable
 		yHits.push(y);
 	}
 	
-	public void setShipLocations(int index, int x, int y){ // Tracks coordinate pairs for auto-targeting of the AI.
+	public void setShipLocations(int index, int x, int y){ // Tracks coordinate pairs for auto-targeting of the AI. From these coordinate values, the AI will have a chance to auto-hit at one of these coordinates.
 			System.out.println("INDEX: " + index + " x " + x + " y " + y);
 			Location loc = m_ShipLocations[index];
 			System.out.println("HERE.");
@@ -230,17 +219,22 @@ public class Player implements Serializable
 	
 		return m_ShipLocations[y].gety();
 	}
-
-	
-	/*public boolean isHitXEmpty(){
-		return xHits.empty();
-	}*/
 	
 	public void pushShip(String shipName){
 		shipStack.push(shipName);
 	}
 	public String popShip(){
 		return shipStack.pop();
+	}
+	
+	public String peekShip(){
+		String shipName = "";
+		try{
+			shipName = shipStack.peek();
+		}catch(EmptyStackException e){
+			shipName = "";
+		}
+		return shipName;
 	}
 	public boolean isShipStackEmpty(){
 		System.out.println("Checking if ship stack is empty");

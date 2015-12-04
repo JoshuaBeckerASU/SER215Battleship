@@ -33,9 +33,9 @@ public class LoadingWindow implements Serializable
     private ImageIcon m_Background_IC, m_Loading_L_IC;
     private static JLabel m_Message;
 	
-    public LoadingWindow(ImageIcon background, ImageIcon loading)// constructer
+    public LoadingWindow(ImageIcon background, ImageIcon loading) // Constructor
     {
-		GraphicsDevice gd = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();// geting size of screen
+		GraphicsDevice gd = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();// getting size of screen
 		m_ScreenWidth = gd.getDisplayMode().getWidth();
 		m_ScreenHeight = gd.getDisplayMode().getHeight();
         m_Background_IC = background;
@@ -60,7 +60,7 @@ public class LoadingWindow implements Serializable
         m_Message.setForeground(Color.BLACK);
         
         for(int i = 0; i < m_ScreenHeight/23; i++)
-            m_Background_L.add(new JLabel("\n"));//spaceing
+            m_Background_L.add(new JLabel("\n")); // Spacing
         
         m_Background_L.add(m_Loading_L);
         m_Background_L.add(m_Message);

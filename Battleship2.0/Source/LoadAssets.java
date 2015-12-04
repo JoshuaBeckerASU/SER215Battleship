@@ -33,6 +33,7 @@ public class LoadAssets implements Runnable, Serializable
 	private Map<String, File> soundMap; // Attempting utilization of a Map datastructure for storage and retrieval of sounds when needed.
 	private final int GridCol;
 	private final int GridRows;
+	private Clip currentClip;
     
 	LoadAssets()
 	{
@@ -325,6 +326,12 @@ public class LoadAssets implements Runnable, Serializable
 		soundMap.put("cannon_shot2.wav", loadGameSound("cannon_shot2.wav"));
 		LoadingWindow.updateMessage("Loading invalid.wav");
 		soundMap.put("invalid.wav", loadGameSound("invalid.wav"));
+		LoadingWindow.updateMessage("Loading miss1.wav");
+		soundMap.put("miss1.wav", loadGameSound("miss1.wav"));
+		LoadingWindow.updateMessage("Loading miss2.wav");
+		soundMap.put("miss2.wav", loadGameSound("miss2.wav"));
+		LoadingWindow.updateMessage("Loading whistler_short.wav");
+		soundMap.put("whistler_short.wav", loadGameSound("whistler_short.wav"));
 
         System.out.println("DONE LOADING");
     }
@@ -342,8 +349,7 @@ public class LoadAssets implements Runnable, Serializable
 		return sound;
 	}
 	
-	
-	// SOUND PLAYER - Consider moving to game.java? Does this make sense?
+	// SOUND PLAYER
 	public void playSound(final String fileName) {
 
 		try{
@@ -352,14 +358,21 @@ public class LoadAssets implements Runnable, Serializable
 			DataLine.Info info;
 			Clip clip;
 			
-			stream = AudioSystem.getAudioInputStream(soundMap.get(fileName));
+			stream = AudioSystem.getAudioInputStream(soundMap.get(fileName)); // Sounds loaded at the start of the game will be accessed from here.
 			format = stream.getFormat();
 			info = new DataLine.Info(Clip.class, format);
 			clip = (Clip) AudioSystem.getLine(info);
 			clip.open(stream);
 			clip.start();
+			currentClip = clip;
 	
 		}catch (Exception e){}
+	}
+	
+	public void stopSound() {
+
+		currentClip.stop();
+	
 	}
 	
 }

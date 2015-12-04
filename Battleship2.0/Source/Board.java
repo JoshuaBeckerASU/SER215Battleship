@@ -60,6 +60,7 @@ public class Board implements Serializable
 		{
 			Arrays.fill(m_HasShip[i],"NOSHIP");
 		}
+		m_Assets.stopSound(); // Stop main menu music
 		
 		createBoards();
 		

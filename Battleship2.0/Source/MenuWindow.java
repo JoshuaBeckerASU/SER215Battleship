@@ -34,7 +34,7 @@ public class MenuWindow implements Runnable, Serializable
 	private LoadAssets m_Assets;
     private static boolean m_IsWindowed;
 	
-    public MenuWindow(JFrame oldWindow)// constructer
+    public MenuWindow(JFrame oldWindow)// constructor
     {
         m_OldWindow = oldWindow;
 		m_Assets = Main.s_Assets;
@@ -46,7 +46,7 @@ public class MenuWindow implements Runnable, Serializable
 	**/
 	public void createComponents()
 	{
-		GraphicsDevice gd = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();// geting size of screen
+		GraphicsDevice gd = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();// getting size of screen
 		m_ScreenWidth = gd.getDisplayMode().getWidth();
 		m_ScreenHeight = gd.getDisplayMode().getHeight();
         
@@ -208,6 +208,8 @@ public class MenuWindow implements Runnable, Serializable
 		addElements();
         
         m_OldWindow.dispose();
+		
+		m_Assets.playSound("whistler_short.wav");
     }
     /**isWindowed
     * @details: if the window mode

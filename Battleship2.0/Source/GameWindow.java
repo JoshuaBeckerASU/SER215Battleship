@@ -43,6 +43,7 @@ public class GameWindow implements Serializable, Runnable
 	
     public GameWindow(Game game)// constructer
     {
+			
 		m_CurrentGame = game;
 		
 		m_Assets = Main.s_Assets;
@@ -54,6 +55,8 @@ public class GameWindow implements Serializable, Runnable
 		addActionListeners();
 		
 		addElements();
+		
+
 	}
 	/**createComponents
 	* creates components and gives them
