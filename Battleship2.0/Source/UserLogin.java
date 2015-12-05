@@ -76,13 +76,23 @@ public class UserLogin extends JFrame
             break;
             
          case 1: m_Result_S = "Username and password combination does not exist";
-            m_Message_L.setText("Username and password combination does not exist");
+            m_Message_L.setText("Invalid Username/Password");
+            
             isLoggedIn = false;
             break;
             
          case 2: m_Result_S = "Database connection failed.";
-            m_Message_L.setText("Database connection failed.");
-            isLoggedIn = false;
+            int result = JOptionPane.showConfirmDialog (m_UserLoginFrame, "DataBase Connection Failed\nNote if you are Running via the Source\nthe DataBase will not connect\nRun Executeable Jar File To Connect\nWould you like to skip sign in?");
+            if(result == JOptionPane.YES_OPTION)
+            {
+                isLoggedIn = false; 
+                m_UserLoginFrame.dispose();
+                Main.startLoading();
+            }else
+            {
+                m_Message_L.setText("Database connection failed.");
+                isLoggedIn = false; 
+            }
             break;
       }
       

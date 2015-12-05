@@ -75,6 +75,21 @@ public class LobbySlot extends JLabel implements Serializable
         add(m_Difficulty_CB);
         add(m_TypeOfPlayer_CB);
     }
+    public void disableIsActive()
+    {
+        m_isActive_CkB.getInputMap().put(KeyStroke.getKeyStroke("SPACE"), "none");
+        m_isActive_CkB.getInputMap().put(KeyStroke.getKeyStroke("released SPACE"), "none");
+    }
+    public void disableType()
+    {
+        m_TypeOfPlayer_CB.getInputMap().put(KeyStroke.getKeyStroke("SPACE"), "none");
+        m_TypeOfPlayer_CB.getInputMap().put(KeyStroke.getKeyStroke("released SPACE"), "none");
+    }
+    public void disableDiff()
+    {
+        m_Difficulty_CB.getInputMap().put(KeyStroke.getKeyStroke("SPACE"), "none");
+        m_Difficulty_CB.getInputMap().put(KeyStroke.getKeyStroke("released SPACE"), "none");
+    }
     public JTextArea getNameTA()
     {
         return m_Name_TA;
@@ -94,5 +109,9 @@ public class LobbySlot extends JLabel implements Serializable
     public void setisActive(boolean isActive)
     {
         m_isActive_CkB.setSelected(isActive);
+    }
+    public void setType(int type)
+    {
+        m_TypeOfPlayer_CB.setSelectedIndex(type);
     }
 }

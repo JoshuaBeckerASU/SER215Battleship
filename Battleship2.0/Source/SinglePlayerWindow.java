@@ -154,8 +154,11 @@ public class SinglePlayerWindow implements Serializable
         for (int i = 0; i < ml.length; i++)
             m_Slots[0].getisActive().removeMouseListener( ml[i] );
         
-        m_Slots[0].getisActive().getInputMap().put(KeyStroke.getKeyStroke("SPACE"), "none");
-        m_Slots[0].getisActive().getInputMap().put(KeyStroke.getKeyStroke("released SPACE"), "none");
+        m_Slots[0].disableIsActive();
+        m_Slots[0].disableType();
+        m_Slots[1].disableIsActive();
+        m_Slots[1].disableType();
+        m_Slots[1].setType(1);
         
         m_Slots[0].getType().setEditable(false);
 	}
