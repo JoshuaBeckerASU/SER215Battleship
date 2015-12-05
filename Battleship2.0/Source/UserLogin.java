@@ -28,18 +28,18 @@ public class UserLogin extends JFrame
    private String m_UserName_S, m_Password_S, m_ConfirmPass_S, m_Result_S;
    private FlowLayout m_FrameLayout = new FlowLayout(), m_PanelLayout1 = new FlowLayout(), m_PanelLayout2 = new FlowLayout();
    private GridLayout m_PanelLayoutNew1 = new GridLayout(), m_PanelLayoutNew2 = new GridLayout();
-   private RecordTracking records = new RecordTracking();
+   private UserRegistration records;
    private JPanel m_Content_P;
    public static JLabel m_Message_L;
    
    
    //for testing
-   /*
+   
    public static void main(String[] args)
    {
       new UserLogin();
    }
-   */
+   
    
    public UserLogin()
    {
@@ -283,7 +283,8 @@ public class UserLogin extends JFrame
                m_UserName_S = m_UserName_T.getText();
                m_Password_S = m_Password_T.getText();
                isLogged = loginSuccess();
-               records.connect(m_UserName_S);
+//               records = new UserRegistration(m_UserName_S, m_Password_S);
+//               records.userLogin();
                if(isLogged)
                {
                     m_UserLoginFrame.dispose();

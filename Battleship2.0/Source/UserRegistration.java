@@ -35,8 +35,8 @@ public class UserRegistration
       1 username and password combination doesn't exist
       2 database connection failed
       */
-      int resultCode;
-      String sqlPassCheck = "SELECT count(*) from bs_player WHERE name = '" + userName + "' AND password = MD5('" + passWord + "');";
+      int resultCode = 1;
+      String sqlPassCheck = "SELECT * from bs_player WHERE name = '" + userName + "' AND password = MD5('" + passWord + "');";
       Statement stmtUserPass = null;
 
       try
@@ -45,21 +45,21 @@ public class UserRegistration
          stmtUserPass = conn.createStatement();
          stmt = conn.createStatement();
          
-         sql = "SELECT count(*) cnt from bs_player WHERE name = '" + userName + "';";
+         sql = "SELECT * from bs_player WHERE name = '" + userName + "' AND password = MD5('" + passWord + "');";
          ResultSet rs = stmt.executeQuery(sql);
          
          //if user exists return corresponding code otherwise create new user and return corresponding code
-         if(rs.isBeforeFirst())
+         if(rs.next())
          {
             ResultSet rsPassCheck = stmtUserPass.executeQuery(sqlPassCheck);
             
-            if(rsPassCheck.isBeforeFirst())
+            if(rsPassCheck.next())
             {
                rs.close();
                stmt.close();
                conn.close();
                resultCode = 0;
-               //System.out.println(resultCode);
+               System.out.println(resultCode);
                return resultCode;
             }
             
@@ -69,7 +69,7 @@ public class UserRegistration
                stmt.close();
                conn.close();
                resultCode = 1;
-               //System.out.println(resultCode);
+               System.out.println(resultCode);
                return resultCode;
             }
          }
@@ -82,14 +82,14 @@ public class UserRegistration
             conn.close();
             
             resultCode = 1;
-            //System.out.println(resultCode);
+            System.out.println(resultCode);
             return resultCode;
          }
       }
       
       catch(SQLException se)
       {
-        // se.printStackTrace();
+         se.printStackTrace();
          System.out.println(failedConn);
          resultCode = 2;
          return resultCode;
