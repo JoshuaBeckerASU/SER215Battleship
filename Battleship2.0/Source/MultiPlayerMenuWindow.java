@@ -183,8 +183,8 @@ public class MultiPlayerMenuWindow implements Serializable
                     newClient();
 					break;
                 case "JoinGame": m_OldWindow_F.dispose();
-                    
-                    newClient();
+                    String result = JOptionPane.showInputDialog(m_MultiPlayerMenu_F,"Enter the Ip Adress of the Server you would Like to Connect to\nNote: must be on the same network\n\nEnter '0' to use localHost");
+                    newClient(result);
                     break;
 				case "BackToMainMenu": m_OldWindow_F.setVisible(true); m_MultiPlayerMenu_F.dispose();
 					break;
@@ -200,6 +200,20 @@ public class MultiPlayerMenuWindow implements Serializable
         
         thread.start();
     }
+    private void newClient(String ip)
+    {
+        if(ip.equals("0"))
+        {
+            m_Client = new GameClient_(m_MultiPlayerMenu_F, this,true);
+        }else
+        {
+            m_Client = new GameClient_(ip,8000,m_MultiPlayerMenu_F, this);
+        }
+        
+        Thread thread = new Thread(m_Client,"ClientThread");
+        
+        thread.start();
+    }
     public void startGame()
     {
         m_LSlots = new LobbySlot[2];
@@ -209,4 +223,5 @@ public class MultiPlayerMenuWindow implements Serializable
         m_Game = new Game(m_Client, m_LSlots);
         m_Game.setUpGame(m_Game);
     }
+
 }

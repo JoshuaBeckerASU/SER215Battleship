@@ -111,8 +111,8 @@ public class MenuWindow implements Runnable, Serializable
 		m_MenuButton_L.add(m_MultiPlayer_B);
         m_MenuButton_L.add(new JLabel("\n\n"));
         m_MenuButton_L.add(m_SinglePlayer_B);
-        m_MenuButton_L.add(new JLabel("\n\n"));
-		m_MenuButton_L.add(m_Settings_B);
+        //m_MenuButton_L.add(new JLabel("\n\n"));
+		//m_MenuButton_L.add(m_Settings_B);
         m_MenuButton_L.add(new JLabel("\n\n"));
         m_MenuButton_L.add(m_SwitchToWindow_B);
         m_MenuButton_L.add(new JLabel("\n\n"));

@@ -45,6 +45,20 @@ public class GameClient_ implements Runnable
         try
         {
             m_IP = InetAddress.getLocalHost().getHostAddress();
+            JOptionPane.showMessageDialog(oldWindow, "Server's IP: " + m_IP);
+        }catch(UnknownHostException e)
+        {
+            System.err.println(e);
+        }
+        m_Port = 8000;
+    }
+    public GameClient_(JFrame oldWindow, MultiPlayerMenuWindow multiPlayerMenu, boolean localHost) 
+    {
+        m_MultiPlayerMenu = multiPlayerMenu;
+        m_OldWindow = oldWindow;
+        try
+        {
+            m_IP = InetAddress.getLocalHost().getHostAddress();
         }catch(UnknownHostException e)
         {
             System.err.println(e);
