@@ -874,7 +874,7 @@ public class Game implements Serializable
 							tmp.setIcon(m_Assets.getImage("Target"));
 							if(randomNum >= .5)
 								m_Assets.playSound("miss1.wav");
-							elselen
+							else
 								m_Assets.playSound("miss2.wav");
 						}else
 						{							
