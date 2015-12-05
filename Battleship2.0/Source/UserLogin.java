@@ -43,14 +43,6 @@ public class UserLogin extends JFrame
    
    public UserLogin()
    {
-      
-      try
-      {
-          System.out.println(InetAddress.getLocalHost().getHostAddress());
-      }catch(UnknownHostException e)
-      {
-          
-      }
       createComponents();
       buildComponentsLog();
       addElementsLog();
@@ -322,7 +314,6 @@ public class UserLogin extends JFrame
                new UserLogin();
                break;
          }
-         Main.startLoading();
          if(isLogged == true || isRegged == true)
          {
             //once logged in or registered closes login window and loads game

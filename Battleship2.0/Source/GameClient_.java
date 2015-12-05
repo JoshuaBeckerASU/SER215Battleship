@@ -42,7 +42,13 @@ public class GameClient_ implements Runnable
     {
         m_MultiPlayerMenu = multiPlayerMenu;
         m_OldWindow = oldWindow;
-        m_IP = "10.143.110.9";
+        try
+        {
+            m_IP = InetAddress.getLocalHost().getHostAddress();
+        }catch(UnknownHostException e)
+        {
+            System.err.println(e);
+        }
         m_Port = 8000;
     }
     public GameClient_(String ip, int port, JFrame oldWindow, MultiPlayerMenuWindow multiPlayerMenu) 

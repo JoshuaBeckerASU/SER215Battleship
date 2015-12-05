@@ -221,6 +221,7 @@ public class GameWindow implements Serializable, Runnable
         m_ChatBox_L.add(m_Chat_SP);
         m_ChatBox_L.add(m_InsertChat_TA);
 		
+        if(m_CurrentGame.isMultiplayer())
 		m_Footer_L.add(m_ChatBox_L, BorderLayout.CENTER);
 		
 		m_Background_L.add(m_Header_L, BorderLayout.NORTH);
