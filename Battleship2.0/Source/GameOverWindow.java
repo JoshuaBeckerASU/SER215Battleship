@@ -107,10 +107,10 @@ public class GameOverWindow implements Serializable
         m_Background_L.add(new JLabel("\n"));
 		m_Background_L.add(new JLabel("\n"));
         
-		m_Background_L.add(m_ReplayGame_B);
-		m_Background_L.add(new JLabel("\n"));
-		m_Background_L.add(m_StartGame_B);
-		m_Background_L.add(new JLabel("\n"));
+		//m_Background_L.add(m_ReplayGame_B);
+		//m_Background_L.add(new JLabel("\n"));
+		//m_Background_L.add(m_StartGame_B);
+		//m_Background_L.add(new JLabel("\n"));
 		m_Background_L.add(m_BackToMenu_B);
 		
 		m_GameOver_F.add(m_Background_L);
@@ -148,8 +148,13 @@ public class GameOverWindow implements Serializable
 			String command = event.getActionCommand();
 			switch(command)
 			{
-				case "BackToMenu": MenuWindow menu = new MenuWindow(new JFrame("domnb"));//loading screen...
-                                   m_OldWindow.dispose(); m_GameOver_F.dispose();
+				case "BackToMenu": 
+                        m_GameOver_F.setVisible(false);
+                        m_GameOver_F.dispose();
+                        MenuWindow menu = new MenuWindow(m_OldWindow);
+                        Main.s_GameThread = new Thread(menu);
+        
+                        Main.s_GameThread.start();
 					break;
 				case "StartGame":
                     break;
