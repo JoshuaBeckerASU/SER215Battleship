@@ -34,15 +34,21 @@ public class GameClient_ implements Runnable
     private String m_IP;
     private Thread m_ChatServiceThread;
     private ChatService m_ChatService;
+    private JFrame m_OldWindow;
+    private MultiPlayerMenuWindow m_MultiPlayerMenu;
     private int m_Port;
     
-    public GameClient_() 
+    public GameClient_(JFrame oldWindow, MultiPlayerMenuWindow multiPlayerMenu) 
     {
-        m_IP = "10.143.111.97";
+        m_MultiPlayerMenu = multiPlayerMenu;
+        m_OldWindow = oldWindow;
+        m_IP = "10.143.110.9";
         m_Port = 8000;
     }
-    public GameClient_(String ip, int port) 
+    public GameClient_(String ip, int port, JFrame oldWindow, MultiPlayerMenuWindow multiPlayerMenu) 
     {
+        m_MultiPlayerMenu = multiPlayerMenu;
+        m_OldWindow = oldWindow;
         m_IP = ip;
         m_Port = port;
     }
@@ -76,37 +82,40 @@ public class GameClient_ implements Runnable
     
     public void run()
     {
+        WaitForConnection wfc = new WaitForConnection("Waiting For Connection");
+        m_OldWindow.setEnabled(false);
         try 
         {
-            System.out.println("Connecting...");
-            try
-            {
-                m_Socket = new Socket(m_IP, m_Port);
-                
-                System.out.println("Connecting to ChatService...");
-                m_ChatSocket = new Socket(m_IP, m_Port);
-                System.out.println("\nConnected to ChatService...");
-            }catch(java.net.ConnectException e)
-            {
-                System.out.println("Not able to cennect to server");
-                System.err.println(e);
-                System.exit(1);
-            }
-                
-            System.out.println("Connected...");
+            m_Socket = new Socket(m_IP, m_Port);
             
-            System.out.println("Getting OutputStream Stream From server...");
+            //System.out.println("Connecting to ChatService...");
+            m_ChatSocket = new Socket(m_IP, m_Port);
+            //System.out.println("\nConnected to ChatService...");
+ 
+            wfc.updateMessage("Waiting For Other Players");
+            
+            //System.out.println("Getting OutputStream Stream From server...");
             toServer =  new ObjectOutputStream(m_Socket.getOutputStream());
             toChatServer = new ObjectOutputStream(m_ChatSocket.getOutputStream());
             toChatServer.flush();
             
-            System.out.println("Getting Input Stream From server...");
+            //System.out.println("Getting Input Stream From server...");
             fromServer = new ObjectInputStream(m_Socket.getInputStream());
             fromChatServer = new ObjectInputStream(m_ChatSocket.getInputStream());
             
             m_ChatService = new ChatService();
             m_ChatServiceThread = new Thread(m_ChatService);
             m_ChatServiceThread.start();
+           
+            m_MultiPlayerMenu.startGame();
+            wfc.dispose();
+            m_OldWindow.dispose();
+        }catch(java.net.ConnectException e)
+        {
+            wfc.dispose();
+            MenuWindow menu = new MenuWindow(new JFrame(""));
+            JOptionPane.showMessageDialog(menu.getMainFrame(),"Error Connection refused");
+            m_OldWindow.setEnabled(true);
         }
         catch (IOException ex) {
             System.err.print(ex);

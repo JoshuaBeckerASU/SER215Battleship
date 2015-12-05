@@ -25,7 +25,7 @@ import java.awt.image.*;
 import java.io.*;
 import java.awt.Color.*;
 
-public class LoadingWindow implements Serializable
+public class LoadingWindow
 {
 	private JFrame m_Loading_F;
 	private int m_ScreenWidth, m_ScreenHeight;
@@ -48,6 +48,7 @@ public class LoadingWindow implements Serializable
         
 		m_Loading_F.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		m_Loading_F.add(m_Background_L);
+        m_Loading_F.setAlwaysOnTop(true);
         
         m_Background_L.setLayout(new BoxLayout(m_Background_L, BoxLayout.Y_AXIS));
         

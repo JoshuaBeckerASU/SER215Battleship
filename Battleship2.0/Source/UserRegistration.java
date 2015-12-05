@@ -95,7 +95,7 @@ public class UserRegistration
       
       catch(SQLException se)
       {
-         se.printStackTrace();
+        // se.printStackTrace();
          System.out.println(failedConn);
          resultCode = 2;
          return resultCode;
@@ -156,7 +156,7 @@ public class UserRegistration
       
       catch(SQLException se)
       {
-         se.printStackTrace();
+         //se.printStackTrace();
          System.out.println("Not Connected");
          resultCode = 2;
          return resultCode;

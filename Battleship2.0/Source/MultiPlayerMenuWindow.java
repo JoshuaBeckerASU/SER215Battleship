@@ -144,7 +144,6 @@ public class MultiPlayerMenuWindow implements Serializable
 		
 		m_MultiPlayerMenu_F.setVisible(true);
         
-        m_OldWindow_F.setVisible(false);
 	}
 	
 	/**addActionListeners
@@ -173,48 +172,19 @@ public class MultiPlayerMenuWindow implements Serializable
 		public void actionPerformed(ActionEvent event)
 		{
 			String command = event.getActionCommand();
+            m_OldWindow_F.setVisible(false);
 			switch(command)
 			{
-				case "HostGame": /*m_OldWindow_F.dispose();
-                    m_Server = new GameServer_("Josh");
+				case "HostGame":
+                    m_Server = new GameServer_(false);
                     m_Server_T = new Thread(m_Server);
                     m_Server_T.start();
                     
-                    System.out.println("HERE");
-                    m_LSlots = new LobbySlot[2];
-                    m_LSlots[0] = new LobbySlot(1,m_Assets);
-                    m_LSlots[1] = new LobbySlot(2,m_Assets);
-                    m_Game = new Game(-1, m_LSlots, m_Assets);
-                    
-                    m_Game.setUpGame(m_Game);
-                    */
+                    newClient();
 					break;
                 case "JoinGame": m_OldWindow_F.dispose();
-                        m_LSlots = new LobbySlot[2];
-                        m_LSlots[0] = new LobbySlot(1);
-                        m_LSlots[1] = new LobbySlot(2);
-                        System.out.println("Selected JoinGame");
-                        
-                        WaitForConnection wfc = new WaitForConnection();
-                        Thread wfcThread = new Thread(wfc, "WaitingForPlayerThread");
-                        wfcThread.start();
-                        m_Client = new GameClient_();
-                        Thread thread = new Thread(m_Client,"ClientThread");
-                        
-                        //WaitForConnection wfc = new WaitForConnection(new JFrame());
-                        //Thread wfcThread = new Thread(wfc);
-                        
-                        //wfcThread.start();
-                        thread.start();
-                       
-                        while(thread.isAlive())
-                        {
-                            
-                        }
-                        wfc.dispose();
-                        m_Game = new Game(m_Client, m_LSlots);
-                        m_Game.setUpGame(m_Game);
-                        m_MultiPlayerMenu_F.dispose();
+                    
+                    newClient();
                     break;
 				case "BackToMainMenu": m_OldWindow_F.setVisible(true); m_MultiPlayerMenu_F.dispose();
 					break;
@@ -223,4 +193,20 @@ public class MultiPlayerMenuWindow implements Serializable
 			}
 		}  
 	}
+    private void newClient()
+    {
+        m_Client = new GameClient_(m_MultiPlayerMenu_F, this);
+        Thread thread = new Thread(m_Client,"ClientThread");
+        
+        thread.start();
+    }
+    public void startGame()
+    {
+        m_LSlots = new LobbySlot[2];
+        m_LSlots[0] = new LobbySlot(1);
+        m_LSlots[1] = new LobbySlot(2);
+        
+        m_Game = new Game(m_Client, m_LSlots);
+        m_Game.setUpGame(m_Game);
+    }
 }

@@ -107,7 +107,6 @@ public class RecordTracking
       
       catch(SQLException se)
       {
-         se.printStackTrace();
       }
    }
    

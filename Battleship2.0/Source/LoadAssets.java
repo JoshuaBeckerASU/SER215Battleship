@@ -39,7 +39,7 @@ public class LoadAssets implements Runnable, Serializable
 	{
 		GridCol = 16;
 		GridRows = 19;
-        m_Assets = new ImageIcon[43];
+        m_Assets = new ImageIcon[45];
         m_Names = new ArrayList<String>();
 		soundMap = new HashMap<String, File>();
 	}
@@ -269,12 +269,15 @@ public class LoadAssets implements Runnable, Serializable
         LoadingWindow.updateMessage("Loading Game Peaces.");
         m_Assets[36] = loadGameImage("GameBoardBlank.png", ScreenWidth,(ScreenHeight-700)/2);
         m_Assets[37] = loadGameImage("MenuBox.png",ScreenWidth - 250, ScreenHeight- 300);
-        LoadingWindow.updateMessage("Loading Game Peaces..");
-        LoadingWindow.updateMessage("Done Loading...");
+        LoadingWindow.updateMessage("Loading Game Art.");
         m_Assets[38] = loadButtonImage("WaitingForOtherPlayerButton.png");
+        LoadingWindow.updateMessage("Loading Game Art..");
         m_Assets[39] = loadGameImage("Blank.png", 1000, 100);
         m_Assets[41] = loadGif("ConnectingToServer.gif",214,183);
+        LoadingWindow.updateMessage("Loading Game Art...");
         m_Assets[42] = loadButtonImage("SwitchToWindowButton.png");
+        m_Assets[43] = loadGif("Waiting.gif",300,35);
+        m_Assets[44] = loadGameImage("WaitingScreenBG.png",200,75);
         
 		m_Names.add("GameBoard");
 		m_Names.add("GameBoardBlank");
@@ -319,6 +322,8 @@ public class LoadAssets implements Runnable, Serializable
         m_Names.add("Blank");
         m_Names.add("ConnectingToServer");
         m_Names.add("SwitchToWindow");
+        m_Names.add("Waiting");
+        m_Names.add("WaitingScreenBG");
 		
 		LoadingWindow.updateMessage("Loading Sounds...");
 		
@@ -334,6 +339,8 @@ public class LoadAssets implements Runnable, Serializable
 		soundMap.put("whistler_short.wav", loadGameSound("whistler_short.wav"));
 
         System.out.println("DONE LOADING");
+        
+        Main.startGame();
     }
 	
 	

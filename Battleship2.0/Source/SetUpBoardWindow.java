@@ -35,6 +35,8 @@ public class SetUpBoardWindow implements Serializable
 	private Ship m_CurrentShip;
 	private LoadAssets m_Assets;
     private boolean m_IsWindowed;
+    private WaitForConnection m_WaitingWindow;
+    private SetUpBoardWindow m_This;
 	
     public SetUpBoardWindow(Player player)// constructer
     {
@@ -60,6 +62,8 @@ public class SetUpBoardWindow implements Serializable
 		
 		addElements();
 		
+        m_This = this;
+        
 		m_CurrentPlayer.startBoardSetup();
 	}
 	/**createComponents
@@ -265,30 +269,29 @@ public class SetUpBoardWindow implements Serializable
 							m_CurrentPlayer.setNextShip();
 							if(m_CurrentPlayer.allShipsSet() && !Game.getCurrentGame().isMultiplayer())
 							{
-								// DOUBLE CHECK IF THEY ARE READY...
 								Game.getCurrentGame().setUpBoards();
-								// DELETE MEMU BUTTONS AND THINGS...
 							}else if(m_CurrentPlayer.allShipsSet())
                             {
+                                m_WaitingWindow = new WaitForConnection("Waiting for Other Player");
+                                
                                 m_CurrentPlayer = Game.getCurrentGame().getPlayer(1);
                                 if(Game.getCurrentGame().isMultiplayer())
-                                {  
-                                    WaitForConnection wfc = new WaitForConnection();
-                                    Thread thread = new Thread(wfc, "WaitingForPlayerThread");
-                                    thread.start();
-                                    for(int i = 0; i < 5; i++)
-                                    {
-                                        Game.getCurrentGame().getInputFromServer();
-                                    }
-                                    wfc.dispose();
-                                    Game.getCurrentGame().setUpBoards();
-                                    m_SetUpBoard_F.dispose();
+                                {
+                                   
+                                    System.out.println("waiting for player");
+                                    Game.getCurrentGame().getInputFromServer(m_This);
                                 }
                             }
 							break;
 				}
 			}
 		}
+    }
+    public void playGame()
+    {
+        m_WaitingWindow.dispose();
+        m_SetUpBoard_F.dispose();
+        Game.getCurrentGame().setUpBoards();
     }
 	/**setKeyBind
 	* maps the key strokes with there actions

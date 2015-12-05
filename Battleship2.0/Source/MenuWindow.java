@@ -220,4 +220,8 @@ public class MenuWindow implements Runnable, Serializable
     {
         return m_IsWindowed;
     }
+    public JFrame getMainFrame()
+    {
+        return m_Menu_F;
+    }
 }

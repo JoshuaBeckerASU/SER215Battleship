@@ -21,40 +21,41 @@ import java.util.*;
 import java.awt.*;
 import javax.swing.*;
 
-public class GameServer_ extends JFrame
+public class GameServer_ extends JFrame implements Runnable
 {
     private ObjectOutputStream toChatPlayerOne;
     private ObjectOutputStream toChatPlayerTwo;
     
     private Socket m_ChatSocketOne;
     private Socket m_ChatSocketTwo;
-    // Text area for displaying contents
+    
+    private boolean turn;
+    
     private JTextArea ServerConsole = new JTextArea();
     
-    public static void main(String[] args) {
-        new GameServer_();
-    }
-    
-    public GameServer_() 
+    public GameServer_(boolean showWindow) 
     {
-    
-        // Place text area on the frame
         setLayout(new BorderLayout());
         add(new JScrollPane(ServerConsole), BorderLayout.CENTER);
-        setTitle("GameServer_");
+        setTitle("GameServer");
         setSize(500, 300);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setVisible(true); // It is necessary to show the frame here!
+        if(showWindow)
+        {
+             setVisible(true);
+        }
+       
         boolean turn = true;
     
+    }
+    public void run()
+    {
         try 
         {
-    
-            // Create a server socket
             ServerSocket serverSocket = new ServerSocket(8000);
             ServerConsole.append("GameServer_ started at " + new Date() + '\n');
-        
-            // Listen for a connection request
+            
+            //get connected.
             ServerConsole.append("\nSearching for Players... \n");
             Socket socket1 = serverSocket.accept();
             
@@ -245,7 +246,8 @@ public class GameServer_ extends JFrame
             }
         }
 
-        private class MessageListener implements Runnable{
+        private class MessageListener implements Runnable
+        {
 
             private ObjectInputStream fromClient;
             private String message;

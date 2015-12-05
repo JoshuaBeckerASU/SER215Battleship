@@ -21,7 +21,7 @@ import java.io.*;
 
 public class Game implements Serializable
 {
-    public static int MULTIPLAYERGAME = -1;
+    public static final int MULTIPLAYERGAME = -1;
 	private Player m_Players[];
     private LobbySlot m_Slots[];
 	private Player m_CurrentPlayer;
@@ -40,6 +40,7 @@ public class Game implements Serializable
     private Thread m_Client_T;
     private int m_ShotCount = 0;
     private boolean m_Turn;
+    private int m_ShipCount = 0;
     
 /**getInputFromServer Class
 * @Details: will get information from the
@@ -50,6 +51,12 @@ public class Game implements Serializable
     {
         private ObjectInputStream m_FromServer_OIS;
         private Object m_Object;
+        private SetUpBoardWindow m_SetUpBoardWindow;
+        GetInputFromServer(ObjectInputStream fromServer, SetUpBoardWindow window)
+        {
+            m_SetUpBoardWindow = window;
+            m_FromServer_OIS = fromServer;
+        }
         GetInputFromServer(ObjectInputStream fromServer)
         {
             m_FromServer_OIS = fromServer;
@@ -93,10 +100,18 @@ public class Game implements Serializable
                 
             }else if(m_Object instanceof Ship)
             {
+                m_ShipCount++;
                 Ship ship = (Ship) m_Object;
                 System.out.println(m_Players[1].getNumShipsPlaced() + " ship = " + ship.getName());
                 m_Players[1].setShip(m_Players[1].getNumShipsPlaced(),new Ship(ship));
                 m_Players[1].addToTaken(ship.x(),ship.y(),new Ship(ship));
+                if(m_ShipCount == 5)
+                {
+                    m_SetUpBoardWindow.playGame();
+                }else
+                {
+                    run();
+                }
             }
         }
         /**getObject
@@ -140,15 +155,11 @@ public class Game implements Serializable
 		m_TargetLoc = new Location[5];
         m_CurrentGame = this;
 	}
-    public void getInputFromServer()
+    public void getInputFromServer(SetUpBoardWindow window)
     {
-        GetInputFromServer getShip = new GetInputFromServer(m_Client.getInputStream());
+        GetInputFromServer getShip = new GetInputFromServer(m_Client.getInputStream(), window);
         Thread thread = new Thread(getShip, "getShipThread");
         thread.start();
-        while(thread.isAlive())
-        {
-            
-        }
     }
     public void sendMessage(String message)
     {
@@ -184,7 +195,6 @@ public class Game implements Serializable
 	}
 	public void startMultiplayerGame()
 	{
-        System.out.println("StartMultiPlayerGame");
         m_GameWindow = new GameWindow(m_CurrentGame);
         m_OldWindow = m_GameWindow.getFrame();
         
@@ -406,12 +416,13 @@ public class Game implements Serializable
                 if(m_Turn)
                 {
                     m_Players[1].enableBoard();
-                    //System.out.println("Your Players turn");
+                    m_GameWindow.updateActionConsole("Your Turn");
                     m_CurrentPlayer = m_Players[0];
                     m_CurrentPlayerIndex = 0;
                 }else
                 {
                     //System.out.println("Other Players turn");
+                    m_GameWindow.updateActionConsole("Other Players Turn");
                     m_CurrentPlayerIndex = 1;
                     m_CurrentPlayer = m_Players[1];
                     getShotsFromServer();
@@ -450,7 +461,7 @@ public class Game implements Serializable
     public void multiPlayerSelTarget(int x, int y, Player playerOffence, Player playerDefence, boolean player,int shotNum)
     {
 		m_TargetLoc[shotNum] = new Location(x,y);
-        //System.out.println(playerDefence.getStringBoard()[x][y]);
+        m_GameWindow.updateActionConsole(playerOffence.getName() + " has Selected a target at location (" + x +","+ y + ")");
         JLabel tmp = ((JLabel) playerDefence.getTargetBoard()[x].getComponent(y));
         String result = playerDefence.getStringBoard()[x][y];
 		switch(result)
@@ -463,7 +474,7 @@ public class Game implements Serializable
                             BoardMouseAction.setIcon(m_Assets.getImage("Target"));
                         else
                             tmp.setIcon(m_Assets.getImage("Target"));
-                        m_GameWindow.updateActionConsole("Miss On Location x = " + x + " y = " + y+ "\n\n"+ (4 - shotNum) + " Shots Left\n");
+                        m_GameWindow.updateActionConsole("Miss\n\n"+ (4 - shotNum) + " Shots Left\n");
                         break;
             default:
                         if(playerDefence.getShip(result) != null)
@@ -476,7 +487,7 @@ public class Game implements Serializable
                                 tmp.setIcon(m_Assets.getImage("HitMarker"));
                             
                             m_GameWindow.decFleetHealth(player);
-                            m_GameWindow.updateActionConsole("HIT On Location x = " + x + " y = " + y+ "\n\n"+ (4 - shotNum) + " Shots Left\n");
+                            m_GameWindow.updateActionConsole("HIT On Location \n\n"+ (4 - shotNum) + " Shots Left\n");
                             
                             if(playerDefence.getShip(result).getLives() == 0)
                             {

@@ -21,13 +21,14 @@ import javax.imageio.*;
 public class Main implements Serializable
 {
     private static Thread s_LoadAssetsThread;
-    private static Thread s_GameThread;
+    public static Thread s_GameThread;
+    private static LoadingWindow m_LoadingW;
     public static final LoadAssets s_Assets = new LoadAssets();
     public static void main(String[] args)
     {
         new UserLogin();
     }
-    public static void startGame()
+    public static void startLoading()
     {
 		GraphicsDevice gd = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();// Getting size of screen
 		int ScreenWidth = gd.getDisplayMode().getWidth();
@@ -56,20 +57,15 @@ public class Main implements Serializable
 			System.out.println("FIle Not Found\nFile Path: " + path);System.exit(0);
 		}
         
-        LoadingWindow loadW = new LoadingWindow(icon, gif);
+        m_LoadingW = new LoadingWindow(icon, gif);
         
         s_LoadAssetsThread = new Thread(s_Assets);
         
         s_LoadAssetsThread.start();
-        while(true)
-        {
-            if(!s_LoadAssetsThread.isAlive())
-            {
-                break;
-            }
-        }
-        //new WaitForConnection(new JFrame());//testing
-		MenuWindow menu = new MenuWindow(loadW.getMainFrame());
+    }
+    public static void startGame()
+    {
+        MenuWindow menu = new MenuWindow(m_LoadingW.getMainFrame());
         s_GameThread = new Thread(menu);
         
         s_GameThread.start();

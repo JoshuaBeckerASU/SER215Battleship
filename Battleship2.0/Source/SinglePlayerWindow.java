@@ -200,7 +200,6 @@ public class SinglePlayerWindow implements Serializable
 		m_SinglePlayer_F.pack();
 		
 		m_SinglePlayer_F.setVisible(true);
-        m_OldWindow.setVisible(false);
 	}
 	/**addActionListeners
 	* adds ActionListener, which wait till
@@ -228,6 +227,7 @@ public class SinglePlayerWindow implements Serializable
 		public void actionPerformed(ActionEvent event)
 		{
 			String command = event.getActionCommand();
+            m_OldWindow.setVisible(false);
 			switch(command)
 			{
 				case "ResetLobby": //new GameSetUpWindow(m_SinglePlayer_F, m_Assets);//new ResetLobbyWindow(m_SinglePlayer_F, m_Assets);

@@ -30,6 +30,12 @@ public class WaitingScreenWindow implements Serializable
 	private int m_ScreenWidth, m_ScreenHeight;
 	private JLabel m_Background_L, m_Waiting_L;
 	private LoadAssets m_Assets;
+    
+    public static void main(String args[])
+    {
+        new WaitingScreenWindow();
+    }
+    
 	
     public WaitingScreenWindow()// Constructor
     {

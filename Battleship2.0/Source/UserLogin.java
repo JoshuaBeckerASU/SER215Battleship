@@ -29,6 +29,7 @@ public class UserLogin extends JFrame
    private GridLayout m_PanelLayoutNew1 = new GridLayout(), m_PanelLayoutNew2 = new GridLayout();
    private RecordTracking records = new RecordTracking();
    private JPanel m_Content_P;
+   public static JLabel m_Message_L;
    
    
    //for testing
@@ -69,14 +70,17 @@ public class UserLogin extends JFrame
       switch(resultCode)
       {
          case 0: m_Result_S = "You have successfully logged in.";
+            m_Message_L.setText("You have successfully logged in.");
             isLoggedIn = true;
             break;
             
          case 1: m_Result_S = "Username and password combination does not exist";
+            m_Message_L.setText("Username and password combination does not exist");
             isLoggedIn = false;
             break;
             
          case 2: m_Result_S = "Database connection failed.";
+            m_Message_L.setText("Database connection failed.");
             isLoggedIn = false;
             break;
       }
@@ -135,6 +139,7 @@ public class UserLogin extends JFrame
       m_Exit = new JButton("Exit");
       m_Cancel = new JButton("Cancel");
       m_Register = new JButton("Register");
+      m_Message_L = new JLabel("");
       
       
       m_UserName_L = new JLabel("Username:");
@@ -186,6 +191,8 @@ public class UserLogin extends JFrame
       m_Exit.setPreferredSize(new Dimension(70,20));
       m_NewUser.setPreferredSize(new Dimension(75,20));
       
+      m_Message_L.setAlignmentX(Component.CENTER_ALIGNMENT);
+      
       m_Login.setActionCommand("Login");
       m_NewUser.setActionCommand("New User");
       m_Exit.setActionCommand("Exit");
@@ -204,6 +211,7 @@ public class UserLogin extends JFrame
       
       m_Content_P.add(m_LabelText_ExistingUser_P);
       m_Content_P.add(m_LabelText_ExistingPass_P);
+      m_Content_P.add(m_Message_L);
       m_Content_P.add(m_Buttons_Existing_P);
       
       m_UserLoginFrame.add(m_Content_P);
@@ -275,8 +283,11 @@ public class UserLogin extends JFrame
                m_Password_S = m_Password_T.getText();
                isLogged = loginSuccess();
                records.connect(m_UserName_S);
-               m_UserLoginFrame.dispose();
-               Main.startGame();
+               if(isLogged)
+               {
+                    m_UserLoginFrame.dispose();
+                    Main.startLoading();
+               }
                break;
             case "New User":
                UserReg();
@@ -291,7 +302,11 @@ public class UserLogin extends JFrame
                m_Password_S = m_Password_T.getText();
                m_ConfirmPass_S = m_ConfirmPass_T.getText();
                isRegged = registrationSuccess();
-               m_UserRegFrame.dispose();
+               if(isRegged)
+               {
+                    m_UserRegFrame.dispose();
+                    new UserLogin();
+               }
                break;
             case "Cancel":
                m_UserRegFrame.dispose();
