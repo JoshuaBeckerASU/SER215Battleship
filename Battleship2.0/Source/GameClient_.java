@@ -38,6 +38,7 @@ public class GameClient_ implements Runnable
     private MultiPlayerMenuWindow m_MultiPlayerMenu;
     private int m_Port;
     
+    //constructor
     public GameClient_(JFrame oldWindow, MultiPlayerMenuWindow multiPlayerMenu) 
     {
         m_MultiPlayerMenu = multiPlayerMenu;
@@ -52,6 +53,7 @@ public class GameClient_ implements Runnable
         }
         m_Port = 8000;
     }
+    //constructor
     public GameClient_(JFrame oldWindow, MultiPlayerMenuWindow multiPlayerMenu, boolean localHost) 
     {
         m_MultiPlayerMenu = multiPlayerMenu;
@@ -65,6 +67,7 @@ public class GameClient_ implements Runnable
         }
         m_Port = 8000;
     }
+    //constructor
     public GameClient_(String ip, int port, JFrame oldWindow, MultiPlayerMenuWindow multiPlayerMenu) 
     {
         m_MultiPlayerMenu = multiPlayerMenu;
@@ -72,6 +75,7 @@ public class GameClient_ implements Runnable
         m_IP = ip;
         m_Port = port;
     }
+    //--------------getters and setters--------------//
     public ObjectInputStream getInputStream()
     {
         return fromServer;
@@ -84,7 +88,12 @@ public class GameClient_ implements Runnable
     {
         m_GameWindow = gameWindow;
     }
-    
+    //-------------End of getters and setters--------//
+    /**
+     * sends a message to the server, and to the other clients
+     * 
+     * @param message: message to be sent
+     **/
     public void sendMessage(String message)
     {
         try
@@ -99,7 +108,11 @@ public class GameClient_ implements Runnable
             System.exit(1);
         }  
     }
-    
+    /**
+     * run will be exicuted when the thread is called, and will
+     * connect to the server and start communicating with it.
+     * 
+     **/
     public void run()
     {
         WaitForConnection wfc = new WaitForConnection("Waiting For Connection");
@@ -141,7 +154,10 @@ public class GameClient_ implements Runnable
             System.err.print(ex);
         }
     }
-    
+    /**
+     * will set up the chat Service within the game
+     * 
+     */
     private class ChatService implements Runnable
     {
         private String m_Message;
